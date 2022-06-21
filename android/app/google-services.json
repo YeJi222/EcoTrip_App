@@ -1,0 +1,82 @@
+{
+  "project_info": {
+    "project_number": "465599434722",
+    "project_id": "fluttercamp-67707",
+    "storage_bucket": "fluttercamp-67707.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:465599434722:android:858789dd11ae7e3337f3bb",
+        "android_client_info": {
+          "package_name": "com.example.ecotripapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "465599434722-2aa67ttcic373k2cs0476qoj4332rghs.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBSWrS4uGvjrM_F9FnRXbiPSj0av3DOYAg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "465599434722-2aa67ttcic373k2cs0476qoj4332rghs.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "465599434722-88ecirofjnvdgrn6u4vjc2ujqdmkgji1.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.flutterCamp"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:465599434722:android:c12e68946aeb685b37f3bb",
+        "android_client_info": {
+          "package_name": "com.example.flutter_camp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "465599434722-2aa67ttcic373k2cs0476qoj4332rghs.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBSWrS4uGvjrM_F9FnRXbiPSj0av3DOYAg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "465599434722-2aa67ttcic373k2cs0476qoj4332rghs.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "465599434722-88ecirofjnvdgrn6u4vjc2ujqdmkgji1.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.flutterCamp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
