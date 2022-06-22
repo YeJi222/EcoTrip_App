@@ -99,9 +99,7 @@ class _HomePageState extends State<HomePage> {
                 color: Colors.black,
                 size: 28,
               )),
-          SizedBox(
-            width: 10,
-          ),
+          SizedBox(width: 10,),
         ],
       ),
       body: ListView(
