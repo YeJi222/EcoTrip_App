@@ -1,12 +1,10 @@
 import 'dart:async';
-import 'dart:io';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:dynamic_timeline/dynamic_timeline.dart';
 import 'package:awesome_calendar/awesome_calendar.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:google_ml_vision/google_ml_vision.dart';
 import 'package:image_picker/image_picker.dart';
+import 'widget.dart';
 import 'package:intl/intl.dart';
 
 class UploadPage extends StatefulWidget {
@@ -69,53 +67,6 @@ class _UploadPageState extends State<UploadPage> {
   int timestamp = DateTime.now().millisecondsSinceEpoch;
   var image;
   var oldImg;
-
-  GoogleVisionImage? visionImage;
-  TextRecognizer textRecognizer = GoogleVision.instance.textRecognizer();
-  late VisionText visionText;
-  String text = '';
-
-  Future getGalleryImage() async {
-    image = await ImagePicker().getImage(
-      source: ImageSource.gallery,
-    );
-    if(image != null){
-      oldImg = image;
-    }
-
-    setState(() {
-      _image = image;
-      if(_image != null) defaultFlag = 1;
-      else {
-        _image = oldImg;
-      }
-    });
-
-    if(_image != null){
-      File file = File(_image!.path);
-      visionImage = GoogleVisionImage.fromFile(file);
-      visionText = await textRecognizer.processImage(visionImage!);
-      text = visionText.text!;
-    }
-
-    category=[];
-    savedCategory =[];
-
-    final ImageLabeler labeler = GoogleVision.instance.imageLabeler();
-    if(_image != null) {
-      final List<ImageLabel> labels = await labeler.processImage(visionImage!);
-
-      for (ImageLabel label in labels) {
-        final String? text = label.text;
-
-        setState(() {
-          category.add(text!);
-        });
-      }
-
-      labeler.close();
-    }
-  }
 
   String default_url = '';
   String select_url = '';
@@ -203,62 +154,6 @@ class _UploadPageState extends State<UploadPage> {
                 ],
               ),
             ),
-            // const SizedBox(
-            //   height: 10,
-            // ),
-            // Padding(
-            //   padding: EdgeInsets.only(left: 15, right: 15),
-            //   child: StreamBuilder(
-            //     stream: img_url(),
-            //     builder: (context, snapshot) {
-            //       if (snapshot.connectionState == ConnectionState.done) {
-            //         if (defaultFlag == 0) {
-            //           return AspectRatio(
-            //             aspectRatio: 18 / 10,
-            //             child: Image.network(
-            //               default_url,
-            //               fit: BoxFit.fitWidth,
-            //             ),
-            //           );
-            //         } else {
-            //           return AspectRatio(
-            //             aspectRatio: 18 / 10,
-            //             child: Image.file(
-            //               File(_image!.path),
-            //               fit: BoxFit.fitWidth,
-            //             ),
-            //           );
-            //         }
-            //       }
-            //       return const CircularProgressIndicator();
-            //     },
-            //   ),
-            // ),
-            // Padding(
-            //   padding: EdgeInsets.only(right: 25),
-            //   child: Row(
-            //     mainAxisAlignment: MainAxisAlignment.end,
-            //     children: <Widget>[
-            //       TextButton.icon(
-            //         onPressed: () {
-            //           getGalleryImage();
-            //         },
-            //         icon: const Icon(
-            //           Icons.cloud_upload_rounded,
-            //           color: Color(0xff5ac21d),
-            //         ),
-            //         label: const Text(
-            //           'Upload',
-            //           style: TextStyle(
-            //             fontWeight: FontWeight.bold,
-            //             fontSize: 18,
-            //             color: Color(0xff5ac21d),
-            //           ),
-            //         ),
-            //       ),
-            //     ],
-            //   ),
-            // ),
             Padding(
               padding: EdgeInsets.only(left: 25, right: 10),
               child: Column(
@@ -391,6 +286,7 @@ class _UploadPageState extends State<UploadPage> {
                   ),
                   child: TextButton(
                     onPressed: () async {
+                      Navigator.pushNamed(context, '/timeline');
                     },
                     child: const Text(
                       'Next',
