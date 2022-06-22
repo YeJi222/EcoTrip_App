@@ -1,6 +1,7 @@
 import 'package:ecotripapp/widget.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:animated_text_kit/animated_text_kit.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -53,13 +54,30 @@ class _HomePageState extends State<HomePage> {
             const SizedBox(
               width: 8,
             ),
-            const Text(
-              "Eco Trip",
-              style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold),
-            ),
+            DefaultTextStyle(
+              style: const TextStyle(
+                fontSize: 18.0,
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+              ),
+              child: AnimatedTextKit(
+                animatedTexts: [
+                  WavyAnimatedText('EcoTrip'),
+                ],
+                isRepeatingAnimation: true,
+                repeatForever: true,
+                onTap: () {
+                  print("Tap Event");
+                },
+              ),
+            )
+            // const Text(
+            //   "Eco Trip",
+            //   style: TextStyle(
+            //       color: Colors.black,
+            //       fontSize: 18,
+            //       fontWeight: FontWeight.bold),
+            // ),
           ],
         ),
         leadingWidth: 250,

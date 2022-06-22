@@ -7,6 +7,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_ml_vision/google_ml_vision.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 
 class UploadPage extends StatefulWidget {
   const UploadPage({
@@ -20,6 +21,8 @@ class UploadPage extends StatefulWidget {
 class _UploadPageState extends State<UploadPage> {
   DateTime initialDate = DateTime.now();
   List<DateTime>? multiOrRangeSelect;
+  List<String>? date_format;
+  int date_len = 0;
 
   Future<void> multiOrRangeSelectPicker() async {
     final List<DateTime>? picked = await showDialog<List<DateTime>>(
@@ -34,6 +37,13 @@ class _UploadPageState extends State<UploadPage> {
     if (picked != null) {
       setState(() {
         multiOrRangeSelect = picked;
+
+        for(int i = 0 ; i < picked.length ; i++) {
+          date_format?[i] = DateFormat("yyyy년 MM월 dd일").format(multiOrRangeSelect![i]);
+        }
+        date_len = multiOrRangeSelect!.length;
+        print(date_len);
+
       });
     }
   }
@@ -255,9 +265,7 @@ class _UploadPageState extends State<UploadPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   TextButton.icon(
-                    onPressed: () {
-                      getGalleryImage();
-                    },
+                    onPressed: () => multiOrRangeSelectPicker(),
                     icon: const Icon(
                       Icons.date_range,
                       color: Color(0xff5ac21d),
@@ -272,80 +280,106 @@ class _UploadPageState extends State<UploadPage> {
                       ),
                     ),
                   ),
-                  Text(multiOrRangeSelect?.toString() ?? ''),
+                  // Text(multiOrRangeSelect?.first.toString() ?? ''),
+                  // Text(multiOrRangeSelect?.toString() ?? ''),
+                  // Text(date_format.toString()),
                   const Padding(padding: EdgeInsets.only(top: 20)),
                 ],
               ),
             ),
-            Container(
-                padding: const EdgeInsets.only(left: 40, right: 40),
-                child: Column(
-                  children: <Widget>[
-                    const SizedBox(height: 15.0),
-                    TextField(
-                      controller: _nameController,
-                      decoration: const InputDecoration(
-                        hintText: 'Name',
-                        hintStyle: TextStyle(
-                          color: Colors.grey,
-                          fontSize: 16,
-                          fontWeight: FontWeight.normal,
+            SizedBox(
+              height: 520,
+              child: ListView.builder(
+                  itemCount: date_len,
+                  itemBuilder: (BuildContext context, int idx){
+                    return Container(
+                        padding: const EdgeInsets.only(left: 40, right: 40),
+                        child: Column(
+                          children: <Widget>[
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'DAY ${idx + 1}',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 15.0),
+                            TextField(
+                              controller: _nameController,
+                              decoration: const InputDecoration(
+                                hintText: 'Name',
+                                hintStyle: TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.normal,
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: const BorderSide(width: 2, color: Colors.green),
+                                ),
+                                border: InputBorder.none,
+                                focusedBorder: InputBorder.none,
+                                fillColor: Colors.white,
+                                filled: true,
+                              ),
+                              style: const TextStyle(
+                                color: Colors.black,
+                                fontSize: 17,
+                              ),
+                            ),
+                            const SizedBox(height: 12.0),
+                            TextField(
+                              controller: _priceController,
+                              decoration: const InputDecoration(
+                                hintText: 'Price',
+                                hintStyle: TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.normal,
+                                ),
+                                border: InputBorder.none,
+                                focusedBorder: InputBorder.none,
+                                fillColor: Colors.white,
+                                filled: true,
+                              ),
+                              style: const TextStyle(
+                                color: Colors.black,
+                                fontSize: 17,
+                              ),
+                            ),
+                            const SizedBox(height: 12.0),
+                            TextField(
+                              controller: _bioController,
+                              decoration: const InputDecoration(
+                                hintText: 'Bio',
+                                hintStyle: TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.normal,
+                                ),
+                                border: InputBorder.none,
+                                focusedBorder: InputBorder.none,
+                                fillColor: Colors.white,
+                                filled: true,
+                              ),
+                              maxLines: 3,
+                              style: const TextStyle(
+                                color: Colors.black,
+                                fontSize: 17,
+                              ),
+                            ),
+                            SizedBox(height: 50),
+                          ],
                         ),
-                        border: InputBorder.none,
-                        focusedBorder: InputBorder.none,
-                        fillColor: Colors.white,
-                        filled: true,
-                      ),
-                      style: const TextStyle(
-                        color: Colors.black,
-                        fontSize: 17,
-                      ),
-                    ),
-                    const SizedBox(height: 12.0),
-                    TextField(
-                      controller: _priceController,
-                      decoration: const InputDecoration(
-                        hintText: 'Price',
-                        hintStyle: TextStyle(
-                          color: Colors.grey,
-                          fontSize: 16,
-                          fontWeight: FontWeight.normal,
-                        ),
-                        border: InputBorder.none,
-                        focusedBorder: InputBorder.none,
-                        fillColor: Colors.white,
-                        filled: true,
-                      ),
-                      style: const TextStyle(
-                        color: Colors.black,
-                        fontSize: 17,
-                      ),
-                    ),
-                    const SizedBox(height: 12.0),
-                    TextField(
-                      controller: _bioController,
-                      decoration: const InputDecoration(
-                        hintText: 'Bio',
-                        hintStyle: TextStyle(
-                          color: Colors.grey,
-                          fontSize: 16,
-                          fontWeight: FontWeight.normal,
-                        ),
-                        border: InputBorder.none,
-                        focusedBorder: InputBorder.none,
-                        fillColor: Colors.white,
-                        filled: true,
-                      ),
-                      maxLines: 3,
-                      style: const TextStyle(
-                        color: Colors.black,
-                        fontSize: 17,
-                      ),
-                    ),
-                  ],
-                ),
+                    );
+                  }
+              ),
             ),
-            const SizedBox(height: 40.0),
+            const SizedBox(height: 20.0),
             Padding(
                 padding: EdgeInsets.only(left: 40, right: 40),
                 child: Container(
