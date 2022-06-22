@@ -372,6 +372,7 @@ class _UploadPageState extends State<UploadPage> {
                                 fontSize: 17,
                               ),
                             ),
+
                             SizedBox(height: 50),
                           ],
                         ),
