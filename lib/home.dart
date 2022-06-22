@@ -38,7 +38,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xfffafafa),
+      backgroundColor: Color(0xfff9fff8),
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         leading: Row(
@@ -156,7 +156,7 @@ class _HomePageState extends State<HomePage> {
                 TextButton(
                   // onPressed: signInWithGoogle,
                   onPressed: () async {
-                    Navigator.popAndPushNamed(context, '/upload');
+                    Navigator.pushNamed(context, '/upload');
                   },
                   child: const Text(
                     'Upload',

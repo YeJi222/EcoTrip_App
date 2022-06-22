@@ -1,11 +1,10 @@
 import 'dart:async';
-import 'dart:io';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:dynamic_timeline/dynamic_timeline.dart';
 import 'package:awesome_calendar/awesome_calendar.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'widget.dart';
 import 'package:intl/intl.dart';
 
 class UploadPage extends StatefulWidget {
@@ -126,6 +125,37 @@ class _UploadPageState extends State<UploadPage> {
               ),
             ),
 
+            // const SizedBox(
+            //   height: 10,
+            // ),
+            // Padding(
+            //   padding: EdgeInsets.only(left: 15, right: 15),
+            //   child: StreamBuilder(
+            //     stream: img_url(),
+            //     builder: (context, snapshot) {
+            //       if (snapshot.connectionState == ConnectionState.done) {
+            //         if (defaultFlag == 0) {
+            //           return AspectRatio(
+            //             aspectRatio: 18 / 10,
+            //             child: Image.network(
+            //               default_url,
+            //               fit: BoxFit.fitWidth,
+            //             ),
+            //           );
+            //         } else {
+            //           return AspectRatio(
+            //             aspectRatio: 18 / 10,
+            //             child: Image.file(
+            //               File(_image!.path),
+            //               fit: BoxFit.fitWidth,
+            //             ),
+            //           );
+            //         }
+            //       }
+            //       return const CircularProgressIndicator();
+            //     },
+            //   ),
+            // ),
             // Padding(
             //   padding: EdgeInsets.only(right: 25),
             //   child: Row(
@@ -283,6 +313,7 @@ class _UploadPageState extends State<UploadPage> {
                   ),
                   child: TextButton(
                     onPressed: () async {
+                      Navigator.pushNamed(context, '/timeline');
                     },
                     child: const Text(
                       'Next',

@@ -49,7 +49,7 @@ class LoginPage extends StatelessWidget {
         decoration: const BoxDecoration(
           image: DecorationImage(
             fit: BoxFit.cover,
-            image: AssetImage('img/background.webp'), // 배경 이미지
+            image: AssetImage('img/login.png'), // 배경 이미지
           ),
         ),
         child: Scaffold(
@@ -58,7 +58,7 @@ class LoginPage extends StatelessWidget {
             body: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                const SizedBox(height: 200,),
+                const SizedBox(height: 250,),
                 ClipRRect(
                   borderRadius: BorderRadius.circular(30.0),
                   child: SizedBox(
@@ -69,7 +69,7 @@ class LoginPage extends StatelessWidget {
                       )
                   ),
                 ),
-                const SizedBox(height: 430,),
+                const SizedBox(height: 390,),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [

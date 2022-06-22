@@ -7,6 +7,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'firebase_options.dart';
 import 'home.dart';
 import 'login.dart';
+import 'timeline.dart';
 
 class TravelApp extends StatelessWidget {
   const TravelApp({Key? key}) : super(key: key);
@@ -21,7 +22,7 @@ class TravelApp extends StatelessWidget {
         '/home': (BuildContext context) => const HomePage(),
         '/loading': (BuildContext context) => const LoadingPage(),
         '/upload': (BuildContext context) => const UploadPage(),
-        // '/search': (BuildContext context) => const SearchPage(),
+        '/timeline': (BuildContext context) => const TimePage(),
         // '/cart': (BuildContext context) => const CartScreen(),
         // '/coin': (BuildContext context) => CoinPage(),
       },
