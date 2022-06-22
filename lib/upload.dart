@@ -5,7 +5,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:awesome_calendar/awesome_calendar.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:google_ml_vision/google_ml_vision.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
@@ -60,87 +59,10 @@ class _UploadPageState extends State<UploadPage> {
     print('dispose is called');
   }
 
-  PickedFile? _image;
-  List<String> category = [];
-  List<String> savedCategory = [];
   String url = '';
   String creator_name = '';
   int defaultFlag = 0;
   int timestamp = DateTime.now().millisecondsSinceEpoch;
-  var image;
-  var oldImg;
-
-  GoogleVisionImage? visionImage;
-  TextRecognizer textRecognizer = GoogleVision.instance.textRecognizer();
-  late VisionText visionText;
-  String text = '';
-
-  Future getGalleryImage() async {
-    image = await ImagePicker().getImage(
-      source: ImageSource.gallery,
-    );
-    if(image != null){
-      oldImg = image;
-    }
-
-    setState(() {
-      _image = image;
-      if(_image != null) defaultFlag = 1;
-      else {
-        _image = oldImg;
-      }
-    });
-
-    if(_image != null){
-      File file = File(_image!.path);
-      visionImage = GoogleVisionImage.fromFile(file);
-      visionText = await textRecognizer.processImage(visionImage!);
-      text = visionText.text!;
-    }
-
-    category=[];
-    savedCategory =[];
-
-    final ImageLabeler labeler = GoogleVision.instance.imageLabeler();
-    if(_image != null) {
-      final List<ImageLabel> labels = await labeler.processImage(visionImage!);
-
-      for (ImageLabel label in labels) {
-        final String? text = label.text;
-
-        setState(() {
-          category.add(text!);
-        });
-      }
-
-      labeler.close();
-    }
-  }
-
-  String default_url = '';
-  String select_url = '';
-
-  Stream<String> img_url() async* {
-    Future<String> downloadURL() async {
-      String downloadURL = await FirebaseStorage.instance
-          .ref("upload_default.png")
-          .getDownloadURL();
-
-      return downloadURL;
-    }
-
-    default_url = await (await downloadURL()).toString();
-
-    Future<String> imgURL() async {
-      String imgURL = await FirebaseStorage.instance
-          .ref('${timestamp}.png')
-          .getDownloadURL();
-
-      return imgURL;
-    }
-
-    select_url = await (await imgURL()).toString();
-  }
 
   final _nameController = TextEditingController();
   final _bioController = TextEditingController();
@@ -168,7 +90,7 @@ class _UploadPageState extends State<UploadPage> {
               color: Colors.black,
             ),
             onPressed: () {
-              Navigator.pop(context);
+              Navigator.popAndPushNamed(context, '/home');
             },
           ),
           elevation: 0.0,
