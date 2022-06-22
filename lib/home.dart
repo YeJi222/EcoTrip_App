@@ -134,8 +134,6 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ],
               ),
-
-
                 // RichText(
                 //   text: const TextSpan(
                 //     children: [
