@@ -99,6 +99,7 @@ class LoginPage extends StatelessWidget {
                           //   Navigator.popAndPushNamed(context, '/home');
                           // }
                         },
+                        //test
                         child: const Text(
                           'Google Login',
                           style: TextStyle(
