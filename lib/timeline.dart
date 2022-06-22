@@ -1,7 +1,6 @@
 import 'package:dynamic_timeline/dynamic_timeline.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-
 import 'widget.dart';
 
 class TimePage extends StatefulWidget {

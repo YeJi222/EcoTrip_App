@@ -1,7 +1,9 @@
 import 'package:ecotripapp/widget.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:floating_bottom_bar/animated_bottom_navigation_bar.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -103,24 +105,51 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
       body: ListView(
-          padding: EdgeInsets.all(20),
+          padding: EdgeInsets.only(left: 20, right: 20),
           scrollDirection: Axis.vertical,
           children: [
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                RichText(
-                  text: const TextSpan(
-                    children: [
-                      TextSpan(
-                          text: "Hello User \u{1f44a}",
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 30,
-                              fontWeight: FontWeight.bold)),
-                    ],
+                Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: <Widget>[
+                  const SizedBox(width: 20.0, height: 70.0),
+                  DefaultTextStyle(
+                    style: const TextStyle(
+                      fontSize: 20.0,
+                      fontFamily: 'Horizon',
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    child: AnimatedTextKit(
+                      animatedTexts: [
+                        RotateAnimatedText(
+                            "${FirebaseAuth.instance.currentUser!.displayName} 👊🏻"
+                        ),
+                      ],
+                      onTap: () {
+                        print("Tap Event");
+                      },
+                      repeatForever: true,
+                    ),
                   ),
-                ),
+                ],
+              ),
+
+
+                // RichText(
+                //   text: const TextSpan(
+                //     children: [
+                //       TextSpan(
+                //           text: "Hello User \u{1f44a}",
+                //           style: TextStyle(
+                //               color: Colors.black,
+                //               fontSize: 30,
+                //               fontWeight: FontWeight.bold)),
+                //     ],
+                //   ),
+                // ),
                 SizedBox(
                   width: 400,
                   height: 370,
@@ -153,20 +182,6 @@ class _HomePageState extends State<HomePage> {
                     )
                   ],
                 ),
-                TextButton(
-                  // onPressed: signInWithGoogle,
-                  onPressed: () async {
-                    Navigator.pushNamed(context, '/upload');
-                  },
-                  child: const Text(
-                    'Upload',
-                    style: TextStyle(
-                        color: Color(0xfffc99a1),
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20
-                    ),
-                  ),
-                ),
                 SizedBox(
                   width: 400,
                   child: ListView(
@@ -178,6 +193,62 @@ class _HomePageState extends State<HomePage> {
               ],
             ),
           ]),
+      bottomNavigationBar: AnimatedBottomNavigationBar(
+        bottomBarItems: [
+          BottomBarItemsModel(
+            icon: const Icon(Icons.home),
+            iconSelected: const Icon(Icons.home, color: Colors.green),
+            onTap: () => {},
+          ),
+          BottomBarItemsModel(
+            icon: Icon(Icons.search,),
+            iconSelected: Icon(Icons.search, color: Colors.green),
+            onTap: () => {},
+          ),
+          BottomBarItemsModel(
+            icon: Icon(Icons.person,),
+            iconSelected: Icon(Icons.person, color: Colors.green),
+            onTap: () => {
+              Navigator.pushNamed(context, '/profile')
+            },
+          ),
+          BottomBarItemsModel(
+            icon: Icon(Icons.settings,),
+            iconSelected: Icon(Icons.settings, color: Colors.green),
+            onTap: () => {},
+          ),
+        ],
+        bottomBarCenterModel: BottomBarCenterModel(
+          centerBackgroundColor: Colors.green,
+          centerIcon: FloatingCenterButton(
+            child: Icon(
+              Icons.add,
+              color: AppColors.white,
+
+            ),
+          ),
+          centerIconChild: [
+            FloatingCenterButtonChild(
+              child: const Icon(
+                Icons.edit,
+                color: AppColors.white,
+              ),
+              onTap: () {
+                Navigator.pushNamed(context, '/upload');
+              },
+            ),
+            FloatingCenterButtonChild(
+              child: const Icon(
+                Icons.home,
+                color: AppColors.white,
+              ),
+              onTap: () {
+
+              },
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
