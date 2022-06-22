@@ -126,37 +126,6 @@ class _UploadPageState extends State<UploadPage> {
               ),
             ),
 
-            // const SizedBox(
-            //   height: 10,
-            // ),
-            // Padding(
-            //   padding: EdgeInsets.only(left: 15, right: 15),
-            //   child: StreamBuilder(
-            //     stream: img_url(),
-            //     builder: (context, snapshot) {
-            //       if (snapshot.connectionState == ConnectionState.done) {
-            //         if (defaultFlag == 0) {
-            //           return AspectRatio(
-            //             aspectRatio: 18 / 10,
-            //             child: Image.network(
-            //               default_url,
-            //               fit: BoxFit.fitWidth,
-            //             ),
-            //           );
-            //         } else {
-            //           return AspectRatio(
-            //             aspectRatio: 18 / 10,
-            //             child: Image.file(
-            //               File(_image!.path),
-            //               fit: BoxFit.fitWidth,
-            //             ),
-            //           );
-            //         }
-            //       }
-            //       return const CircularProgressIndicator();
-            //     },
-            //   ),
-            // ),
             // Padding(
             //   padding: EdgeInsets.only(right: 25),
             //   child: Row(
