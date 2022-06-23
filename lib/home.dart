@@ -1,9 +1,13 @@
+import 'package:ecotripapp/cotroller.dart';
 import 'package:ecotripapp/widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:floating_bottom_bar/animated_bottom_navigation_bar.dart';
+import 'package:get/get.dart';
+
+import 'model.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -13,17 +17,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  List<Product> products = [
-    const Product(
-        name: "name",
-        description: "description",
-        imageURL:
-        "https://imgnn.seoul.co.kr/img//upload/2021/03/16/SSI_20210316152606_V.jpg"),
-    const Product(
-        name: "name",
-        description: "description",
-        imageURL: "https://cdn.dailytnews.kr/news/photo/201811/35_37_5744.jpg")
-  ];
 
   @override
   void initState() {
@@ -134,27 +127,18 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ],
               ),
-                // RichText(
-                //   text: const TextSpan(
-                //     children: [
-                //       TextSpan(
-                //           text: "Hello User \u{1f44a}",
-                //           style: TextStyle(
-                //               color: Colors.black,
-                //               fontSize: 30,
-                //               fontWeight: FontWeight.bold)),
-                //     ],
-                //   ),
-                // ),
-                SizedBox(
-                  width: 400,
-                  height: 370,
-                  child: ListView(
-                      scrollDirection: Axis.horizontal,
-                      shrinkWrap: true,
-                      dragStartBehavior: DragStartBehavior.start,
-                      padding: const EdgeInsets.all(16.0),
-                      children: buildListCardsH(products, context)),
+                GetX(
+                  init: Controller(),
+                  builder: (controller) => SizedBox(
+                    width: 400,
+                    height: 370,
+                    child: ListView(
+                        scrollDirection: Axis.horizontal,
+                        shrinkWrap: true,
+                        dragStartBehavior: DragStartBehavior.start,
+                        padding: const EdgeInsets.all(16.0),
+                        children: buildListCardsH(Get.find<Controller>().products, context)),
+                  ),
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -178,13 +162,16 @@ class _HomePageState extends State<HomePage> {
                     )
                   ],
                 ),
-                SizedBox(
-                  width: 400,
-                  child: ListView(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      padding: const EdgeInsets.all(16.0),
-                      children: buildListCardsV(products, context)),
+                GetX(
+                  init: Controller(),
+                  builder: (controller) => SizedBox(
+                    width: 400,
+                    child: ListView(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        padding: const EdgeInsets.all(16.0),
+                        children: buildListCardsV(Get.find<Controller>().products, context)),
+                  ),
                 ),
               ],
             ),

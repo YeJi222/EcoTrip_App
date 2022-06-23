@@ -3,9 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'dart:async';
+import 'package:get/get.dart';
+import 'cotroller.dart';
 
 class LoginPage extends StatelessWidget {
-  const LoginPage({Key? key}) : super(key: key);
+  LoginPage({Key? key}) : super(key: key);
+  final Controller controller = Get.put(Controller());
 
   Future<UserCredential> signInWithGoogle() async {
     // Trigger the authentication flow
@@ -91,6 +94,7 @@ class LoginPage extends StatelessWidget {
                           final userCredential = await signInWithGoogle();
                           if(userCredential != null){
                             googleCreate();
+                            controller.getProduct();
                             Navigator.pushNamed(context, '/home');
                           } else{
                             print("Google auth hasn't been enabled for this project.");
