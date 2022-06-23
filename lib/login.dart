@@ -37,6 +37,7 @@ class LoginPage extends StatelessWidget {
         'email': FirebaseAuth.instance.currentUser!.email,
         'name': FirebaseAuth.instance.currentUser!.displayName,
         'uid': FirebaseAuth.instance.currentUser!.uid,
+        'profile_url': FirebaseAuth.instance.currentUser!.photoURL,
       });
     }
   }
@@ -46,6 +47,7 @@ class LoginPage extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(useMaterial3: true),
       home: Container(
+        height: 400,
         decoration: const BoxDecoration(
           image: DecorationImage(
             fit: BoxFit.cover,
