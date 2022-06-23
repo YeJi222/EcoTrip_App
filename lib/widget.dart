@@ -1,3 +1,4 @@
+import 'package:floating_bottom_bar/animated_bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
 
 class Event extends StatelessWidget {
@@ -260,4 +261,68 @@ List<Card> buildListCardsV(List<Product> products, BuildContext context) {
           ),
         ));
   }).toList();
+}
+Widget floatingBar(BuildContext context) {
+  return AnimatedBottomNavigationBar(
+    bottomBarItems: [
+      BottomBarItemsModel(
+        icon: const Icon(Icons.home, color: Colors.black),
+        iconSelected: const Icon(Icons.home, color: Colors.green),
+        dotColor: Colors.green,
+        onTap: () => {
+          Navigator.pushNamed(context, '/home'),
+        },
+      ),
+      BottomBarItemsModel(
+        icon: Icon(Icons.search, color: Colors.black),
+        iconSelected: Icon(Icons.search, color: Colors.green),
+        dotColor: Colors.green,
+        onTap: () => {},
+      ),
+      BottomBarItemsModel(
+        icon: Icon(Icons.person, color: Colors.black),
+        iconSelected: Icon(Icons.person, color: Colors.green),
+        dotColor: Colors.green,
+        onTap: () => {
+          Navigator.pushNamed(context, '/profile')
+        },
+      ),
+      BottomBarItemsModel(
+        icon: Icon(Icons.settings, color: Colors.black),
+        iconSelected: Icon(Icons.settings, color: Colors.green),
+        dotColor: Colors.green,
+        onTap: () => {},
+      ),
+    ],
+    bottomBarCenterModel: BottomBarCenterModel(
+      centerBackgroundColor: Colors.green,
+      centerIcon: FloatingCenterButton(
+        child: Icon(
+          Icons.add,
+          color: AppColors.white,
+
+        ),
+      ),
+      centerIconChild: [
+        FloatingCenterButtonChild(
+          child: const Icon(
+            Icons.edit,
+            color: AppColors.white,
+          ),
+          onTap: () {
+            Navigator.pushNamed(context, '/upload');
+          },
+        ),
+        FloatingCenterButtonChild(
+          child: const Icon(
+            Icons.home,
+            color: AppColors.white,
+          ),
+          onTap: () {
+
+          },
+        ),
+      ],
+    ),
+  );
 }
