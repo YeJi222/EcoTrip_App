@@ -1,5 +1,8 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:floating_bottom_bar/animated_bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
+
+import 'model.dart';
 
 class Event extends StatelessWidget {
   const Event({
@@ -24,16 +27,49 @@ class Event extends StatelessWidget {
   }
 }
 
-class Product {
-  const Product({
-    required this.name,
-    required this.description,
-    required this.imageURL,
-  });
+class DayHeader extends StatelessWidget {
+  const DayHeader({
+    Key? key,
+    required this.day,
+  }) : super(key: key);
 
-  final String name;
-  final String description;
-  final String imageURL;
+  final int day;
+
+  @override
+  Widget build(BuildContext context) {
+    late final String dayString;
+
+    switch (day) {
+      case 0:
+        dayString = 'Day1';
+        break;
+      case 1:
+        dayString = 'Day2';
+        break;
+      case 2:
+        dayString = 'Day3';
+        break;
+      case 3:
+        dayString = 'Day4';
+        break;
+      case 4:
+        dayString = 'Day5';
+        break;
+    }
+    return Container(
+      margin: const EdgeInsets.only(left: 20),
+      width: 100,
+      height: 30,
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: Colors.black,
+        ),
+        borderRadius: BorderRadius.circular(5),
+      ),
+      child: Text(dayString),
+    );
+  }
 }
 
 // List Horizon
@@ -68,8 +104,14 @@ List<Card> buildListCardsH(List<Product> products, BuildContext context) {
                   height: 350,
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(40.0),
-                    child: Image.network(
-                      product.imageURL,
+                    child: CachedNetworkImage(
+                      progressIndicatorBuilder: (context, url, progress) =>
+                          Center(
+                            child: CircularProgressIndicator(
+                              value: progress.progress,
+                            ),
+                          ),
+                      imageUrl: product.imageURL,
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -82,7 +124,7 @@ List<Card> buildListCardsH(List<Product> products, BuildContext context) {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            product.name,
+                            product.title,
                             style: const TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.w600,
@@ -202,8 +244,14 @@ List<Card> buildListCardsV(List<Product> products, BuildContext context) {
                           height: 100,
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(15.0),
-                            child: Image.network(
-                              product.imageURL,
+                            child: CachedNetworkImage(
+                              progressIndicatorBuilder: (context, url, progress) =>
+                                  Center(
+                                    child: CircularProgressIndicator(
+                                      value: progress.progress,
+                                    ),
+                                  ),
+                              imageUrl: product.imageURL,
                               fit: BoxFit.cover,
                             ),
                           )),
@@ -214,7 +262,7 @@ List<Card> buildListCardsV(List<Product> products, BuildContext context) {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(product.name, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
+                              Text(product.title, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
                               const SizedBox(height: 10,),
                               Text(product.description, style: TextStyle(fontWeight: FontWeight.w300, fontSize: 13),),
                               const SizedBox(height: 10,),
@@ -323,6 +371,13 @@ Widget floatingBar(BuildContext context) {
           },
         ),
       ],
+    ),
+  );
+}
+void showSnackBar(BuildContext context, String text) {
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      content: Text(text),
     ),
   );
 }
