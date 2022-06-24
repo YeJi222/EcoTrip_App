@@ -5,15 +5,47 @@ import 'package:dynamic_timeline/dynamic_timeline.dart';
 import 'package:awesome_calendar/awesome_calendar.dart';
 import 'package:ecotripapp/cotroller.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/state_manager.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
+import 'firebase_options.dart';
 import 'widget.dart';
 import 'package:intl/intl.dart';
 import 'package:direct_select/direct_select.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+
+class ApplicationUploadState extends ChangeNotifier{
+  ApplicationUploadState(){
+    init();
+  }
+
+  Future<void> init() async {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+
+    FirebaseAuth.instance.userChanges().listen((user) async {
+      if (user != null) {
+        final doc_user = await FirebaseFirestore.instance
+            .collection('user')
+            .doc(FirebaseAuth.instance.currentUser!.uid)
+            .get();
+        if(doc_user.exists == true){
+          _name = doc_user.get('name');
+        }
+        notifyListeners();
+      }
+      notifyListeners();
+    });
+  }
+
+  String _name = '';
+  String get name => _name;
+}
 
 class UploadPage extends StatefulWidget {
   const UploadPage({
@@ -624,62 +656,73 @@ class _UploadPageState extends State<UploadPage> {
                   ),
                 ),
               ),
-              const SizedBox(height: 5.0),
+              const SizedBox(height: 15.0),
               Padding(
-                padding: EdgeInsets.only(left: 40, right: 40),
-                child: Container(
-                  height: 50,
-                  decoration: BoxDecoration(
-                    color: Color(0xff5ac21d),
-                    borderRadius: BorderRadius.circular(15.0),
-                  ),
-                  child: TextButton(
-                    onPressed: () async {
-                      String uploadTime = timestamp.toString();
-                      final storageRef =
-                          FirebaseStorage.instance.ref().child('$uploadTime.png');
+                padding: EdgeInsets.only(left: 30, right: 30),
+                child:Consumer<ApplicationUploadState>(
+                    builder: (context, appState, _) {
+                      return TextButton(
+                        onPressed: () async {
+                          if(_nameController.text == "" || _locController.text == ""
+                              || _descController.text == ""){
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(content: Text('You should fill all the blanks!'))
+                            );
+                          } else{
+                            String uploadTime = timestamp.toString();
+                            final storageRef =
+                            FirebaseStorage.instance.ref().child('$uploadTime.png');
 
-                      if (_image != null) {
-                        File file = File(_image!.path);
-                        await storageRef.putFile(file);
+                            if (_image != null) {
+                              File file = File(_image!.path);
+                              await storageRef.putFile(file);
 
-                        url = await storageRef.getDownloadURL();
-                      }
+                              url = await storageRef.getDownloadURL();
+                            }
 
-                      // controller.addProduct(
-                      //     _nameController.text, _locController.text,
-                      //     _descController.text, url
-                      // );
-                      if (url == '') {
-                        showSnackBar(context, 'You should upload some Image!');
-                      } else {
-                        await FirebaseFirestore.instance
-                            .collection('products')
-                            .doc(uploadTime)
-                            .set(<String, dynamic>{
-                          'imgURL': url,
-                          'title': _nameController.text,
-                          'timestamp': uploadTime,
-                          'description': _descController.text,
-                          'creator_name':
-                              FirebaseAuth.instance.currentUser!.displayName,
-                          'location': _locController.text
-                        });
-                      }
-                    },
-                    child: TextButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      child: const Text(
-                        'Next',
-                        style: TextStyle(
-                          fontSize: 22,
-                          color: Colors.white,
+                            // controller.addProduct(
+                            //     _nameController.text, _locController.text,
+                            //     _descController.text, url
+                            // );
+                            if (url == '') {
+                              showSnackBar(context, 'You should upload some Image!');
+                            } else {
+                              await FirebaseFirestore.instance
+                                  .collection('products')
+                                  .doc(uploadTime)
+                                  .set(<String, dynamic>{
+                                'imgURL': url,
+                                'title': _nameController.text,
+                                'timestamp': uploadTime,
+                                'description': _descController.text,
+                                'creator_name': appState.name,
+                                // FirebaseAuth.instance.currentUser!.displayName,
+                                'location': _locController.text
+                              }).then((_) => {
+                                showSnackBar(context, 'Upload complete!'),
+                                Navigator.popAndPushNamed(context, '/upload')
+                              });
+                            }
+                          }
+                        },
+                        child: Container(
+                          width: 700,
+                          height: 45,
+                          decoration: const BoxDecoration(
+                              color: Color(0xff69f81b),
+                              gradient: LinearGradient(
+                                colors: [Color(0xffbff5ad), Color(0xff54c737)],
+                              ),
+                              borderRadius: BorderRadius.all(Radius.circular(20))),
+                          child: const Center(
+                            child: Text(
+                              'Next',
+                              style: TextStyle(color: Colors.white, fontSize: 20),
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
-                  ),
+                    );
+                  }
                 ),
               ),
             ],

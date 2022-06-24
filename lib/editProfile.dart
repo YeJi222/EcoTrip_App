@@ -186,17 +186,17 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     ),
                   ),
                   Positioned(
-                    top: 10.0,
+                    top: 25.0,
                     child: CircleAvatar(
-                      radius: 70,
+                      radius: 80,
                       backgroundColor: Colors.white,
                       child: Consumer<EditState>(
                         builder: (context, appState, _) {
                           origin_url = appState.profile_url;
                           if(defaultFlag == 0){
                             return Container(
-                              width: 130,
-                              height: 130,
+                              width: 150,
+                              height: 150,
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(100.0),
                                 child: Image.network(
@@ -204,14 +204,14 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                   // 'https://lh3.googleusercontent.com/a-/AOh14GhIF7h_cMzyLADYmzEvtkAB4qeZPb_sKWl9DF15=s96-c',
                                   // '${FirebaseAuth.instance.currentUser?.photoURL}',
                                   // photoURL ?? default_url,
-                                  fit: BoxFit.fitWidth,
+                                  fit: BoxFit.cover,
                                 ),
                               ),
                             );
                           } else{
                             return Container(
-                              width: 130,
-                              height: 130,
+                              width: 150,
+                              height: 150,
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(100.0),
                                 child: Image.file(
@@ -227,7 +227,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   ),
                 ],
               ),
-              const SizedBox(height: 30),
+              const SizedBox(height: 65),
               Padding(
                 padding: EdgeInsets.only(left: 30, right: 30),
                 child: Column(
@@ -373,14 +373,14 @@ class _EditProfilePageState extends State<EditProfilePage> {
                           fillColor: Colors.white,
                           filled: true,
                         ),
-                        maxLines: 4,
+                        maxLines: 5,
                         style: const TextStyle(
                           color: Colors.black,
                           fontSize: 17,
                         ),
                       ),
                     ),
-                    const SizedBox(height: 30.0),
+                    const SizedBox(height: 55.0),
                     Center(
                       child: TextButton(
                         onPressed: () async {
@@ -432,7 +432,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                           }
                         },
                         child: Container(
-                          width: 200,
+                          width: 300,
                           height: 50,
                           decoration: const BoxDecoration(
                               color: Color(0xff69f81b),
@@ -448,25 +448,13 @@ class _EditProfilePageState extends State<EditProfilePage> {
                           ),
                         ),
                       ),
-                    )
+                    ),
                   ],
                 ),
               ),
-
-              // Expanded(
-              //     child: Consumer<FirebaseAuthMethods>(
-              //       builder: (context, appState, _) => GridView.count(
-              //         crossAxisCount: 2,
-              //         padding: const EdgeInsets.all(16.0),
-              //         childAspectRatio: 9.0 / 9.0,
-              //         children: buildGridCards(appState.userProducts, context),
-              //       ),
-              //     ),
-              // ),
-
             ],
           ),
-          bottomNavigationBar: floatingBar(context),
+          // bottomNavigationBar: floatingBar(context),
         ),
     );
   }

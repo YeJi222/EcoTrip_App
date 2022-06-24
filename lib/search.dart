@@ -4,11 +4,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class DataModel {
   final String? title;
-  final String? developer;
-  final String? framework;
-  final String? tool;
+  final String? description;
+  final String? location;
+  final String? creator_name;
 
-  DataModel({this.title, this.developer, this.framework, this.tool});
+  DataModel({this.title, this.description, this.location, this.creator_name});
 
   //Create a method to convert QuerySnapshot from Cloud Firestore to a list of objects of this DataModel
   //This function in essential to the working of FirestoreSearchScaffold
@@ -19,9 +19,9 @@ class DataModel {
 
       return DataModel(
           title: dataMap['title'],
-          developer: dataMap['description'],
-          framework: dataMap['location'],
-          tool: dataMap['creator_name']);
+          description: dataMap['description'],
+          location: dataMap['location'],
+          creator_name: dataMap['creator_name']);
     }).toList();
   }
 }
@@ -70,7 +70,7 @@ class _SearchPage extends State<SearchPage> {
                 child: FirestoreSearchResults.builder(
                   tag: 'test',
                   firestoreCollectionName: 'products',
-                  searchBy: 'title',
+                  searchBy: 'location',
                   initialBody: const Center(child: Text(
                       'Search Trip Plans :)',
                       style: TextStyle(
@@ -102,14 +102,23 @@ class _SearchPage extends State<SearchPage> {
                                   padding: const EdgeInsets.all(8.0),
                                   child: Text(
                                     '${data.title}',
-                                    style: Theme.of(context).textTheme.headline6,
+                                    // style: Theme.of(context).textTheme.headline6,
+                                    style: TextStyle(
+                                      fontFamily: 'cafe24',
+                                      fontSize: 25,
+                                    ),
                                   ),
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.only(
                                       bottom: 8.0, left: 8.0, right: 8.0),
-                                  child: Text('${data.tool}',
-                                      style: Theme.of(context).textTheme.bodyText1),
+                                  child: Text('${data.location}',
+                                      // style: Theme.of(context).textTheme.bodyText1),
+                                        style: TextStyle(
+                                          fontFamily: 'cafe24',
+                                          fontSize: 18,
+                                        ),
+                                  ),
                                 )
                               ],
                             );
@@ -154,14 +163,23 @@ class _SearchPage extends State<SearchPage> {
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
                             '${data.title}',
-                            style: Theme.of(context).textTheme.headline6,
+                            // style: Theme.of(context).textTheme.headline6,
+                            style: TextStyle(
+                              fontFamily: 'cafe24',
+                              fontSize: 25,
+                            ),
                           ),
                         ),
                         Padding(
                           padding: const EdgeInsets.only(
                               bottom: 8.0, left: 8.0, right: 8.0),
-                          child: Text('${data.tool}',
-                              style: Theme.of(context).textTheme.bodyText1),
+                          child: Text('${data.location}',
+                              // style: Theme.of(context).textTheme.bodyText1),
+                              style: TextStyle(
+                                fontFamily: 'cafe24',
+                                fontSize: 18,
+                              ),
+                          ),
                         )
                       ],
                     );
@@ -171,7 +189,9 @@ class _SearchPage extends State<SearchPage> {
             if (snapshot.connectionState == ConnectionState.done) {
               if (!snapshot.hasData) {
                 return const Center(
-                  child: Text('No Search Results!'),
+                  child: Text(
+                    'No Search Results!',
+                  ),
                 );
               }
             }
