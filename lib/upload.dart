@@ -135,53 +135,50 @@ class _UploadPageState extends State<UploadPage> {
     image = await ImagePicker().getImage(
       source: ImageSource.gallery,
     );
-    if (image != null) {
-      oldImg = image;
-    }
+    // if (image != null) {
+    //   oldImg = image;
+    // }
 
     setState(() {
       _image = image;
-      if (_image != null)
-        defaultFlag = 1;
-      else {
-        _image = oldImg;
-      }
+      // if (_image != null)
+      //   defaultFlag = 1;
+      // else {
+      //   _image = oldImg;
+      // }
     });
   }
 
-  String default_url = '';
   String select_url = '';
 
-  Stream<String> img_url() async* {
-    Future<String> downloadURL() async {
-      String downloadURL = await FirebaseStorage.instance
-          .ref("upload_default.png")
-          .getDownloadURL();
-
-      return downloadURL;
-    }
-
-    default_url = await (await downloadURL()).toString();
-
-    Future<String> imgURL() async {
-      String imgURL = await FirebaseStorage.instance
-          .ref('${timestamp}.png')
-          .getDownloadURL();
-
-      return imgURL;
-    }
-
-    select_url = await (await imgURL()).toString();
-  }
+  // Stream<String> img_url() async* {
+  //   Future<String> downloadURL() async {
+  //     String downloadURL = await FirebaseStorage.instance
+  //         .ref("upload_default.png")
+  //         .getDownloadURL();
+  //
+  //     return downloadURL;
+  //   }
+  //
+  //   default_url = await (await downloadURL()).toString();
+  //
+  //   Future<String> imgURL() async {
+  //     String imgURL = await FirebaseStorage.instance
+  //         .ref('${timestamp}.png')
+  //         .getDownloadURL();
+  //
+  //     return imgURL;
+  //   }
+  //
+  //   select_url = await (await imgURL()).toString();
+  // }
 
   late final ScrollController verticalController;
   late final ScrollController horizontalController;
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async => false,
-      child: Scaffold(
+    return Scaffold(
         backgroundColor: const Color(0xfff9fff8),
         appBar: AppBar(
           backgroundColor: Colors.transparent,
@@ -204,258 +201,439 @@ class _UploadPageState extends State<UploadPage> {
           ),
           elevation: 0.0,
         ),
-        body: ListView(
-          children: [
-            Padding(
-              padding: EdgeInsets.only(left: 25, right: 25),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
-                  Text(
-                    'File types supported: JPG, PNG, GIF, SVG, MP4, WEBM,\nMP3, WAV, OGG, GLB, GLTF, Max size: 40 MB',
-                    style: TextStyle(
-                      color: Colors.grey,
-                      fontSize: 12,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Padding(
-              padding: EdgeInsets.only(left: 15, right: 15),
-              child: StreamBuilder(
-                stream: img_url(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.done) {
-                    if (defaultFlag == 0) {
-                      return AspectRatio(
-                        aspectRatio: 18 / 10,
-                        child: CachedNetworkImage(
-                          progressIndicatorBuilder: (context, url, progress) =>
-                              Center(
-                            child: CircularProgressIndicator(
-                              value: progress.progress,
-                            ),
-                          ),
-                          imageUrl: default_url,
-                          fit: BoxFit.cover,
-                        ),
-                      );
-                    } else {
-                      return AspectRatio(
-                        aspectRatio: 18 / 10,
-                        child: Image.file(
-                          File(_image!.path),
-                          fit: BoxFit.fitWidth,
-                        ),
-                      );
-                    }
-                  }
-                  return const CircularProgressIndicator();
-                },
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(right: 25),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: <Widget>[
-                  TextButton.icon(
-                    onPressed: () {
-                      getGalleryImage();
-                    },
-                    icon: const Icon(
-                      Icons.cloud_upload_rounded,
-                      color: Color(0xff5ac21d),
-                    ),
-                    label: const Text(
-                      'Upload',
+        body: Container(
+          width: 500,
+          child: ListView(
+            children: [
+              Padding(
+                padding: EdgeInsets.only(left: 25, right: 25),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: const [
+                    Text(
+                      'File types supported: JPG, PNG, GIF, SVG, MP4, WEBM,\nMP3, WAV, OGG, GLB, GLTF, Max size: 40 MB',
                       style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
-                        color: Color(0xff5ac21d),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  TextField(
-                    controller: _nameController,
-                    decoration: const InputDecoration(
-                      hintText: 'Title',
-                      hintStyle: TextStyle(
                         color: Colors.grey,
-                        fontSize: 16,
-                        fontWeight: FontWeight.normal,
+                        fontSize: 12,
                       ),
-                      border: InputBorder.none,
-                      focusedBorder: InputBorder.none,
-                      fillColor: Colors.white,
-                      filled: true,
                     ),
-                    style: const TextStyle(
-                      color: Colors.black,
-                      fontSize: 17,
-                    ),
-                  ),
-                  const SizedBox(height: 12.0),
-                  TextField(
-                    controller: _locController,
-                    decoration: const InputDecoration(
-                      hintText: 'Loaction',
-                      hintStyle: TextStyle(
-                        color: Colors.grey,
-                        fontSize: 16,
-                        fontWeight: FontWeight.normal,
-                      ),
-                      border: InputBorder.none,
-                      focusedBorder: InputBorder.none,
-                      fillColor: Colors.white,
-                      filled: true,
-                    ),
-                    style: const TextStyle(
-                      color: Colors.black,
-                      fontSize: 17,
-                    ),
-                  ),
-                  const SizedBox(height: 12.0),
-                  TextField(
-                    controller: _descController,
-                    decoration: const InputDecoration(
-                      hintText: 'Description',
-                      hintStyle: TextStyle(
-                        color: Colors.grey,
-                        fontSize: 16,
-                        fontWeight: FontWeight.normal,
-                      ),
-                      border: InputBorder.none,
-                      focusedBorder: InputBorder.none,
-                      fillColor: Colors.white,
-                      filled: true,
-                    ),
-                    maxLines: 3,
-                    style: const TextStyle(
-                      color: Colors.black,
-                      fontSize: 17,
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 25, right: 25),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
-                  Text(
-                    'Choose dates for trip*',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 18,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                ],
+              const SizedBox(
+                height: 10,
               ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(left: 15, right: 10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  TextButton.icon(
-                    onPressed: () => multiOrRangeSelectPicker(),
-                    icon: const Icon(
-                      Icons.date_range,
-                      color: Color(0xff5ac21d),
-                      size: 28,
-                    ),
-                    label: const Text(
-                      'Choose Dates',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20,
-                        color: Color(0xff5ac21d),
-                      ),
-                    ),
-                  ),
-                  // Text(multiOrRangeSelect?.first.toString() ?? ''),
-                  // Text(multiOrRangeSelect?.toString() ?? ''),
-                  // Text(date_format.toString()),
-                  const Padding(padding: EdgeInsets.only(top: 20)),
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(5),
-              child: SizedBox(
-                height: 520,
-                width: 300,
-                child: Scrollbar(
-                  thumbVisibility: true,
-                  controller: horizontalController,
-                  child: Scrollbar(
-                    controller: verticalController,
-                    child: SingleChildScrollView(
-                      controller: horizontalController,
-                      scrollDirection: Axis.horizontal,
-                      child: SingleChildScrollView(
-                        controller: verticalController,
-                        child: Column(
-                          children: [
-                            Row(
-                              children: [
-                                const SizedBox(width: 30),
-                                ...List.generate(
-                                  date_len,
-                                  (index) => DayHeader(day: index),
+              Padding(
+                padding: EdgeInsets.only(left: 15, right: 15),
+                child: _image==null ? AspectRatio(
+                          aspectRatio: 18 / 10,
+                          child: CachedNetworkImage(
+                            progressIndicatorBuilder: (context, url, progress) =>
+                                Center(
+                                  child: CircularProgressIndicator(
+                                    value: progress.progress,
+                                  ),
                                 ),
-                              ],
+                            imageUrl: controller.default_url,
+                            fit: BoxFit.cover,
+                          ),
+                        ) : AspectRatio(
+                          aspectRatio: 18 / 10,
+                          child: Image.file(
+                            File(_image!.path),
+                            fit: BoxFit.fitWidth,
+                          ),
+                        )
+                // child: StreamBuilder(
+                //   stream: img_url(),
+                //   builder: (context, snapshot) {
+                //     if (snapshot.connectionState == ConnectionState.done) {
+                //
+                //       _image==null ? AspectRatio(
+                //         aspectRatio: 18 / 10,
+                //         child: CachedNetworkImage(
+                //           progressIndicatorBuilder: (context, url, progress) =>
+                //               Center(
+                //                 child: CircularProgressIndicator(
+                //                   value: progress.progress,
+                //                 ),
+                //               ),
+                //           imageUrl: default_url,
+                //           fit: BoxFit.cover,
+                //         ),
+                //       ) : AspectRatio(
+                //         aspectRatio: 18 / 10,
+                //         child: Image.file(
+                //           File(_image!.path),
+                //           fit: BoxFit.fitWidth,
+                //         ),
+                //       );
+                //
+                //     }
+                //     return const CircularProgressIndicator();
+                //   },
+                // ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(right: 25),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    TextButton.icon(
+                      onPressed: () {
+                        getGalleryImage();
+                      },
+                      icon: const Icon(
+                        Icons.cloud_upload_rounded,
+                        color: Color(0xff5ac21d),
+                      ),
+                      label: const Text(
+                        'Upload',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                          color: Color(0xff5ac21d),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    TextField(
+                      controller: _nameController,
+                      decoration: const InputDecoration(
+                        hintText: 'Title',
+                        hintStyle: TextStyle(
+                          color: Colors.grey,
+                          fontSize: 16,
+                          fontWeight: FontWeight.normal,
+                        ),
+                        border: InputBorder.none,
+                        focusedBorder: InputBorder.none,
+                        fillColor: Colors.white,
+                        filled: true,
+                      ),
+                      style: const TextStyle(
+                        color: Colors.black,
+                        fontSize: 17,
+                      ),
+                    ),
+                    const SizedBox(height: 12.0),
+                    TextField(
+                      controller: _locController,
+                      decoration: const InputDecoration(
+                        hintText: 'Loaction',
+                        hintStyle: TextStyle(
+                          color: Colors.grey,
+                          fontSize: 16,
+                          fontWeight: FontWeight.normal,
+                        ),
+                        border: InputBorder.none,
+                        focusedBorder: InputBorder.none,
+                        fillColor: Colors.white,
+                        filled: true,
+                      ),
+                      style: const TextStyle(
+                        color: Colors.black,
+                        fontSize: 17,
+                      ),
+                    ),
+                    const SizedBox(height: 12.0),
+                    TextField(
+                      controller: _descController,
+                      decoration: const InputDecoration(
+                        hintText: 'Description',
+                        hintStyle: TextStyle(
+                          color: Colors.grey,
+                          fontSize: 16,
+                          fontWeight: FontWeight.normal,
+                        ),
+                        border: InputBorder.none,
+                        focusedBorder: InputBorder.none,
+                        fillColor: Colors.white,
+                        filled: true,
+                      ),
+                      maxLines: 3,
+                      style: const TextStyle(
+                        color: Colors.black,
+                        fontSize: 17,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 25, right: 25),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: const [
+                    Text(
+                      'Choose dates for trip*',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 18,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(left: 15, right: 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    TextButton.icon(
+                      onPressed: () => multiOrRangeSelectPicker(),
+                      icon: const Icon(
+                        Icons.date_range,
+                        color: Color(0xff5ac21d),
+                        size: 28,
+                      ),
+                      label: const Text(
+                        'Choose Dates',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                          color: Color(0xff5ac21d),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    TextButton.icon(
+                      onPressed: () => showDialog<String>(
+                        context: context,
+                        builder: (BuildContext context) => StatefulBuilder(
+                          builder: (context, setState) => AlertDialog(
+                            title: const Text('Add Plan'),
+                            content: Padding(
+                              padding: const EdgeInsets.all(5),
+                              child: SizedBox(
+                                height: 300,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      children: [
+                                        const Text('Choose Day'),
+                                        const SizedBox(
+                                          width: 100,
+                                        ),
+                                        // DropdownButton(
+                                        //   value: dropdownvalue,
+                                        //   icon: const Icon(Icons.keyboard_arrow_down),
+                                        //   items:days.map((String items) {
+                                        //     return DropdownMenuItem(
+                                        //         value: items,
+                                        //         child: Text(items)
+                                        //     );
+                                        //   }
+                                        //   ).toList(),
+                                        //   onChanged: (String? newValue){
+                                        //     setState(() {
+                                        //       dropdownvalue = newValue!;
+                                        //     });
+                                        //   },
+                                        // ),
+                                        DirectSelect(
+                                            itemExtent: 35.0,
+                                            selectedIndex: selectedDays,
+                                            onSelectedItemChanged: (index) {
+                                              setState(() {
+                                                selectedDays = index!;
+                                              });
+                                            },
+                                            items: _buildDays(),
+                                            child: MySelectionItem(
+                                              isForList: false,
+                                              title: days[selectedDays],
+                                            )),
+                                      ],
+                                    ),
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      children: [
+                                        const Text('Start Time'),
+                                        const SizedBox(
+                                          width: 111,
+                                        ),
+                                        DirectSelect(
+                                            itemExtent: 35.0,
+                                            selectedIndex: selectedStartTime,
+                                            onSelectedItemChanged: (index) {
+                                              setState(() {
+                                                selectedStartTime = index!;
+                                              });
+                                            },
+                                            items: _buildTime(),
+                                            child: MySelectionItem(
+                                              isForList: false,
+                                              title: time[selectedStartTime],
+                                            )),
+                                      ],
+                                    ),
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      children: [
+                                        const Text('End Time'),
+                                        const SizedBox(
+                                          width: 119,
+                                        ),
+                                        DirectSelect(
+                                            itemExtent: 35.0,
+                                            selectedIndex: selectedEndTime,
+                                            onSelectedItemChanged: (index) {
+                                              setState(() {
+                                                selectedEndTime = index!;
+                                              });
+                                            },
+                                            items: _buildTime(),
+                                            child: MySelectionItem(
+                                              isForList: false,
+                                              title: time[selectedEndTime],
+                                            )),
+                                      ],
+                                    ),
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                    TextField(
+                                      controller: titleController,
+                                      decoration: const InputDecoration(
+                                        labelText: 'Title',
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
                             ),
-                            const SizedBox(height: 20),
-                            DynamicTimeline(
-                              firstDateTime: DateTime(1970, 01, 01, 7),
-                              lastDateTime: DateTime(1970, 01, 01, 22),
-                              labelBuilder: DateFormat('HH:mm').format,
-                              intervalDuration: const Duration(hours: 1),
-                              crossAxisCount: date_len,
-                              intervalExtent: 40,
-                              items: items,
-                            ),
-                          ],
+                            actions: <Widget>[
+                              TextButton(
+                                onPressed: () => Navigator.pop(context, 'Cancel'),
+                                child: const Text('Cancel'),
+                              ),
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.pop(context, 'Okay');
+                                  setState(() {
+                                    items.add(
+                                      TimelineItem(
+                                        startDateTime: DateTime(1970, 1, 1,
+                                            int.parse(time[selectedStartTime])),
+                                        endDateTime: DateTime(1970, 1, 1,
+                                            int.parse(time[selectedEndTime])),
+                                        position:
+                                            int.parse(days[selectedDays]) - 1,
+                                        child: const Event(title: 'title'),
+                                      ),
+                                    );
+                                  });
+                                  print(items);
+                                },
+                                child: const Text('OK'),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ).then((_) => setState(() {
+                            dropdownvalue = '1';
+                            selectedDays = 0;
+                            selectedEndTime = 0;
+                            selectedStartTime = 0;
+                            titleController.text = "";
+                          })),
+                      icon: const Icon(
+                        Icons.insert_invitation_outlined,
+                        color: Color(0xff5ac21d),
+                        size: 28,
+                      ),
+                      label: const Text(
+                        'Add Plan',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                          color: Color(0xff5ac21d),
+                        ),
+                      ),
+                    ),
+                    const Padding(padding: EdgeInsets.only(top: 20)),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(5),
+                child: SizedBox(
+                  height: 520,
+                  width: 300,
+                  child: Scrollbar(
+                    thumbVisibility: true,
+                    controller: horizontalController,
+                    child: Scrollbar(
+                      controller: verticalController,
+                      child: SingleChildScrollView(
+                        controller: horizontalController,
+                        scrollDirection: Axis.horizontal,
+                        child: SingleChildScrollView(
+                          controller: verticalController,
+                          child: Column(
+                            children: [
+                              Row(
+                                children: [
+                                  const SizedBox(width: 30),
+                                  ...List.generate(
+                                    date_len,
+                                    (index) => DayHeader(day: index),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 20),
+                              DynamicTimeline(
+                                firstDateTime: DateTime(1970, 01, 01, 7),
+                                lastDateTime: DateTime(1970, 01, 01, 22),
+                                labelBuilder: DateFormat('HH:mm').format,
+                                intervalDuration: const Duration(hours: 1),
+                                crossAxisCount: date_len,
+                                intervalExtent: 40,
+                                items: items,
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
                   ),
                 ),
               ),
-            ),
-            const SizedBox(height: 5.0),
-            Padding(
-              padding: EdgeInsets.only(left: 40, right: 40),
-              child: Container(
-                height: 50,
-                decoration: BoxDecoration(
-                  color: Color(0xff5ac21d),
-                  borderRadius: BorderRadius.circular(15.0),
-                ),
-                child: TextButton(
+              const SizedBox(height: 5.0),
+              Padding(
+                padding: EdgeInsets.only(left: 40, right: 40),
+                child: Container(
+                  height: 50,
+                  decoration: BoxDecoration(
+                    color: Color(0xff5ac21d),
+                    borderRadius: BorderRadius.circular(15.0),
+                  ),
+                  child: TextButton(
                     onPressed: () async {
                       String uploadTime = timestamp.toString();
-                      final storageRef = FirebaseStorage.instance
-                          .ref()
-                          .child('$uploadTime.png');
+                      final storageRef =
+                          FirebaseStorage.instance.ref().child('$uploadTime.png');
 
                       if (_image != null) {
                         File file = File(_image!.path);
@@ -464,174 +642,28 @@ class _UploadPageState extends State<UploadPage> {
                         url = await storageRef.getDownloadURL();
                       }
 
-                      controller.addProduct(
-                          _nameController.text, _locController.text,
-                          _descController.text, url
-                      );
+                      // controller.addProduct(
+                      //     _nameController.text, _locController.text,
+                      //     _descController.text, url
+                      // );
                       if (url == '') {
                         showSnackBar(context, 'You should upload some Image!');
                       } else {
-                        await FirebaseFirestore.instance.collection('products').doc(uploadTime).set(<String, dynamic>{
+                        await FirebaseFirestore.instance
+                            .collection('products')
+                            .doc(uploadTime)
+                            .set(<String, dynamic>{
                           'imgURL': url,
                           'title': _nameController.text,
                           'timestamp': uploadTime,
                           'description': _descController.text,
-                          'creator_name': FirebaseAuth.instance.currentUser!
-                              .displayName,
+                          'creator_name':
+                              FirebaseAuth.instance.currentUser!.displayName,
                           'location': _locController.text
                         });
-
                       }
-
-
                     },
-                    // onPressed: () => showDialog<String>(
-                    //   context: context,
-                    //   builder: (BuildContext context) => StatefulBuilder(
-                    //     builder: (context, setState) => AlertDialog(
-                    //       title: const Text('Add Plan'),
-                    //       content: Padding(
-                    //         padding: const EdgeInsets.all(5),
-                    //         child: SizedBox(
-                    //           height: 300,
-                    //           child: Column(
-                    //             crossAxisAlignment: CrossAxisAlignment.start,
-                    //             children: [
-                    //               Row(
-                    //                 mainAxisAlignment: MainAxisAlignment.start,
-                    //                 children: [
-                    //                   const Text('Choose Day'),
-                    //                   const SizedBox(
-                    //                     width: 100,
-                    //                   ),
-                    //                   // DropdownButton(
-                    //                   //   value: dropdownvalue,
-                    //                   //   icon: const Icon(Icons.keyboard_arrow_down),
-                    //                   //   items:days.map((String items) {
-                    //                   //     return DropdownMenuItem(
-                    //                   //         value: items,
-                    //                   //         child: Text(items)
-                    //                   //     );
-                    //                   //   }
-                    //                   //   ).toList(),
-                    //                   //   onChanged: (String? newValue){
-                    //                   //     setState(() {
-                    //                   //       dropdownvalue = newValue!;
-                    //                   //     });
-                    //                   //   },
-                    //                   // ),
-                    //                   DirectSelect(
-                    //                       itemExtent: 35.0,
-                    //                       selectedIndex: selectedDays,
-                    //                       onSelectedItemChanged: (index) {
-                    //                         setState(() {
-                    //                           selectedDays = index!;
-                    //                         });
-                    //                       },
-                    //                       items: _buildDays(),
-                    //                       child: MySelectionItem(
-                    //                         isForList: false,
-                    //                         title: days[selectedDays],
-                    //                       )),
-                    //                 ],
-                    //               ),
-                    //               const SizedBox(
-                    //                 height: 10,
-                    //               ),
-                    //               Row(
-                    //                 mainAxisAlignment: MainAxisAlignment.start,
-                    //                 children: [
-                    //                   const Text('Start Time'),
-                    //                   const SizedBox(
-                    //                     width: 111,
-                    //                   ),
-                    //                   DirectSelect(
-                    //                       itemExtent: 35.0,
-                    //                       selectedIndex: selectedStartTime,
-                    //                       onSelectedItemChanged: (index) {
-                    //                         setState(() {
-                    //                           selectedStartTime = index!;
-                    //                         });
-                    //                       },
-                    //                       items: _buildTime(),
-                    //                       child: MySelectionItem(
-                    //                         isForList: false,
-                    //                         title: time[selectedStartTime],
-                    //                       )),
-                    //                 ],
-                    //               ),
-                    //               const SizedBox(
-                    //                 height: 10,
-                    //               ),
-                    //               Row(
-                    //                 mainAxisAlignment: MainAxisAlignment.start,
-                    //                 children: [
-                    //                   const Text('End Time'),
-                    //                   const SizedBox(
-                    //                     width: 119,
-                    //                   ),
-                    //                   DirectSelect(
-                    //                       itemExtent: 35.0,
-                    //                       selectedIndex: selectedEndTime,
-                    //                       onSelectedItemChanged: (index) {
-                    //                         setState(() {
-                    //                           selectedEndTime = index!;
-                    //                         });
-                    //                       },
-                    //                       items: _buildTime(),
-                    //                       child: MySelectionItem(
-                    //                         isForList: false,
-                    //                         title: time[selectedEndTime],
-                    //                       )),
-                    //                 ],
-                    //               ),
-                    //               const SizedBox(
-                    //                 height: 10,
-                    //               ),
-                    //               TextField(
-                    //                 controller: titleController,
-                    //                 decoration: const InputDecoration(
-                    //                   labelText: 'Title',
-                    //                 ),
-                    //               ),
-                    //             ],
-                    //           ),
-                    //         ),
-                    //       ),
-                    //       actions: <Widget>[
-                    //         TextButton(
-                    //           onPressed: () => Navigator.pop(context, 'Cancel'),
-                    //           child: const Text('Cancel'),
-                    //         ),
-                    //         TextButton(
-                    //           onPressed: () {
-                    //             Navigator.pop(context, 'Okay');
-                    //             setState(() {
-                    //               items.add(
-                    //                 TimelineItem(
-                    //                   startDateTime: DateTime(1970, 1, 1,
-                    //                       int.parse(time[selectedStartTime])),
-                    //                   endDateTime: DateTime(1970, 1, 1,
-                    //                       int.parse(time[selectedEndTime])),
-                    //                   position: int.parse(days[selectedDays]) - 1,
-                    //                   child: const Event(title: 'title'),
-                    //                 ),
-                    //               );
-                    //             });
-                    //             print(items);
-                    //           },
-                    //           child: const Text('OK'),
-                    //         ),
-                    //       ],
-                    //     ),
-                    //   ),
-                    // ).then((_) => setState(() {
-                    //       dropdownvalue = '1';
-                    //       selectedDays = 0;
-                    //       selectedEndTime = 0;
-                    //       selectedStartTime = 0;
-                    //       titleController.text = "";
-                    //     })),
+                    //
                     child: const Text(
                       'Next',
                       style: TextStyle(
@@ -642,11 +674,11 @@ class _UploadPageState extends State<UploadPage> {
                   ),
                 ),
               ),
-          ],
+            ],
+          ),
         ),
         resizeToAvoidBottomInset: false,
-      ),
-    );
+      );
   }
 }
 

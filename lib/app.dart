@@ -17,7 +17,7 @@ class TravelApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       title: 'TravelApp',
-      initialRoute: "/loading",
+      initialRoute: "/login",
       routes: {
         '/login': (BuildContext context) => LoginPage(),
         '/home': (BuildContext context) => const HomePage(),

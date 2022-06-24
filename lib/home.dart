@@ -17,6 +17,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final Controller controller = Get.put(Controller());
 
   @override
   void initState() {
@@ -127,18 +128,19 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ],
               ),
-                GetX(
-                  init: Controller(),
-                  builder: (controller) => SizedBox(
-                    width: 400,
-                    height: 370,
-                    child: ListView(
-                        scrollDirection: Axis.horizontal,
-                        shrinkWrap: true,
-                        dragStartBehavior: DragStartBehavior.start,
-                        padding: const EdgeInsets.all(16.0),
-                        children: buildListCardsH(Get.find<Controller>().products, context)),
-                  ),
+                GetBuilder<Controller>(
+                  builder: (_) {
+                    return SizedBox(
+                      width: 400,
+                      height: 370,
+                      child: ListView(
+                          scrollDirection: Axis.horizontal,
+                          shrinkWrap: true,
+                          dragStartBehavior: DragStartBehavior.start,
+                          padding: const EdgeInsets.all(16.0),
+                          children: buildListCardsH(controller.products, context)),
+                    );
+                  },
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -162,17 +164,19 @@ class _HomePageState extends State<HomePage> {
                     )
                   ],
                 ),
-                GetX(
-                  init: Controller(),
-                  builder: (controller) => SizedBox(
-                    width: 400,
-                    child: ListView(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        padding: const EdgeInsets.all(16.0),
-                        children: buildListCardsV(Get.find<Controller>().products, context)),
-                  ),
+                GetBuilder<Controller>(
+                    builder: (_) {
+                      return SizedBox(
+                        width: 400,
+                        child: ListView(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            padding: const EdgeInsets.all(16.0),
+                            children: buildListCardsV(_.products, context)),
+                      );
+                    }
                 ),
+
               ],
             ),
           ]),
@@ -217,7 +221,7 @@ class _HomePageState extends State<HomePage> {
                 color: AppColors.white,
               ),
               onTap: () {
-                Navigator.pushNamed(context, '/upload');
+                Navigator.pushNamed(context, '/upload').then((_) => setState(() {}));
               },
             ),
             FloatingCenterButtonChild(

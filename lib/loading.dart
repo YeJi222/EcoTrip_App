@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
 import 'home.dart';
-import 'login.dart';
+import 'package:get/get.dart';
+import 'cotroller.dart';
 
 class LoadingPage extends StatefulWidget {
   const LoadingPage({Key? key}) : super(key: key);
@@ -14,6 +15,9 @@ class LoadingPage extends StatefulWidget {
 }
 
 class _LoadingPageState extends State<LoadingPage> {
+
+  final Controller controller = Get.put(Controller());
+
   @override
   Widget build(BuildContext context) {
     Timer(
@@ -21,7 +25,7 @@ class _LoadingPageState extends State<LoadingPage> {
         () => Navigator.pushReplacement(
           context,
           PageRouteBuilder(
-            pageBuilder: (c, a1, a2) => const LoginPage(),
+            pageBuilder: (c, a1, a2) => const HomePage(),
             transitionsBuilder: (c, anim, a2, child) => FadeTransition(opacity: anim, child: child),
             transitionDuration: const Duration(milliseconds: 1500),
           ),
