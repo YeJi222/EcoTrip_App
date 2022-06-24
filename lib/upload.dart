@@ -149,6 +149,7 @@ class _UploadPageState extends State<UploadPage> {
     });
   }
 
+  String default_url = '';
   String select_url = '';
 
   // Stream<String> img_url() async* {
@@ -178,7 +179,9 @@ class _UploadPageState extends State<UploadPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
         backgroundColor: const Color(0xfff9fff8),
         appBar: AppBar(
           backgroundColor: Colors.transparent,
@@ -211,7 +214,8 @@ class _UploadPageState extends State<UploadPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: const [
                     Text(
-                      'File types supported: JPG, PNG, GIF, SVG, MP4, WEBM,\nMP3, WAV, OGG, GLB, GLTF, Max size: 40 MB',
+                      'Add a trip-related image!\n'
+                      '(File types supported: JPG, PNG, GIF, SVG, MP4, WEBM,\nMP3, WAV, OGG, GLB, GLTF, Max size: 40 MB)',
                       style: TextStyle(
                         color: Colors.grey,
                         fontSize: 12,
@@ -358,7 +362,7 @@ class _UploadPageState extends State<UploadPage> {
                         fillColor: Colors.white,
                         filled: true,
                       ),
-                      maxLines: 3,
+                      maxLines: 4,
                       style: const TextStyle(
                         color: Colors.black,
                         fontSize: 17,
@@ -663,12 +667,16 @@ class _UploadPageState extends State<UploadPage> {
                         });
                       }
                     },
-                    //
-                    child: const Text(
-                      'Next',
-                      style: TextStyle(
-                        fontSize: 22,
-                        color: Colors.white,
+                    child: TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: Text(
+                        'Next',
+                        style: TextStyle(
+                          fontSize: 22,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
                   ),
@@ -678,7 +686,8 @@ class _UploadPageState extends State<UploadPage> {
           ),
         ),
         resizeToAvoidBottomInset: false,
-      );
+      ),
+    );
   }
 }
 
