@@ -671,7 +671,7 @@ class _UploadPageState extends State<UploadPage> {
                       onPressed: () {
                         Navigator.pop(context);
                       },
-                      child: Text(
+                      child: const Text(
                         'Next',
                         style: TextStyle(
                           fontSize: 22,
