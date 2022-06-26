@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecotripapp/profile.dart';
 import 'package:ecotripapp/search.dart';
@@ -50,7 +51,6 @@ class _NavigatorPageState extends State<NavigatorPage> {
               iconSelected: const Icon(Icons.home, color: Colors.green),
               dotColor: Colors.green,
               onTap: () => {
-                // Navigator.pushNamed(context, '/home'),
                 changeActivePage(0),
               },
             ),
@@ -75,18 +75,16 @@ class _NavigatorPageState extends State<NavigatorPage> {
               iconSelected: Icon(Icons.person, color: Colors.green),
               dotColor: Colors.green,
               onTap: () => {
-                // Navigator.pushNamed(context, '/profile')
                 changeActivePage(3),
               },
             ),
           ],
           bottomBarCenterModel: BottomBarCenterModel(
             centerBackgroundColor: Colors.green,
-            centerIcon: FloatingCenterButton(
+            centerIcon: const FloatingCenterButton(
               child: Icon(
                 Icons.add,
                 color: AppColors.white,
-
               ),
             ),
             centerIconChild: [
@@ -109,81 +107,6 @@ class _NavigatorPageState extends State<NavigatorPage> {
             ],
           ),
         ),
-      /*
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            Navigator.pushNamed(context, '/upload');
-          },
-          child: Icon(Icons.add),
-          backgroundColor: Colors.red,
-        ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
-        bottomNavigationBar: BubbleBottomBar(
-          hasNotch: true,
-          fabLocation: BubbleBottomBarFabLocation.end,
-          opacity: .2,
-          currentIndex: activeIndex,
-          onTap: changeActivePage,
-          borderRadius: BorderRadius.vertical(
-            top: Radius.circular(16),
-          ), //border radius doesn't work when the notch is enabled.
-          elevation: 8,
-          tilesPadding: EdgeInsets.symmetric(
-            vertical: 8.0,
-          ),
-          items: <BubbleBottomBarItem>[
-            BubbleBottomBarItem(
-              showBadge: true,
-              badge: Text("5"),
-              badgeColor: Colors.deepPurpleAccent,
-              backgroundColor: Colors.red,
-              icon: Icon(
-                Icons.dashboard,
-                color: Colors.black,
-              ),
-              activeIcon: Icon(
-                Icons.dashboard,
-                color: Colors.red,
-              ),
-              title: Text("Home"),
-            ),
-            BubbleBottomBarItem(
-                backgroundColor: Colors.deepPurple,
-                icon: Icon(
-                  Icons.access_time,
-                  color: Colors.black,
-                ),
-                activeIcon: Icon(
-                  Icons.access_time,
-                  color: Colors.deepPurple,
-                ),
-                title: Text("Logs")),
-            BubbleBottomBarItem(
-                backgroundColor: Colors.indigo,
-                icon: Icon(
-                  Icons.folder_open,
-                  color: Colors.black,
-                ),
-                activeIcon: Icon(
-                  Icons.folder_open,
-                  color: Colors.indigo,
-                ),
-                title: Text("Folders")),
-            BubbleBottomBarItem(
-                backgroundColor: Colors.green,
-                icon: Icon(
-                  Icons.menu,
-                  color: Colors.black,
-                ),
-                activeIcon: Icon(
-                  Icons.menu,
-                  color: Colors.green,
-                ),
-                title: Text("Menu"))
-          ],
-        ),
-
-       */
         body: pages[activeIndex]);
   }
 }
@@ -227,10 +150,13 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final Controller controller = Get.put(Controller());
 
+  static int load_num = 15; // number of cards to load
+  Stream<int> loadStream =
+  Stream<int>.periodic(const Duration(seconds: 2), (x) => load_num);
+
   @override
   void initState() {
     super.initState();
-    print('initState is called');
   }
 
   @override
@@ -276,14 +202,7 @@ class _HomePageState extends State<HomePage> {
                     print("Tap Event");
                   },
                 ),
-              )
-              // const Text(
-              //   "Eco Trip",
-              //   style: TextStyle(
-              //       color: Colors.black,
-              //       fontSize: 18,
-              //       fontWeight: FontWeight.bold),
-              // ),
+              ),
             ],
           ),
           leadingWidth: 250,
@@ -295,106 +214,105 @@ class _HomePageState extends State<HomePage> {
                   Icons.notifications_none_outlined,
                   color: Colors.black,
                   size: 28,
-                )),
-            // IconButton(
-            //     onPressed: () {},
-            //     icon: const Icon(
-            //       Icons.bookmark_added_outlined,
-            //       color: Colors.black,
-            //       size: 28,
-            //     )),
-            SizedBox(width: 10,),
+                ),
+            ),
+            const SizedBox(width: 10,),
           ],
         ),
-        body: ListView(
-            padding: EdgeInsets.only(left: 20, right: 20),
-            scrollDirection: Axis.vertical,
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+        body: StreamBuilder<int>(
+            stream: loadStream,
+            builder: (context, snapshot) {
+              return ListView(
+                padding: const EdgeInsets.only(left: 20, right: 20),
+                scrollDirection: Axis.vertical,
                 children: [
-                  Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: <Widget>[
-                    const SizedBox(width: 20.0, height: 70.0),
-                    DefaultTextStyle(
-                      style: const TextStyle(
-                        fontSize: 20.0,
-                        fontFamily: 'Horizon',
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: <Widget>[
+                          const SizedBox(width: 20.0, height: 70.0),
+                          DefaultTextStyle(
+                            style: const TextStyle(
+                              fontSize: 20.0,
+                              fontFamily: 'Horizon',
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            child: Consumer<ApplicationHomeState>(
+                                builder: (context, appState, _) {
+                                  return AnimatedTextKit(
+                                    animatedTexts: [
+                                      RotateAnimatedText(
+                                        'Hello! ${appState.name} 🌿',
+                                      ),
+                                    ],
+                                    onTap: () {
+                                      print("Tap Event");
+                                    },
+                                    repeatForever: true,
+                                  );
+                                }
+                            ),
+                          ),
+                        ],
                       ),
-                      child: Consumer<ApplicationHomeState>(
-                        builder: (context, appState, _) {
-                          return AnimatedTextKit(
-                            animatedTexts: [
-                              RotateAnimatedText(
-                                'Hello! ${appState.name} 🌿',
-                                // "${FirebaseAuth.instance.currentUser!.displayName} 👊🏻"
-                              ),
-                            ],
-                            onTap: () {
-                              print("Tap Event");
-                            },
-                            repeatForever: true,
+                      GetBuilder<Controller>(
+                        builder: (_) {
+                          return SizedBox(
+                            width: 400,
+                            height: 370,
+                            child: ListView(
+                                scrollDirection: Axis.horizontal,
+                                shrinkWrap: true,
+                                dragStartBehavior: DragStartBehavior.start,
+                                padding: const EdgeInsets.all(16.0),
+                                children: buildListCardsH(
+                                    controller.products, context)
+                            ),
                           );
-                        }
-                      ),
-                    ),
-                  ],
-                ),
-                GetBuilder<Controller>(
-                  builder: (_) {
-                  return SizedBox(
-                    width: 400,
-                    height: 370,
-                    child: ListView(
-                      scrollDirection: Axis.horizontal,
-                      shrinkWrap: true,
-                      dragStartBehavior: DragStartBehavior.start,
-                      padding: const EdgeInsets.all(16.0),
-                      children: buildListCardsH(controller.products, context)),
-                    );
-                  },
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    const Text("Recently Booked",
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 15,
-                            fontWeight: FontWeight.bold)),
-                    Padding(
-                      padding: EdgeInsets.only(left: 135),
-                      child: TextButton(
-                        onPressed: () {
-                          print("Text Button");
                         },
-                        child: Text("See more",
-                            style: TextStyle(
-                                color: Color(0xff6dc62f),
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold)),),
-                    )
-                  ],
-                ),
-                  GetBuilder<Controller>(
-                      builder: (_) {
-                        return SizedBox(
-                          width: 400,
-                          child: ListView(
-                              shrinkWrap: true,
-                              physics: const NeverScrollableScrollPhysics(),
-                              padding: const EdgeInsets.all(16.0),
-                              children: buildListCardsV(_.products, context)),
-                        );
-                      }
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          const Text("Recently Booked",
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold)),
+                          Padding(
+                            padding: EdgeInsets.only(left: 135),
+                            child: TextButton(
+                              onPressed: () {
+                                print("Text Button");
+                              },
+                              child: const Text("See more",
+                                  style: TextStyle(
+                                      color: Color(0xff6dc62f),
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold)),),
+                          )
+                        ],
+                      ),
+                      GetBuilder<Controller>(
+                          builder: (_) {
+                            return SizedBox(
+                              width: 400,
+                              child: ListView(
+                                  shrinkWrap: true,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  padding: const EdgeInsets.all(16.0),
+                                  children: buildListCardsV(_.products, context)),
+                            );
+                          }
+                      ),
+                    ],
                   ),
-
                 ],
-              ),
-            ],
+              );
+            },
           ),
         ),
      );
