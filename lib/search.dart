@@ -1,6 +1,10 @@
+import 'package:ecotripapp/widget.dart';
 import 'package:firestore_search/firestore_search.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:get/get_state_manager/src/simple/get_state.dart';
+
+import 'cotroller.dart';
 
 class DataModel {
   final String? title;
@@ -88,41 +92,58 @@ class _SearchPage extends State<SearchPage> {
                           child: Text('No Search Results!'),
                         );
                       }
-                      return ListView.builder(
-                          itemCount: dataList.length,
-                          itemBuilder: (context, index) {
-                            final DataModel data = dataList[index];
-
-                            return Column(
-                              mainAxisSize: MainAxisSize.min,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text(
-                                    '${data.title}',
-                                    // style: Theme.of(context).textTheme.headline6,
-                                    style: TextStyle(
-                                      fontFamily: 'cafe24',
-                                      fontSize: 25,
-                                    ),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      bottom: 8.0, left: 8.0, right: 8.0),
-                                  child: Text('${data.location}',
-                                      // style: Theme.of(context).textTheme.bodyText1),
-                                        style: TextStyle(
-                                          fontFamily: 'cafe24',
-                                          fontSize: 18,
-                                        ),
-                                  ),
-                                )
-                              ],
-                            );
-                          });
+                      return ListView(
+                        children: [
+                          GetBuilder<Controller>(
+                              builder: (_) {
+                                return SizedBox(
+                                  width: 400,
+                                  child: ListView(
+                                      shrinkWrap: true,
+                                      physics: const NeverScrollableScrollPhysics(),
+                                      padding: const EdgeInsets.all(16.0),
+                                      children: buildListCardsV(_.products, context)),
+                                );
+                              }
+                          ),
+                        ],
+                      );
+                      // return ListView.builder(
+                      //     itemCount: dataList.length,
+                      //     itemBuilder: (context, index) {
+                      //       final DataModel data = dataList[index];
+                      //
+                      //       return Column(
+                      //         mainAxisSize: MainAxisSize.min,
+                      //         mainAxisAlignment: MainAxisAlignment.center,
+                      //         crossAxisAlignment: CrossAxisAlignment.start,
+                      //         children: [
+                      //           Padding(
+                      //             padding: const EdgeInsets.all(8.0),
+                      //             child: Text(
+                      //               '${data.title}',
+                      //               // style: Theme.of(context).textTheme.headline6,
+                      //               style: TextStyle(
+                      //                 fontFamily: 'cafe24',
+                      //                 fontSize: 25,
+                      //               ),
+                      //             ),
+                      //           ),
+                      //           Padding(
+                      //             padding: const EdgeInsets.only(
+                      //                 bottom: 8.0, left: 8.0, right: 8.0),
+                      //             child: Text('${data.location}',
+                      //                 // style: Theme.of(context).textTheme.bodyText1),
+                      //                   style: TextStyle(
+                      //                     fontFamily: 'cafe24',
+                      //                     fontSize: 18,
+                      //                   ),
+                      //             ),
+                      //           )
+                      //         ],
+                      //       );
+                      //     }
+                      //   );
                     }
 
                     if (snapshot.connectionState == ConnectionState.done) {
@@ -149,41 +170,57 @@ class _SearchPage extends State<SearchPage> {
                   child: Text('No Search Results!'),
                 );
               }
-              return ListView.builder(
-                  itemCount: dataList.length,
-                  itemBuilder: (context, index) {
-                    final DataModel data = dataList[index];
-
-                    return Column(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            '${data.title}',
-                            // style: Theme.of(context).textTheme.headline6,
-                            style: TextStyle(
-                              fontFamily: 'cafe24',
-                              fontSize: 25,
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              bottom: 8.0, left: 8.0, right: 8.0),
-                          child: Text('${data.location}',
-                              // style: Theme.of(context).textTheme.bodyText1),
-                              style: TextStyle(
-                                fontFamily: 'cafe24',
-                                fontSize: 18,
-                              ),
-                          ),
-                        )
-                      ],
-                    );
-                  });
+              return ListView(
+                children: [
+                  GetBuilder<Controller>(
+                      builder: (_) {
+                        return SizedBox(
+                          width: 400,
+                          child: ListView(
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              padding: const EdgeInsets.all(16.0),
+                              children: buildListCardsV(_.products, context)),
+                        );
+                      }
+                  ),
+                ],
+              );
+              // return ListView.builder(
+              //     itemCount: dataList.length,
+              //     itemBuilder: (context, index) {
+              //       final DataModel data = dataList[index];
+              //
+              //       return Column(
+              //         mainAxisSize: MainAxisSize.min,
+              //         mainAxisAlignment: MainAxisAlignment.center,
+              //         crossAxisAlignment: CrossAxisAlignment.start,
+              //         children: [
+              //           Padding(
+              //             padding: const EdgeInsets.all(8.0),
+              //             child: Text(
+              //               '${data.title}',
+              //               // style: Theme.of(context).textTheme.headline6,
+              //               style: TextStyle(
+              //                 fontFamily: 'cafe24',
+              //                 fontSize: 25,
+              //               ),
+              //             ),
+              //           ),
+              //           Padding(
+              //             padding: const EdgeInsets.only(
+              //                 bottom: 8.0, left: 8.0, right: 8.0),
+              //             child: Text('${data.location}',
+              //                 // style: Theme.of(context).textTheme.bodyText1),
+              //                 style: TextStyle(
+              //                   fontFamily: 'cafe24',
+              //                   fontSize: 18,
+              //                 ),
+              //             ),
+              //           )
+              //         ],
+              //       );
+              //     });
             }
 
             if (snapshot.connectionState == ConnectionState.done) {
