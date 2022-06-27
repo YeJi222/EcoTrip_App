@@ -7,16 +7,38 @@ import 'package:path_provider/path_provider.dart';
 import 'package:screenshot/screenshot.dart';
 import 'package:scroll_page_view/pager/page_controller.dart';
 import 'package:scroll_page_view/pager/scroll_page_view.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dynamic_timeline/dynamic_timeline.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:intl/intl.dart';
+
+import 'model.dart';
+import 'widget.dart';
 
 class DetailPage extends StatefulWidget {
   const DetailPage(this.product, {Key? key}) : super(key: key);
   final Product product;
 
   @override
-  State<StatefulWidget> createState() => _DetailPageState();
+  State<DetailPage> createState() => _DetailPageState();
 }
 
 class _DetailPageState extends State<DetailPage> {
+
+  late final ScrollController verticalController;
+  late final ScrollController horizontalController;
+
+  late Product product = const Product(
+      title: "",
+      description: "",
+      imageURL: "",
+      location: "",
+      items: [],
+      duration: '0');
+
   final _screenshotController = ScreenshotController();
   Future<void> shareScreenshot() async {
     final directory;
@@ -51,18 +73,13 @@ class _DetailPageState extends State<DetailPage> {
     }
   }
 
-  late Product product = const Product(
-      title: '',
-      location: '',
-      description: '',
-      imageURL: ''
-  );
-
   @override
   void initState() {
     super.initState();
     Future.delayed(Duration.zero, () {
       precache();
+      verticalController = ScrollController();
+      horizontalController = ScrollController();
       WidgetsBinding.instance.addPostFrameCallback((_) { // null check
         setState(() {
           product = widget.product;
@@ -71,6 +88,7 @@ class _DetailPageState extends State<DetailPage> {
         });
       });
     });
+    print(product.items);
   }
 
   @override
@@ -176,6 +194,81 @@ class _DetailPageState extends State<DetailPage> {
                               thickness: 1.5,
                               indent: 2,
                               endIndent: 10,
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                SizedBox(
+                                  width: 420,
+                                  height: 420,
+                                  child: Stack(
+                                    children: [
+                                      Positioned(
+                                        top: -20,
+                                        left: -15,
+                                        child: SizedBox(
+                                          width: 420,
+                                          height: 420,
+                                          child: CachedNetworkImage(
+                                            progressIndicatorBuilder: (context, url, progress) =>
+                                                Center(
+                                                  child: CircularProgressIndicator(
+                                                    value: progress.progress,
+                                                  ),
+                                                ),
+                                            imageUrl: product.imageURL,
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(5),
+                                  child: SizedBox(
+                                    height: 520,
+                                    width: 400,
+                                    child: Scrollbar(
+                                      thumbVisibility: true,
+                                      controller: horizontalController,
+                                      child: Scrollbar(
+                                        controller: verticalController,
+                                        child: SingleChildScrollView(
+                                          controller: horizontalController,
+                                          scrollDirection: Axis.horizontal,
+                                          child: SingleChildScrollView(
+                                            controller: verticalController,
+                                            child: Column(
+                                              children: [
+                                                Row(
+                                                  children: [
+                                                    const SizedBox(width: 30),
+                                                    ...List.generate(
+                                                      int.parse(product.duration),
+                                                          (index) => DayHeader(day: index),
+                                                    ),
+                                                  ],
+                                                ),
+                                                const SizedBox(height: 20),
+                                                DynamicTimeline(
+                                                  firstDateTime: DateTime(2000, 01, 01, 7),
+                                                  lastDateTime: DateTime(2000, 01, 01, 22),
+                                                  labelBuilder: DateFormat('HH:mm').format,
+                                                  intervalDuration: const Duration(hours: 1),
+                                                  crossAxisCount: int.parse(product.duration),
+                                                  intervalExtent: 40,
+                                                  items: product.items,
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ],
                         ),
