@@ -13,13 +13,14 @@ import 'package:get/state_manager.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'firebase_options.dart';
+import 'model.dart';
 import 'widget.dart';
 import 'package:intl/intl.dart';
 import 'package:direct_select/direct_select.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
-class ApplicationUploadState extends ChangeNotifier{
-  ApplicationUploadState(){
+class ApplicationUploadState extends ChangeNotifier {
+  ApplicationUploadState() {
     init();
   }
 
@@ -34,7 +35,7 @@ class ApplicationUploadState extends ChangeNotifier{
             .collection('user')
             .doc(FirebaseAuth.instance.currentUser!.uid)
             .get();
-        if(doc_user.exists == true){
+        if (doc_user.exists == true) {
           _name = doc_user.get('name');
         }
         notifyListeners();
@@ -62,6 +63,7 @@ class _UploadPageState extends State<UploadPage> {
   List<String>? date_format;
   int date_len = 0;
   final items = <TimelineItem>[];
+  final saves = <SaveEvent>[];
   var days = <String>[];
   var time = <String>[
     '7',
@@ -184,28 +186,6 @@ class _UploadPageState extends State<UploadPage> {
   String default_url = '';
   String select_url = '';
 
-  // Stream<String> img_url() async* {
-  //   Future<String> downloadURL() async {
-  //     String downloadURL = await FirebaseStorage.instance
-  //         .ref("upload_default.png")
-  //         .getDownloadURL();
-  //
-  //     return downloadURL;
-  //   }
-  //
-  //   default_url = await (await downloadURL()).toString();
-  //
-  //   Future<String> imgURL() async {
-  //     String imgURL = await FirebaseStorage.instance
-  //         .ref('${timestamp}.png')
-  //         .getDownloadURL();
-  //
-  //     return imgURL;
-  //   }
-  //
-  //   select_url = await (await imgURL()).toString();
-  // }
-
   late final ScrollController verticalController;
   late final ScrollController horizontalController;
 
@@ -260,56 +240,28 @@ class _UploadPageState extends State<UploadPage> {
                 height: 10,
               ),
               Padding(
-                padding: EdgeInsets.only(left: 15, right: 15),
-                child: _image==null ? AspectRatio(
+                  padding: EdgeInsets.only(left: 15, right: 15),
+                  child: _image == null
+                      ? AspectRatio(
                           aspectRatio: 18 / 10,
                           child: CachedNetworkImage(
-                            progressIndicatorBuilder: (context, url, progress) =>
-                                Center(
-                                  child: CircularProgressIndicator(
-                                    value: progress.progress,
-                                  ),
-                                ),
+                            progressIndicatorBuilder:
+                                (context, url, progress) => Center(
+                              child: CircularProgressIndicator(
+                                value: progress.progress,
+                              ),
+                            ),
                             imageUrl: controller.default_url,
                             fit: BoxFit.cover,
                           ),
-                        ) : AspectRatio(
+                        )
+                      : AspectRatio(
                           aspectRatio: 18 / 10,
                           child: Image.file(
                             File(_image!.path),
                             fit: BoxFit.fitWidth,
                           ),
-                        )
-                // child: StreamBuilder(
-                //   stream: img_url(),
-                //   builder: (context, snapshot) {
-                //     if (snapshot.connectionState == ConnectionState.done) {
-                //
-                //       _image==null ? AspectRatio(
-                //         aspectRatio: 18 / 10,
-                //         child: CachedNetworkImage(
-                //           progressIndicatorBuilder: (context, url, progress) =>
-                //               Center(
-                //                 child: CircularProgressIndicator(
-                //                   value: progress.progress,
-                //                 ),
-                //               ),
-                //           imageUrl: default_url,
-                //           fit: BoxFit.cover,
-                //         ),
-                //       ) : AspectRatio(
-                //         aspectRatio: 18 / 10,
-                //         child: Image.file(
-                //           File(_image!.path),
-                //           fit: BoxFit.fitWidth,
-                //         ),
-                //       );
-                //
-                //     }
-                //     return const CircularProgressIndicator();
-                //   },
-                // ),
-              ),
+                        )),
               Padding(
                 padding: EdgeInsets.only(right: 25),
                 child: Row(
@@ -459,28 +411,13 @@ class _UploadPageState extends State<UploadPage> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Row(
-                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
                                       children: [
                                         const Text('Choose Day'),
                                         const SizedBox(
                                           width: 100,
                                         ),
-                                        // DropdownButton(
-                                        //   value: dropdownvalue,
-                                        //   icon: const Icon(Icons.keyboard_arrow_down),
-                                        //   items:days.map((String items) {
-                                        //     return DropdownMenuItem(
-                                        //         value: items,
-                                        //         child: Text(items)
-                                        //     );
-                                        //   }
-                                        //   ).toList(),
-                                        //   onChanged: (String? newValue){
-                                        //     setState(() {
-                                        //       dropdownvalue = newValue!;
-                                        //     });
-                                        //   },
-                                        // ),
                                         DirectSelect(
                                             itemExtent: 35.0,
                                             selectedIndex: selectedDays,
@@ -500,7 +437,8 @@ class _UploadPageState extends State<UploadPage> {
                                       height: 10,
                                     ),
                                     Row(
-                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
                                       children: [
                                         const Text('Start Time'),
                                         const SizedBox(
@@ -525,7 +463,8 @@ class _UploadPageState extends State<UploadPage> {
                                       height: 10,
                                     ),
                                     Row(
-                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
                                       children: [
                                         const Text('End Time'),
                                         const SizedBox(
@@ -561,7 +500,8 @@ class _UploadPageState extends State<UploadPage> {
                             ),
                             actions: <Widget>[
                               TextButton(
-                                onPressed: () => Navigator.pop(context, 'Cancel'),
+                                onPressed: () =>
+                                    Navigator.pop(context, 'Cancel'),
                                 child: const Text('Cancel'),
                               ),
                               TextButton(
@@ -570,14 +510,31 @@ class _UploadPageState extends State<UploadPage> {
                                   setState(() {
                                     items.add(
                                       TimelineItem(
-                                        startDateTime: DateTime(1970, 1, 1,
+                                        startDateTime: DateTime(2000, 1, 1,
                                             int.parse(time[selectedStartTime])),
-                                        endDateTime: DateTime(1970, 1, 1,
+                                        endDateTime: DateTime(2000, 1, 1,
                                             int.parse(time[selectedEndTime])),
                                         position:
                                             int.parse(days[selectedDays]) - 1,
-                                        child: const Event(title: 'title'),
+                                        child:
+                                            Event(title: titleController.text),
                                       ),
+                                    );
+
+                                    saves.add(
+                                      SaveEvent(
+                                          startTime: DateTime(
+                                              2000,
+                                              1,
+                                              1,
+                                              int.parse(
+                                                  time[selectedStartTime])).millisecondsSinceEpoch.toString(),
+                                          endTime: DateTime(2000, 1, 1,
+                                              int.parse(time[selectedEndTime])).millisecondsSinceEpoch.toString(),
+                                          title: titleController.text,
+                                          position:
+                                              int.parse(days[selectedDays]) -
+                                                  1),
                                     );
                                   });
                                   print(items);
@@ -640,8 +597,8 @@ class _UploadPageState extends State<UploadPage> {
                               ),
                               const SizedBox(height: 20),
                               DynamicTimeline(
-                                firstDateTime: DateTime(1970, 01, 01, 7),
-                                lastDateTime: DateTime(1970, 01, 01, 22),
+                                firstDateTime: DateTime(2000, 01, 01, 7),
+                                lastDateTime: DateTime(2000, 01, 01, 22),
                                 labelBuilder: DateFormat('HH:mm').format,
                                 intervalDuration: const Duration(hours: 1),
                                 crossAxisCount: date_len,
@@ -659,71 +616,89 @@ class _UploadPageState extends State<UploadPage> {
               const SizedBox(height: 15.0),
               Padding(
                 padding: EdgeInsets.only(left: 30, right: 30),
-                child:Consumer<ApplicationUploadState>(
+                child: Consumer<ApplicationUploadState>(
                     builder: (context, appState, _) {
-                      return TextButton(
-                        onPressed: () async {
-                          if(_nameController.text == "" || _locController.text == ""
-                              || _descController.text == ""){
-                            ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(content: Text('You should fill all the blanks!'))
-                            );
-                          } else{
-                            String uploadTime = timestamp.toString();
-                            final storageRef =
-                            FirebaseStorage.instance.ref().child('$uploadTime.png');
+                  return TextButton(
+                    onPressed: () async {
+                      if (_nameController.text == "" ||
+                          _locController.text == "" ||
+                          _descController.text == "") {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                                content:
+                                    Text('You should fill all the blanks!')));
+                      } else {
+                        String uploadTime = timestamp.toString();
+                        final storageRef = FirebaseStorage.instance
+                            .ref()
+                            .child('$uploadTime.png');
 
-                            if (_image != null) {
-                              File file = File(_image!.path);
-                              await storageRef.putFile(file);
+                        if (_image != null) {
+                          File file = File(_image!.path);
+                          await storageRef.putFile(file);
 
-                              url = await storageRef.getDownloadURL();
-                            }
+                          url = await storageRef.getDownloadURL();
+                        }
 
-                            // controller.addProduct(
-                            //     _nameController.text, _locController.text,
-                            //     _descController.text, url
-                            // );
-                            if (url == '') {
-                              showSnackBar(context, 'You should upload some Image!');
-                            } else {
-                              await FirebaseFirestore.instance
-                                  .collection('products')
-                                  .doc(uploadTime)
-                                  .set(<String, dynamic>{
-                                'imgURL': url,
-                                'title': _nameController.text,
-                                'timestamp': uploadTime,
-                                'description': _descController.text,
-                                'creator_name': appState.name,
-                                // FirebaseAuth.instance.currentUser!.displayName,
-                                'location': _locController.text
-                              }).then((_) => {
-                                showSnackBar(context, 'Upload complete!'),
-                                Navigator.popAndPushNamed(context, '/upload')
+                        if (url == '') {
+                          showSnackBar(
+                              context, 'You should upload some Image!');
+                        } else {
+                          await FirebaseFirestore.instance
+                              .collection('products')
+                              .doc(uploadTime)
+                              .set(<String, dynamic>{
+                            'imgURL': url,
+                            'title': _nameController.text,
+                            'timestamp': uploadTime,
+                            'description': _descController.text,
+                            'creator_name': appState.name,
+                            // FirebaseAuth.instance.currentUser!.displayName,
+                            'location': _locController.text,
+                            'duration': date_len.toString(),
+                          });
+
+                          await FirebaseFirestore.instance
+                              .collection('products')
+                              .where('timestamp', isEqualTo: uploadTime)
+                              .get()
+                              .then((snapshot) {
+                            for (var save in saves) {
+                              snapshot.docs[0].reference
+                                  .collection('events')
+                                  .add(<String, dynamic>{
+                                'title': save.title,
+                                'startTime': save.startTime,
+                                'endTime': save.endTime,
+                                'pos': save.position,
                               });
                             }
-                          }
-                        },
-                        child: Container(
-                          width: 700,
-                          height: 45,
-                          decoration: const BoxDecoration(
-                              color: Color(0xff69f81b),
-                              gradient: LinearGradient(
-                                colors: [Color(0xffbff5ad), Color(0xff54c737)],
-                              ),
-                              borderRadius: BorderRadius.all(Radius.circular(20))),
-                          child: const Center(
-                            child: Text(
-                              'Next',
-                              style: TextStyle(color: Colors.white, fontSize: 20),
-                            ),
+                          }).then((_) => {
+                                    showSnackBar(context, 'Upload complete!'),
+                                    Navigator.popAndPushNamed(
+                                        context, '/upload')
+                                  });
+                        }
+                      }
+                    },
+                    child: Container(
+                      width: 700,
+                      height: 45,
+                      decoration: const BoxDecoration(
+                          color: Color(0xff69f81b),
+                          gradient: LinearGradient(
+                            colors: [Color(0xffbff5ad), Color(0xff54c737)],
                           ),
+                          borderRadius: BorderRadius.all(Radius.circular(20))),
+                      child: const Center(
+                        child: Text(
+                          'Next',
+                          style: TextStyle(color: Colors.white, fontSize: 20),
                         ),
-                    );
-                  }
-                ),
+                      ),
+                    ),
+                  );
+                }),
               ),
             ],
           ),
