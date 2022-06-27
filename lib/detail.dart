@@ -7,14 +7,8 @@ import 'package:path_provider/path_provider.dart';
 import 'package:screenshot/screenshot.dart';
 import 'package:scroll_page_view/pager/page_controller.dart';
 import 'package:scroll_page_view/pager/scroll_page_view.dart';
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dynamic_timeline/dynamic_timeline.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
-
 import 'model.dart';
 import 'widget.dart';
 
@@ -62,9 +56,9 @@ class _DetailPageState extends State<DetailPage> {
 
   static const _images = [
     'https://firebasestorage.googleapis.com/v0/b/fluttercamp-67707.appspot.com/o/1656285583450.png?alt=media&token=20b7c448-29b3-4f76-8fe1-92a44d7e32a9',
-    'https://firebasestorage.googleapis.com/v0/b/fluttercamp-67707.appspot.com/o/1656285583450.png?alt=media&token=20b7c448-29b3-4f76-8fe1-92a44d7e32a9',
-    'https://firebasestorage.googleapis.com/v0/b/fluttercamp-67707.appspot.com/o/1656285583450.png?alt=media&token=20b7c448-29b3-4f76-8fe1-92a44d7e32a9',
-    'https://firebasestorage.googleapis.com/v0/b/fluttercamp-67707.appspot.com/o/1656285583450.png?alt=media&token=20b7c448-29b3-4f76-8fe1-92a44d7e32a9',
+    'https://firebasestorage.googleapis.com/v0/b/fluttercamp-67707.appspot.com/o/1656048076693.png?alt=media&token=b69d6890-93a8-45bc-84c9-4eb4ab6d4588',
+    'https://firebasestorage.googleapis.com/v0/b/fluttercamp-67707.appspot.com/o/1656048260589.png?alt=media&token=8c73edf3-db2d-4e58-9d58-87c43d2c5fd5',
+    'https://firebasestorage.googleapis.com/v0/b/fluttercamp-67707.appspot.com/o/1656336591838.png?alt=media&token=3e95b51c-0da7-4691-97d5-7087c7e762e6',
   ];
 
   Future<void> precache() async {
@@ -75,11 +69,11 @@ class _DetailPageState extends State<DetailPage> {
 
   @override
   void initState() {
+    verticalController = ScrollController();
+    horizontalController = ScrollController();
     super.initState();
     Future.delayed(Duration.zero, () {
       precache();
-      verticalController = ScrollController();
-      horizontalController = ScrollController();
       WidgetsBinding.instance.addPostFrameCallback((_) { // null check
         setState(() {
           product = widget.product;
@@ -118,7 +112,7 @@ class _DetailPageState extends State<DetailPage> {
                         child: IconButton(
                           icon: Icon(
                             Icons.arrow_back,
-                            color: Colors.white,
+                            color: Colors.black,
                           ),
                           onPressed: (){
                             Navigator.pop(context);
@@ -131,7 +125,7 @@ class _DetailPageState extends State<DetailPage> {
                         child: IconButton(
                           icon: Icon(
                             Icons.bookmark_added_outlined,
-                            color: Colors.white,
+                            color: Colors.black,
                           ),
                           onPressed: (){
                             Navigator.pushNamed(context, '/favorite');
@@ -145,7 +139,7 @@ class _DetailPageState extends State<DetailPage> {
                           onPressed: shareScreenshot,
                           icon: const Icon(
                             Icons.file_upload_outlined,
-                            color: Colors.white,
+                            color: Colors.black,
                           ),
                         ),
                       ),
@@ -198,32 +192,32 @@ class _DetailPageState extends State<DetailPage> {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                SizedBox(
-                                  width: 420,
-                                  height: 420,
-                                  child: Stack(
-                                    children: [
-                                      Positioned(
-                                        top: -20,
-                                        left: -15,
-                                        child: SizedBox(
-                                          width: 420,
-                                          height: 420,
-                                          child: CachedNetworkImage(
-                                            progressIndicatorBuilder: (context, url, progress) =>
-                                                Center(
-                                                  child: CircularProgressIndicator(
-                                                    value: progress.progress,
-                                                  ),
-                                                ),
-                                            imageUrl: product.imageURL,
-                                            fit: BoxFit.cover,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
+                                // SizedBox(
+                                //   width: 420,
+                                //   height: 420,
+                                //   child: Stack(
+                                //     children: [
+                                //       Positioned(
+                                //         top: -20,
+                                //         left: -15,
+                                //         child: SizedBox(
+                                //           width: 420,
+                                //           height: 420,
+                                //           child: CachedNetworkImage(
+                                //             progressIndicatorBuilder: (context, url, progress) =>
+                                //                 Center(
+                                //                   child: CircularProgressIndicator(
+                                //                     value: progress.progress,
+                                //                   ),
+                                //                 ),
+                                //             imageUrl: product.imageURL,
+                                //             fit: BoxFit.cover,
+                                //           ),
+                                //         ),
+                                //       ),
+                                //     ],
+                                //   ),
+                                // ),
                                 Padding(
                                   padding: const EdgeInsets.all(5),
                                   child: SizedBox(
@@ -243,7 +237,7 @@ class _DetailPageState extends State<DetailPage> {
                                               children: [
                                                 Row(
                                                   children: [
-                                                    const SizedBox(width: 30),
+                                                    const SizedBox(width: 60),
                                                     ...List.generate(
                                                       int.parse(product.duration),
                                                           (index) => DayHeader(day: index),
