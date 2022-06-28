@@ -44,6 +44,7 @@ class _NavigatorPageState extends State<NavigatorPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: Color(0xfff9fff8),
         bottomNavigationBar: AnimatedBottomNavigationBar(
           bottomBarItems: [
             BottomBarItemsModel(
@@ -262,12 +263,12 @@ class _HomePageState extends State<HomePage> {
                         builder: (_) {
                           return SizedBox(
                             width: 400,
-                            height: 370,
+                            height: 330,
                             child: ListView(
                                 scrollDirection: Axis.horizontal,
                                 shrinkWrap: true,
                                 dragStartBehavior: DragStartBehavior.start,
-                                padding: const EdgeInsets.all(16.0),
+                                padding: EdgeInsets.only(left: 12, top: 2),
                                 children: buildListCardsH(
                                     controller.products, context)
                             ),
@@ -278,10 +279,11 @@ class _HomePageState extends State<HomePage> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           const Text("Recently Booked",
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.bold)),
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold)
+                          ),
                           Padding(
                             padding: EdgeInsets.only(left: 135),
                             child: TextButton(
@@ -303,7 +305,7 @@ class _HomePageState extends State<HomePage> {
                               child: ListView(
                                   shrinkWrap: true,
                                   physics: const NeverScrollableScrollPhysics(),
-                                  padding: const EdgeInsets.all(16.0),
+                                  padding: const EdgeInsets.only(left: 10),
                                   children: buildListCardsV(_.products, context)),
                             );
                           }

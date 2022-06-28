@@ -95,30 +95,32 @@ List<Card> buildListCardsH(List<Product> products, BuildContext context) {
             );
           },
           child: SizedBox(
-            width: 300,
-            height: 370,
+            width: 280,
+            // height: 200,
             child: Stack(
               children: [
                 Positioned(
-                    child: SizedBox(
-                  width: 270,
-                  height: 350,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(40.0),
-                    child: CachedNetworkImage(
-                      progressIndicatorBuilder: (context, url, progress) =>
-                          Center(
-                            child: CircularProgressIndicator(
-                              value: progress.progress,
+                  child: SizedBox(
+                  width: 250,
+                  height: 320,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(40.0),
+                      child: CachedNetworkImage(
+                        progressIndicatorBuilder: (context, url, progress) =>
+                            Center(
+                              child: CircularProgressIndicator(
+                                value: progress.progress,
+                              ),
                             ),
-                          ),
-                      imageUrl: product.imageURL[0],
-                      fit: BoxFit.cover,
+                        imageUrl: product.imageURL[0],
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
-                )),
+                ),
                 Positioned(
-                    top: 220,
+                    top: 200,
+                    left: -10,
                     child: Padding(
                       padding: const EdgeInsets.fromLTRB(35, 0, 0, 0),
                       child: Column(
@@ -166,7 +168,8 @@ List<Card> buildListCardsH(List<Product> products, BuildContext context) {
                           )
                         ],
                       ),
-                    )),
+                    )
+                ),
                 Positioned(
                   right: 50,
                   top: 30,
@@ -256,7 +259,8 @@ List<Card> buildListCardsV(List<Product> products, BuildContext context) {
                               imageUrl: product.imageURL[0],
                               fit: BoxFit.cover,
                             ),
-                          )),
+                          )
+                      ),
                       Padding(
                         padding: EdgeInsets.only(left: 10, top: 10, right: 10),
                         child: SizedBox(
