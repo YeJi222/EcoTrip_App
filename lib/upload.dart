@@ -13,6 +13,7 @@ import 'package:get/state_manager.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'firebase_options.dart';
+import 'model.dart';
 import 'widget.dart';
 import 'package:intl/intl.dart';
 import 'package:direct_select/direct_select.dart';
@@ -63,6 +64,7 @@ class _UploadPageState extends State<UploadPage> {
   List<String>? date_format;
   int date_len = 0;
   final items = <TimelineItem>[];
+  final saves = <SaveEvent>[];
   var days = <String>[];
   var time = <String>[
     '7',
@@ -538,6 +540,23 @@ class _UploadPageState extends State<UploadPage> {
                                                   child: Event(title: '${titleController.text}'),
                                                 ),
                                               );
+
+                                              saves.add(
+                                                SaveEvent(
+                                                    startTime: DateTime(
+                                                        2000,
+                                                        1,
+                                                        1,
+                                                        int.parse(
+                                                            time[selectedStartTime])).millisecondsSinceEpoch.toString(),
+                                                    endTime: DateTime(2000, 1, 1,
+                                                        int.parse(time[selectedEndTime])).millisecondsSinceEpoch.toString(),
+                                                    title: titleController.text,
+                                                    position:
+                                                    int.parse(days[selectedDays]) -
+                                                        1),
+                                              );
+
                                             });
                                             // print(items);
                                           },
@@ -680,8 +699,16 @@ class _UploadPageState extends State<UploadPage> {
                                   .set(<String, dynamic>{
                                 'imgURL': [
                                   for(int i = 0 ; i < url_list.length ; i++){
-                                    '$i' : url_list[i],
+                                    'url' : url_list[i],
                                   },
+                                ],
+                                'events': [
+                                  for(int i = 0 ; i < saves.length ; i++){
+                                    'startTime' : saves[i].startTime,
+                                    'endTime' : saves[i].endTime,
+                                    'title' : saves[i].title,
+                                    'position' : saves[i].position,
+                                  }
                                 ],
                                 'title': _nameController.text,
                                 'timestamp': uploadTime,

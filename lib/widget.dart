@@ -1,4 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'dart:developer';
+import 'package:floating_bottom_bar/animated_bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'detail.dart';
 import 'model.dart';
@@ -110,7 +112,7 @@ List<Card> buildListCardsH(List<Product> products, BuildContext context) {
                               value: progress.progress,
                             ),
                           ),
-                      imageUrl: product.imageURL,
+                      imageUrl: product.imageURL[0],
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -239,7 +241,7 @@ List<Card> buildListCardsV(List<Product> products, BuildContext context) {
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SizedBox(
+                      Container(
                           width: 100,
                           height: 100,
                           child: ClipRRect(
@@ -251,11 +253,10 @@ List<Card> buildListCardsV(List<Product> products, BuildContext context) {
                                       value: progress.progress,
                                     ),
                                   ),
-                              imageUrl: product.imageURL,
+                              imageUrl: product.imageURL[0],
                               fit: BoxFit.cover,
                             ),
-                          ),
-                      ),
+                          )),
                       Padding(
                         padding: EdgeInsets.only(left: 10, top: 10, right: 10),
                         child: SizedBox(
@@ -278,9 +279,7 @@ List<Card> buildListCardsV(List<Product> products, BuildContext context) {
                                             style: TextStyle(
                                                 color: Colors.black,
                                                 fontSize: 13,
-                                                fontWeight: FontWeight.bold
-                                            ),
-                                        ),
+                                                fontWeight: FontWeight.bold)),
                                       ],
                                     ),
                                   ),

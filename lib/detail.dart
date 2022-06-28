@@ -28,7 +28,7 @@ class _DetailPageState extends State<DetailPage> {
   late Product product = const Product(
       title: "",
       description: "",
-      imageURL: "",
+      imageURL: [],
       location: "",
       items: [],
       duration: '0');

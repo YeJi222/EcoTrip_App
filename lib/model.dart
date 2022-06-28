@@ -14,7 +14,7 @@ class Product {
   final String title;
   final String location;
   final String description;
-  final String imageURL;
+  final List<String> imageURL;
   final List<TimelineItem> items;
   final String duration;
 }
