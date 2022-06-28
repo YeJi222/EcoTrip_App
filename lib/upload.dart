@@ -13,14 +13,14 @@ import 'package:get/state_manager.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'firebase_options.dart';
-import 'model.dart';
 import 'widget.dart';
 import 'package:intl/intl.dart';
 import 'package:direct_select/direct_select.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 
-class ApplicationUploadState extends ChangeNotifier {
-  ApplicationUploadState() {
+class ApplicationUploadState extends ChangeNotifier{
+  ApplicationUploadState(){
     init();
   }
 
@@ -35,7 +35,7 @@ class ApplicationUploadState extends ChangeNotifier {
             .collection('user')
             .doc(FirebaseAuth.instance.currentUser!.uid)
             .get();
-        if (doc_user.exists == true) {
+        if(doc_user.exists == true){
           _name = doc_user.get('name');
         }
         notifyListeners();
@@ -63,7 +63,6 @@ class _UploadPageState extends State<UploadPage> {
   List<String>? date_format;
   int date_len = 0;
   final items = <TimelineItem>[];
-  final saves = <SaveEvent>[];
   var days = <String>[];
   var time = <String>[
     '7',
@@ -129,7 +128,7 @@ class _UploadPageState extends State<UploadPage> {
               DateFormat("yyyy년 MM월 dd일").format(multiOrRangeSelect![i]);
         }
         date_len = multiOrRangeSelect!.length;
-        print(date_len);
+        // print(date_len);
 
         setState(() {
           days = [];
@@ -157,30 +156,20 @@ class _UploadPageState extends State<UploadPage> {
     print('dispose is called');
   }
 
-  PickedFile? _image;
-  String url = '';
-  String creator_name = '';
-  int defaultFlag = 0;
+  // String creator_name = '';
+  // int defaultFlag = 0;
   int timestamp = DateTime.now().millisecondsSinceEpoch;
-  var image;
-  var oldImg;
+  // var image;
+  // var oldImg;
+  List<XFile>? images_list = [];
 
   Future getGalleryImage() async {
-    image = await ImagePicker().getImage(
-      source: ImageSource.gallery,
-    );
-    // if (image != null) {
-    //   oldImg = image;
-    // }
-
-    setState(() {
-      _image = image;
-      // if (_image != null)
-      //   defaultFlag = 1;
-      // else {
-      //   _image = oldImg;
-      // }
-    });
+    images_list = [];
+    final List<XFile>? selectedImages = await ImagePicker().pickMultiImage();
+    if (selectedImages!.isNotEmpty) {
+      images_list!.addAll(selectedImages);
+    }
+    setState((){});
   }
 
   String default_url = '';
@@ -240,28 +229,34 @@ class _UploadPageState extends State<UploadPage> {
                 height: 10,
               ),
               Padding(
-                  padding: EdgeInsets.only(left: 15, right: 15),
-                  child: _image == null
-                      ? AspectRatio(
-                          aspectRatio: 18 / 10,
-                          child: CachedNetworkImage(
-                            progressIndicatorBuilder:
-                                (context, url, progress) => Center(
-                              child: CircularProgressIndicator(
-                                value: progress.progress,
-                              ),
+                padding: EdgeInsets.only(left: 15, right: 15),
+                child: images_list!.isEmpty ? AspectRatio(
+                    aspectRatio: 18 / 12,
+                    child: CachedNetworkImage(
+                      progressIndicatorBuilder: (context, url, progress) =>
+                          Center(
+                            child: CircularProgressIndicator(
+                              value: progress.progress,
                             ),
-                            imageUrl: controller.default_url,
-                            fit: BoxFit.cover,
                           ),
-                        )
-                      : AspectRatio(
-                          aspectRatio: 18 / 10,
-                          child: Image.file(
-                            File(_image!.path),
+                      imageUrl: controller.default_url,
+                      fit: BoxFit.cover,
+                    ),
+                  )
+                  : AspectRatio(
+                    aspectRatio: 18 / 12,
+                    child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: images_list!.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return Image.file(
+                            File(images_list![index].path),
                             fit: BoxFit.fitWidth,
-                          ),
-                        )),
+                          );
+                        }
+                     ),
+                  ),
+              ),
               Padding(
                 padding: EdgeInsets.only(right: 25),
                 child: Row(
@@ -398,159 +393,170 @@ class _UploadPageState extends State<UploadPage> {
                       width: 10,
                     ),
                     TextButton.icon(
-                      onPressed: () => showDialog<String>(
-                        context: context,
-                        builder: (BuildContext context) => StatefulBuilder(
-                          builder: (context, setState) => AlertDialog(
-                            title: const Text('Add Plan'),
-                            content: Padding(
-                              padding: const EdgeInsets.all(5),
-                              child: SizedBox(
-                                height: 300,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        const Text('Choose Day'),
-                                        const SizedBox(
-                                          width: 100,
+                      onPressed: () {
+                        showDialog<String>(
+                          context: context,
+                          builder: (BuildContext context) =>
+                              StatefulBuilder(
+                                builder: (context, setState) =>
+                                    AlertDialog(
+                                      title: const Text('Add Plan'),
+                                      content: Padding(
+                                        padding: const EdgeInsets.all(5),
+                                        child: SizedBox(
+                                          height: 300,
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Row(
+                                                mainAxisAlignment: MainAxisAlignment
+                                                    .start,
+                                                children: [
+                                                  const Text('Choose Day'),
+                                                  const SizedBox(
+                                                    width: 100,
+                                                  ),
+                                                  // DropdownButton(
+                                                  //   value: dropdownvalue,
+                                                  //   icon: const Icon(Icons.keyboard_arrow_down),
+                                                  //   items:days.map((String items) {
+                                                  //     return DropdownMenuItem(
+                                                  //         value: items,
+                                                  //         child: Text(items)
+                                                  //     );
+                                                  //   }
+                                                  //   ).toList(),
+                                                  //   onChanged: (String? newValue){
+                                                  //     setState(() {
+                                                  //       dropdownvalue = newValue!;
+                                                  //     });
+                                                  //   },
+                                                  // ),
+                                                  DirectSelect(
+                                                      itemExtent: 35.0,
+                                                      selectedIndex: selectedDays,
+                                                      onSelectedItemChanged: (
+                                                          index) {
+                                                        setState(() {
+                                                          selectedDays = index!;
+                                                        });
+                                                      },
+                                                      items: _buildDays(),
+                                                      child: MySelectionItem(
+                                                        isForList: false,
+                                                        title: days[selectedDays],
+                                                      )),
+                                                ],
+                                              ),
+                                              const SizedBox(
+                                                height: 10,
+                                              ),
+                                              Row(
+                                                mainAxisAlignment: MainAxisAlignment.start,
+                                                children: [
+                                                  const Text('Start Time'),
+                                                  const SizedBox(
+                                                    width: 111,
+                                                  ),
+                                                  DirectSelect(
+                                                      itemExtent: 35.0,
+                                                      selectedIndex: selectedStartTime,
+                                                      onSelectedItemChanged: (index) {
+                                                        setState(() {
+                                                          selectedStartTime = index!;
+                                                        });
+                                                      },
+                                                      items: _buildTime(),
+                                                      child: MySelectionItem(
+                                                        isForList: false,
+                                                        title: time[selectedStartTime],
+                                                      )
+                                                  ),
+                                                ],
+                                              ),
+                                              const SizedBox(
+                                                height: 10,
+                                              ),
+                                              Row(
+                                                mainAxisAlignment: MainAxisAlignment.start,
+                                                children: [
+                                                  const Text('End Time'),
+                                                  const SizedBox(
+                                                    width: 119,
+                                                  ),
+                                                  DirectSelect(
+                                                      itemExtent: 35.0,
+                                                      selectedIndex: selectedEndTime,
+                                                      onSelectedItemChanged: (index) {
+                                                        setState(() {
+                                                          selectedEndTime = index!;
+                                                        });
+                                                      },
+                                                      items: _buildTime(),
+                                                      child: MySelectionItem(
+                                                        isForList: false,
+                                                        title: time[selectedEndTime],
+                                                      )),
+                                                ],
+                                              ),
+                                              const SizedBox(
+                                                height: 10,
+                                              ),
+                                              TextField(
+                                                controller: titleController,
+                                                decoration: const InputDecoration(
+                                                  labelText: 'Title',
+                                                ),
+                                              ),
+                                            ],
+                                          ),
                                         ),
-                                        DirectSelect(
-                                            itemExtent: 35.0,
-                                            selectedIndex: selectedDays,
-                                            onSelectedItemChanged: (index) {
-                                              setState(() {
-                                                selectedDays = index!;
-                                              });
-                                            },
-                                            items: _buildDays(),
-                                            child: MySelectionItem(
-                                              isForList: false,
-                                              title: days[selectedDays],
-                                            )),
-                                      ],
-                                    ),
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        const Text('Start Time'),
-                                        const SizedBox(
-                                          width: 111,
-                                        ),
-                                        DirectSelect(
-                                            itemExtent: 35.0,
-                                            selectedIndex: selectedStartTime,
-                                            onSelectedItemChanged: (index) {
-                                              setState(() {
-                                                selectedStartTime = index!;
-                                              });
-                                            },
-                                            items: _buildTime(),
-                                            child: MySelectionItem(
-                                              isForList: false,
-                                              title: time[selectedStartTime],
-                                            )),
-                                      ],
-                                    ),
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        const Text('End Time'),
-                                        const SizedBox(
-                                          width: 119,
-                                        ),
-                                        DirectSelect(
-                                            itemExtent: 35.0,
-                                            selectedIndex: selectedEndTime,
-                                            onSelectedItemChanged: (index) {
-                                              setState(() {
-                                                selectedEndTime = index!;
-                                              });
-                                            },
-                                            items: _buildTime(),
-                                            child: MySelectionItem(
-                                              isForList: false,
-                                              title: time[selectedEndTime],
-                                            )),
-                                      ],
-                                    ),
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
-                                    TextField(
-                                      controller: titleController,
-                                      decoration: const InputDecoration(
-                                        labelText: 'Title',
                                       ),
+                                      actions: <Widget>[
+                                        TextButton(
+                                          onPressed: () =>
+                                              Navigator.pop(context, 'Cancel'),
+                                          child: const Text('Cancel'),
+                                        ),
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.pop(context, 'Okay');
+                                            setState(() {
+                                              items.add(
+                                                TimelineItem(
+                                                  startDateTime: DateTime(
+                                                      1970, 1, 1,
+                                                      int.parse(
+                                                          time[selectedStartTime])),
+                                                  endDateTime: DateTime(
+                                                      1970, 1, 1,
+                                                      int.parse(
+                                                          time[selectedEndTime])),
+                                                  position:
+                                                  int.parse(
+                                                      days[selectedDays]) - 1,
+                                                  child: Event(title: '${titleController.text}'),
+                                                ),
+                                              );
+                                            });
+                                            // print(items);
+                                          },
+                                          child: const Text('OK'),
+                                        ),
+                                      ],
                                     ),
-                                  ],
-                                ),
                               ),
-                            ),
-                            actions: <Widget>[
-                              TextButton(
-                                onPressed: () =>
-                                    Navigator.pop(context, 'Cancel'),
-                                child: const Text('Cancel'),
-                              ),
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.pop(context, 'Okay');
-                                  setState(() {
-                                    items.add(
-                                      TimelineItem(
-                                        startDateTime: DateTime(2000, 1, 1,
-                                            int.parse(time[selectedStartTime])),
-                                        endDateTime: DateTime(2000, 1, 1,
-                                            int.parse(time[selectedEndTime])),
-                                        position:
-                                            int.parse(days[selectedDays]) - 1,
-                                        child:
-                                            Event(title: titleController.text),
-                                      ),
-                                    );
-
-                                    saves.add(
-                                      SaveEvent(
-                                          startTime: DateTime(
-                                              2000,
-                                              1,
-                                              1,
-                                              int.parse(
-                                                  time[selectedStartTime])).millisecondsSinceEpoch.toString(),
-                                          endTime: DateTime(2000, 1, 1,
-                                              int.parse(time[selectedEndTime])).millisecondsSinceEpoch.toString(),
-                                          title: titleController.text,
-                                          position:
-                                              int.parse(days[selectedDays]) -
-                                                  1),
-                                    );
-                                  });
-                                  print(items);
-                                },
-                                child: const Text('OK'),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ).then((_) => setState(() {
-                            dropdownvalue = '1';
-                            selectedDays = 0;
-                            selectedEndTime = 0;
-                            selectedStartTime = 0;
-                            titleController.text = "";
-                          })),
+                        ).then((_) =>
+                            setState(() {
+                              dropdownvalue = '1';
+                              selectedDays = 0;
+                              selectedEndTime = 0;
+                              selectedStartTime = 0;
+                              titleController.text = "";
+                            }
+                          )
+                        );
+                      },
                       icon: const Icon(
                         Icons.insert_invitation_outlined,
                         color: Color(0xff5ac21d),
@@ -588,7 +594,7 @@ class _UploadPageState extends State<UploadPage> {
                             children: [
                               Row(
                                 children: [
-                                  const SizedBox(width: 30),
+                                  const SizedBox(width: 60),
                                   ...List.generate(
                                     date_len,
                                     (index) => DayHeader(day: index),
@@ -597,8 +603,8 @@ class _UploadPageState extends State<UploadPage> {
                               ),
                               const SizedBox(height: 20),
                               DynamicTimeline(
-                                firstDateTime: DateTime(2000, 01, 01, 7),
-                                lastDateTime: DateTime(2000, 01, 01, 22),
+                                firstDateTime: DateTime(1970, 01, 01, 7),
+                                lastDateTime: DateTime(1970, 01, 01, 22),
                                 labelBuilder: DateFormat('HH:mm').format,
                                 intervalDuration: const Duration(hours: 1),
                                 crossAxisCount: date_len,
@@ -616,89 +622,100 @@ class _UploadPageState extends State<UploadPage> {
               const SizedBox(height: 15.0),
               Padding(
                 padding: EdgeInsets.only(left: 30, right: 30),
-                child: Consumer<ApplicationUploadState>(
+                child:Consumer<ApplicationUploadState>(
                     builder: (context, appState, _) {
-                  return TextButton(
-                    onPressed: () async {
-                      if (_nameController.text == "" ||
-                          _locController.text == "" ||
-                          _descController.text == "") {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                                content:
-                                    Text('You should fill all the blanks!')));
-                      } else {
-                        String uploadTime = timestamp.toString();
-                        final storageRef = FirebaseStorage.instance
-                            .ref()
-                            .child('$uploadTime.png');
+                      return TextButton(
+                        onPressed: () async {
+                          if(_nameController.text == "" || _locController.text == ""
+                              || _descController.text == ""){
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(content: Text('You should fill all the blanks!'))
+                            );
+                          } else{
+                            var snackBar = SnackBar(
+                              width: 400,
+                              elevation: 0,
+                              duration: Duration(seconds: 5),
+                              behavior: SnackBarBehavior.floating,
+                              backgroundColor: Colors.transparent,
+                              content: AwesomeSnackbarContent(
+                                title: 'Will be uploaded soon~!',
+                                message:
+                                'Hold on a minute, please',
+                                contentType: ContentType.failure,
+                              ),
+                            );
+                            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                            // showSnackBar(context, 'It will be uploaded soon. Hold on a minute, please');
+                            String uploadTime = timestamp.toString();
+                            List<String> url_list = [];
+                            if (images_list!.isNotEmpty) {
+                              // print("not empty");
+                              for(int i = 0 ; i < images_list!.length ; i++){
+                                File file = File(images_list![i].path);
+                                // print(file);
+                                // storageRef.putFile(file);
+                                final storageRef =
+                                FirebaseStorage.instance.ref().child('$uploadTime/$i.png');
+                                await storageRef.putFile(file);
+                                print(i);
+                                // print(await storageRef.getDownloadURL());
+                                url_list.add(await storageRef.getDownloadURL());
+                                print(url_list[i]);
+                                // url.insert(i, storageRef.getDownloadURL());
+                              }
+                            }
+                            // print(images_list); // url 여러개 저장하기 다시
+                            // print(url[0]);
+                            // print(url[1]);
+                            // print(url[2]);
 
-                        if (_image != null) {
-                          File file = File(_image!.path);
-                          await storageRef.putFile(file);
-
-                          url = await storageRef.getDownloadURL();
-                        }
-
-                        if (url == '') {
-                          showSnackBar(
-                              context, 'You should upload some Image!');
-                        } else {
-                          await FirebaseFirestore.instance
-                              .collection('products')
-                              .doc(uploadTime)
-                              .set(<String, dynamic>{
-                            'imgURL': url,
-                            'title': _nameController.text,
-                            'timestamp': uploadTime,
-                            'description': _descController.text,
-                            'creator_name': appState.name,
-                            // FirebaseAuth.instance.currentUser!.displayName,
-                            'location': _locController.text,
-                            'duration': date_len.toString(),
-                          });
-
-                          await FirebaseFirestore.instance
-                              .collection('products')
-                              .where('timestamp', isEqualTo: uploadTime)
-                              .get()
-                              .then((snapshot) {
-                            for (var save in saves) {
-                              snapshot.docs[0].reference
-                                  .collection('events')
-                                  .add(<String, dynamic>{
-                                'title': save.title,
-                                'startTime': save.startTime,
-                                'endTime': save.endTime,
-                                'pos': save.position,
+                            // print(url_list.length);
+                            if (url_list.isEmpty) {
+                              showSnackBar(context, 'You should upload some Image!');
+                            } else {
+                              await FirebaseFirestore.instance
+                                  .collection('products')
+                                  .doc(uploadTime)
+                                  .set(<String, dynamic>{
+                                'imgURL': [
+                                  for(int i = 0 ; i < url_list.length ; i++){
+                                    '$i' : url_list[i],
+                                  },
+                                ],
+                                'title': _nameController.text,
+                                'timestamp': uploadTime,
+                                'description': _descController.text,
+                                'creator_name': appState.name,
+                                'location': _locController.text
+                              }).then((_) => {
+                                Timer(Duration(seconds: 1), () {
+                                  showSnackBar(context, 'Upload complete!');
+                                  Navigator.popAndPushNamed(context, '/navigator');
+                                })
                               });
                             }
-                          }).then((_) => {
-                                    showSnackBar(context, 'Upload complete!'),
-                                    Navigator.popAndPushNamed(
-                                        context, '/upload')
-                                  });
-                        }
-                      }
-                    },
-                    child: Container(
-                      width: 700,
-                      height: 45,
-                      decoration: const BoxDecoration(
-                          color: Color(0xff69f81b),
-                          gradient: LinearGradient(
-                            colors: [Color(0xffbff5ad), Color(0xff54c737)],
+                          }
+                        },
+                        child: Container(
+                          width: 700,
+                          height: 45,
+                          decoration: const BoxDecoration(
+                              color: Color(0xff69f81b),
+                              gradient: LinearGradient(
+                                colors: [Color(0xffbff5ad), Color(0xff54c737)],
+                              ),
+                              borderRadius: BorderRadius.all(Radius.circular(20))),
+                          child: const Center(
+                            child: Text(
+                              'Next',
+                              style: TextStyle(color: Colors.white, fontSize: 20),
+                            ),
                           ),
-                          borderRadius: BorderRadius.all(Radius.circular(20))),
-                      child: const Center(
-                        child: Text(
-                          'Next',
-                          style: TextStyle(color: Colors.white, fontSize: 20),
                         ),
-                      ),
-                    ),
-                  );
-                }),
+                    );
+                  }
+                ),
               ),
             ],
           ),
