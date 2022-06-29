@@ -302,7 +302,6 @@ class _HomePageState extends State<HomePage> {
                               child: ListView(
                                   shrinkWrap: true,
                                   physics: const NeverScrollableScrollPhysics(),
-                                  padding: const EdgeInsets.only(left: 10),
                                   children: buildListCardsV(_.products, context)),
                             );
                           }

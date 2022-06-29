@@ -1,10 +1,5 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
-// import 'package:badges/badges.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import '../widget.dart';
 
 class FavoritePage extends StatefulWidget {
   const FavoritePage({Key? key}) : super(key: key);
@@ -49,14 +44,7 @@ class _FavoritePageState extends State<FavoritePage> {
                   print("Tap Event");
                 },
               ),
-            )
-            // const Text(
-            //   "Eco Trip",
-            //   style: TextStyle(
-            //       color: Colors.black,
-            //       fontSize: 18,
-            //       fontWeight: FontWeight.bold),
-            // ),
+            ),
           ],
         ),
         leadingWidth: 250,
@@ -68,14 +56,8 @@ class _FavoritePageState extends State<FavoritePage> {
                 Icons.notifications_none_outlined,
                 color: Colors.black,
                 size: 28,
-              )),
-          // IconButton(
-          //     onPressed: () {},
-          //     icon: const Icon(
-          //       Icons.bookmark_added_outlined,
-          //       color: Colors.black,
-          //       size: 28,
-          //     )),
+              ),
+          ),
           SizedBox(width: 10,),
         ],
       ),

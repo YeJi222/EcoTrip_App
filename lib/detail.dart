@@ -11,6 +11,7 @@ import 'package:dynamic_timeline/dynamic_timeline.dart';
 import 'package:intl/intl.dart';
 import 'model.dart';
 import 'widget.dart';
+import 'package:readmore/readmore.dart';
 
 class DetailPage extends StatefulWidget {
   const DetailPage(this.product, {Key? key}) : super(key: key);
@@ -31,7 +32,8 @@ class _DetailPageState extends State<DetailPage> {
       imageURL: [],
       location: "",
       items: [],
-      duration: '0');
+      duration: '0'
+  );
 
   final _screenshotController = ScreenshotController();
   Future<void> shareScreenshot() async {
@@ -54,53 +56,72 @@ class _DetailPageState extends State<DetailPage> {
     );
   }
 
-  static const _images = [
-    'https://firebasestorage.googleapis.com/v0/b/fluttercamp-67707.appspot.com/o/1656285583450.png?alt=media&token=20b7c448-29b3-4f76-8fe1-92a44d7e32a9',
-    'https://firebasestorage.googleapis.com/v0/b/fluttercamp-67707.appspot.com/o/1656048076693.png?alt=media&token=b69d6890-93a8-45bc-84c9-4eb4ab6d4588',
-    'https://firebasestorage.googleapis.com/v0/b/fluttercamp-67707.appspot.com/o/1656048260589.png?alt=media&token=8c73edf3-db2d-4e58-9d58-87c43d2c5fd5',
-    'https://firebasestorage.googleapis.com/v0/b/fluttercamp-67707.appspot.com/o/1656336591838.png?alt=media&token=3e95b51c-0da7-4691-97d5-7087c7e762e6',
-  ];
-
-  Future<void> precache() async {
-    for (var image in _images) {
-      precacheImage(NetworkImage(image), context);
-    }
-    // for (var image in product.imageURL) {
-    //   precacheImage(NetworkImage(image), context);
-    // }
-  }
-
+  late List<String> img_url = [];
   @override
   void initState() {
     verticalController = ScrollController();
     horizontalController = ScrollController();
-    super.initState();
-    product=widget.product;
-    Future.delayed(Duration.zero, () {
-      precache();
-      WidgetsBinding.instance.addPostFrameCallback((_) { // null check
-        setState(() {
-          product = widget.product;
-          // latitudeS = double.parse(product.latitude);
-          // longtitudeS = double.parse(product.longitude);
-        });
-      });
+
+    setState(() {
+      product = widget.product;
+      for(int i = 0 ; i < product.imageURL.length ; i++){
+        img_url.add(product.imageURL[i]);
+        // print(img_url);
+      }
     });
-    print(product.items);
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async => false,
-      child: Screenshot(
-        controller: _screenshotController,
-        child: Scaffold(
-            body: CustomScrollView(
-              physics: const BouncingScrollPhysics(),
-              slivers: [
-                SliverToBoxAdapter(
-                  child: Stack(
+      child: Scaffold(
+          backgroundColor: Colors.white,
+          appBar: AppBar(
+            backgroundColor: Colors.transparent,
+            leading: IconButton(
+              icon: const Icon(
+                Icons.arrow_back,
+                // color: Colors.black,
+              ),
+              onPressed: (){
+                Navigator.pop(context);
+              },
+            ),
+            elevation: 0.0,
+            actions: [
+              IconButton(
+                visualDensity: VisualDensity(horizontal: -4),
+                padding: EdgeInsets.zero,
+                icon: const Icon(
+                  Icons.bookmark_add_outlined,
+                  // Icons.bookmark_add,
+                  // color: Colors.black,
+                ),
+                onPressed: (){
+                  Navigator.pushNamed(context, '/navigator');
+                },
+              ),
+              IconButton(
+                padding: EdgeInsets.only(right: 10),
+                onPressed: shareScreenshot,
+                icon: const Icon(
+                  Icons.file_upload_outlined,
+                  // color: Colors.black,
+                ),
+              ),
+            ],
+          ),
+          extendBodyBehindAppBar: true,
+          body: CustomScrollView(
+            physics: const BouncingScrollPhysics(),
+            slivers: [
+              SliverToBoxAdapter(
+                child: Screenshot(
+                  controller: _screenshotController,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       SizedBox(
                         height: 330,
@@ -108,51 +129,16 @@ class _DetailPageState extends State<DetailPage> {
                           checkedIndicatorColor: Colors.green,
                           delay: Duration(seconds: 3),
                           controller: ScrollPageController(),
-                          children: _images.map((image) => _imageView(image)).toList(),
+                          // children: _images.map((image) => _imageView(image)).toList(),
+                          children: img_url.map((image) => _imageView(image)).toList(),
                         ),
                       ),
-                      Positioned(
-                        top: 50,
-                        child: IconButton(
-                          icon: Icon(
-                            Icons.arrow_back,
-                            color: Colors.black,
-                          ),
-                          onPressed: (){
-                            Navigator.pop(context);
-                          },
-                        ),
-                      ),
-                      Positioned(
-                        top: 50,
-                        right: 40,
-                        child: IconButton(
-                          icon: Icon(
-                            Icons.bookmark_added_outlined,
-                            color: Colors.black,
-                          ),
-                          onPressed: (){
-                            // Navigator.pushNamed(context, '/favorite');
-                          },
-                        ),
-                      ),
-                      Positioned(
-                        top: 50,
-                        right: 5,
-                        child: IconButton(
-                          onPressed: shareScreenshot,
-                          icon: const Icon(
-                            Icons.file_upload_outlined,
-                            color: Colors.black,
-                          ),
-                        ),
-                      ),
+                      SizedBox(height: 15),
                       Padding(
-                        padding: EdgeInsets.only(left: 10),
+                        padding: EdgeInsets.only(left: 10, right: 15),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            SizedBox(height: 350),
                             Padding(
                               padding: EdgeInsets.only(left: 5),
                               child: Text(
@@ -168,24 +154,24 @@ class _DetailPageState extends State<DetailPage> {
                               height: 4,
                             ),
                             Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                const Icon(
-                                  Icons.location_on,
-                                  color: Colors.redAccent,
-                                ),
-                                const SizedBox(
-                                  width: 2,
-                                ),
-                                Text(
-                                  product.location,
-                                  style: const TextStyle(
-                                    // fontWeight: FontWeight.bold,
-                                    fontSize: 18,
-                                    fontFamily: 'jua',
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  const Icon(
+                                    Icons.location_on,
+                                    color: Colors.redAccent,
                                   ),
-                                ),
-                              ]
+                                  const SizedBox(
+                                    width: 2,
+                                  ),
+                                  Text(
+                                    product.location,
+                                    style: const TextStyle(
+                                      // fontWeight: FontWeight.bold,
+                                      fontSize: 18,
+                                      fontFamily: 'jua',
+                                    ),
+                                  ),
+                                ]
                             ),
                             const Divider(
                               height: 30,
@@ -193,64 +179,106 @@ class _DetailPageState extends State<DetailPage> {
                               indent: 2,
                               endIndent: 10,
                             ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(5),
-                                  child: SizedBox(
-                                    height: 520,
-                                    width: 400,
-                                    child: Scrollbar(
-                                      thumbVisibility: true,
-                                      controller: horizontalController,
-                                      child: Scrollbar(
-                                        controller: verticalController,
-                                        child: SingleChildScrollView(
-                                          controller: horizontalController,
-                                          scrollDirection: Axis.horizontal,
-                                          child: SingleChildScrollView(
-                                            controller: verticalController,
-                                            child: Column(
-                                              children: [
-                                                Row(
-                                                  children: [
-                                                    const SizedBox(width: 60),
-                                                    ...List.generate(
-                                                      int.parse(product.duration),
-                                                          (index) => DayHeader(day: index),
-                                                    ),
-                                                  ],
-                                                ),
-                                                const SizedBox(height: 20),
-                                                DynamicTimeline(
-                                                  firstDateTime: DateTime(2000, 01, 01, 7),
-                                                  lastDateTime: DateTime(2000, 01, 01, 22),
-                                                  labelBuilder: DateFormat('HH:mm').format,
-                                                  intervalDuration: const Duration(hours: 1),
-                                                  crossAxisCount: int.parse(product.duration),
-                                                  intervalExtent: 40,
-                                                  items: product.items,
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      ),
+                            Padding(
+                              padding: EdgeInsets.only(left: 10, bottom: 10, right: 15),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Text(
+                                    'Description',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18,
                                     ),
                                   ),
-                                ),
-                              ],
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  ReadMoreText(
+                                    product.description,
+                                    trimLines: 5,
+                                    style: const TextStyle(
+                                        color: Colors.black
+                                    ),
+                                    colorClickableText: Colors.red,
+                                    trimMode: TrimMode.Line,
+                                    trimCollapsedText: ' Read more',
+                                    trimExpandedText: ' ...Briefly',
+                                  ),
+                                  const SizedBox(
+                                    height: 20,
+                                  ),
+                                  const Text(
+                                    'Trip Plans With Challenges',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ],
                         ),
                       ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(left: 20, top: 5, right: 20, bottom: 30),
+                            child: SizedBox(
+                              height: 520,
+                              width: 400,
+                              child: Scrollbar(
+                                thumbVisibility: true,
+                                controller: horizontalController,
+                                child: Scrollbar(
+                                  controller: verticalController,
+                                  child: SingleChildScrollView(
+                                    controller: horizontalController,
+                                    scrollDirection: Axis.horizontal,
+                                    child: SingleChildScrollView(
+                                      controller: verticalController,
+                                      child: Column(
+                                        children: [
+                                          Row(
+                                            children: [
+                                              const SizedBox(width: 60),
+                                              ...List.generate(
+                                                int.parse(product.duration),
+                                                    (index) => DayHeader(day: index),
+                                              ),
+                                            ],
+                                          ),
+                                          const SizedBox(height: 20),
+                                          DynamicTimeline(
+                                            firstDateTime: DateTime(2000, 01, 01, 7),
+                                            lastDateTime: DateTime(2000, 01, 01, 22),
+                                            labelBuilder: DateFormat('HH:mm').format,
+                                            intervalDuration: const Duration(hours: 1),
+                                            crossAxisCount: int.parse(product.duration),
+                                            intervalExtent: 40,
+                                            items: product.items,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+
+
+
                     ],
                   ),
                 ),
-              ],
-            ),
-        ),
+              ),
+            ],
+          ),
       ),
     );
   }

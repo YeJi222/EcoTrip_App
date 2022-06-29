@@ -120,59 +120,67 @@ List<Card> buildListCardsH(List<Product> products, BuildContext context) {
                 ),
                 Positioned(
                     top: 200,
-                    left: -10,
+                    left: -25,
                     child: Padding(
                       padding: const EdgeInsets.fromLTRB(35, 0, 0, 0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            product.title,
-                            style: const TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w600,
-                                fontSize: 25),
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          Text(
-                            product.description,
-                            style: const TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.normal,
-                                fontSize: 17),
-                          ),
-                          // const SizedBox(height: 10,),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Text(
-                                "?????",
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 25),
+                      child: Container(
+                        width: 240,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              product.title,
+                              style: const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 25
                               ),
-                              const SizedBox(
-                                width: 100,
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            Text(
+                              product.description,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.normal,
+                                  fontSize: 15
                               ),
-                              IconButton(
-                                  onPressed: () {},
-                                  icon: const Icon(
-                                    Icons.bookmark_added_outlined,
-                                    color: Colors.white,
-                                    size: 28,
-                                  )),
-                            ],
-                          )
-                        ],
+                            ),
+                            // const SizedBox(height: 10,),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Top 1",
+                                  style: TextStyle(
+                                      color: Colors.lightGreenAccent,
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 25),
+                                ),
+                                const SizedBox(
+                                  width: 120,
+                                ),
+                                IconButton(
+                                    onPressed: () {},
+                                    icon: const Icon(
+                                      Icons.bookmark_added_outlined,
+                                      color: Colors.white,
+                                      size: 27,
+                                    )
+                                ),
+                              ],
+                            )
+                          ],
+                        ),
                       ),
                     )
                 ),
                 Positioned(
                   right: 50,
-                  top: 30,
+                  top: 20,
                   child: Container(
                       width: 60,
                       height: 30,
@@ -185,12 +193,15 @@ List<Card> buildListCardsH(List<Product> products, BuildContext context) {
                       child: Row(
                         children: const [
                           SizedBox(
-                            width: 12,
+                            width: 10,
                           ),
                           Icon(
                             Icons.star,
                             color: Colors.white,
                             size: 16,
+                          ),
+                          SizedBox(
+                            width: 4,
                           ),
                           Text(
                             "4.8",
@@ -229,7 +240,7 @@ List<Card> buildListCardsV(List<Product> products, BuildContext context) {
             );
           },
           child: Padding(
-            padding: EdgeInsets.only(bottom: 15),
+            padding: EdgeInsets.only(bottom: 10),
             child: Container(
                 width: 300,
                 height: 120,
@@ -240,11 +251,11 @@ List<Card> buildListCardsV(List<Product> products, BuildContext context) {
                   ),
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.all(10.0),
+                  padding: const EdgeInsets.only(left: 10.0, top: 10, bottom: 10,),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Container(
+                      SizedBox(
                           width: 100,
                           height: 100,
                           child: ClipRRect(
@@ -262,15 +273,28 @@ List<Card> buildListCardsV(List<Product> products, BuildContext context) {
                           )
                       ),
                       Padding(
-                        padding: EdgeInsets.only(left: 10, top: 10, right: 10),
+                        padding: EdgeInsets.only(left: 10, top: 3,),
                         child: SizedBox(
-                          width: 130,
+                          width: 180,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(product.title, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
+                              Text(
+                                product.title,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18
+                                ),
+                              ),
                               const SizedBox(height: 10,),
-                              Text(product.description, style: TextStyle(fontWeight: FontWeight.w300, fontSize: 13),),
+                              Text(product.description,
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w300,
+                                  fontSize: 13
+                                ),
+                              ),
                               const SizedBox(height: 10,),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
@@ -295,9 +319,9 @@ List<Card> buildListCardsV(List<Product> products, BuildContext context) {
                       ),
                       Column(
                         children: [
-                          const SizedBox(height: 10,),
-                          const Text("data",style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20, color: Color(0xff6dc62f)),),
-                          const SizedBox(height: 15,),
+                          const SizedBox(height: 6,),
+                          const Text("data",style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17, color: Color(0xff6dc62f)),),
+                          const SizedBox(height: 25,),
                           IconButton(
                               onPressed: () {
                                 print("Button");
@@ -305,8 +329,9 @@ List<Card> buildListCardsV(List<Product> products, BuildContext context) {
                               icon: const Icon(
                                 Icons.bookmark_added_outlined,
                                 color: Colors.black,
-                                size: 28,
-                              )),
+                                size: 25,
+                              )
+                          ),
                         ],
                       )
                     ],

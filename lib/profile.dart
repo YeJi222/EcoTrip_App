@@ -56,7 +56,6 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-
   final LoginController loginController = Get.put(LoginController());
 
   bool isDarkModeEnabled = false;
@@ -144,7 +143,7 @@ class _ProfilePageState extends State<ProfilePage> {
               //       color: Colors.black,
               //       size: 28,
               //     )),
-              SizedBox(
+              const SizedBox(
                 width: 10,
               )
             ],
@@ -216,17 +215,17 @@ class _ProfilePageState extends State<ProfilePage> {
                                 Text(
                                   loginController.name,
                                   // "${FirebaseAuth.instance.currentUser!.displayName}",
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 20,
                                     color: Colors.black,
                                   ),
                                 ),
-                                SizedBox(height: 7),
+                                const SizedBox(height: 7),
                                 Text(
                                   loginController.email,
                                   // "${FirebaseAuth.instance.currentUser!.email}",
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     fontSize: 15,
                                     fontWeight: FontWeight.bold,
                                     color: Colors.black,
@@ -286,7 +285,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           Navigator.pushNamed(context, '/loading');
                         },
                         child: Row(
-                          children: [
+                          children: const [
                             Icon(
                               Icons.logout,
                               // color: Colors.black,

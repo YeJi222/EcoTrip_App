@@ -91,73 +91,73 @@ class _EditProfilePageState extends State<EditProfilePage> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-        onWillPop: () async => false,
-        child: Scaffold(
+      onWillPop: () async => false,
+      child: Scaffold(
+        backgroundColor: Color(0xfff9fff8),
+        appBar: AppBar(
           backgroundColor: Color(0xfff9fff8),
-          appBar: AppBar(
-            backgroundColor: Color(0xfff9fff8),
-            leading: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                const SizedBox(
-                  width: 10,
-                ),
-                Image.asset(
-                  'img/leaf.png',
-                  height: 35,
-                ),
-                const SizedBox(
-                  width: 8,
-                ),
-                DefaultTextStyle(
-                  style: const TextStyle(
-                    fontSize: 18.0,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                  ),
-                  child: AnimatedTextKit(
-                    animatedTexts: [
-                      WavyAnimatedText('EcoTrip'),
-                    ],
-                    isRepeatingAnimation: true,
-                    repeatForever: true,
-                    onTap: () {
-                      print("Tap Event");
-                    },
-                  ),
-                ),
-              ],
-            ),
-            leadingWidth: 250,
-            elevation: 0.0,
-            actions: [
-              IconButton(
-                  onPressed: () {},
-                  icon: const Icon(
-                    Icons.notifications_none_outlined,
-                    color: Colors.black,
-                    size: 28,
-                  )),
-              // IconButton(
-              //     onPressed: () {},
-              //     icon: const Icon(
-              //       Icons.bookmark_added_outlined,
-              //       color: Colors.black,
-              //       size: 28,
-              //     )),
-              SizedBox(
+          leading: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              const SizedBox(
                 width: 10,
-              )
+              ),
+              Image.asset(
+                'img/leaf.png',
+                height: 35,
+              ),
+              const SizedBox(
+                width: 8,
+              ),
+              DefaultTextStyle(
+                style: const TextStyle(
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                ),
+                child: AnimatedTextKit(
+                  animatedTexts: [
+                    WavyAnimatedText('EcoTrip'),
+                  ],
+                  isRepeatingAnimation: true,
+                  repeatForever: true,
+                  onTap: () {
+                    print("Tap Event");
+                  },
+                ),
+              ),
             ],
           ),
-          extendBodyBehindAppBar: true,
-          body: ListView(
-            children: [
-              Stack(
-                clipBehavior: Clip.none,
-                alignment: Alignment.bottomCenter,
-                children: [
-                  Positioned(
+          leadingWidth: 250,
+          elevation: 0.0,
+          actions: [
+            IconButton(
+                onPressed: () {},
+                icon: const Icon(
+                  Icons.notifications_none_outlined,
+                  color: Colors.black,
+                  size: 28,
+                )),
+            // IconButton(
+            //     onPressed: () {},
+            //     icon: const Icon(
+            //       Icons.bookmark_added_outlined,
+            //       color: Colors.black,
+            //       size: 28,
+            //     )),
+            SizedBox(
+              width: 10,
+            )
+          ],
+        ),
+        extendBodyBehindAppBar: true,
+        body: ListView(
+          children: [
+            Stack(
+              clipBehavior: Clip.none,
+              alignment: Alignment.bottomCenter,
+              children: [
+                Positioned(
                     top: 5.0,
                     left: 20,
                     child: IconButton(
@@ -170,31 +170,31 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         Navigator.pop(context);
                       },
                     )
+                ),
+                ClipRRect(
+                  borderRadius: const BorderRadius.only(
+                    bottomLeft: Radius.circular(30),
+                    bottomRight: Radius.circular(30),
                   ),
-                  ClipRRect(
-                    borderRadius: const BorderRadius.only(
-                      bottomLeft: Radius.circular(30),
-                      bottomRight: Radius.circular(30),
-                    ),
-                    child: Column(
-                      children: [
-                        SizedBox(
-                          width: double.infinity,
-                          height: 120,
-                          // child: Image.asset(
-                          //   'img/profile_back.png',
-                          //   fit: BoxFit.fill,
-                          // ),
-                        ),
-                      ],
-                    ),
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        width: double.infinity,
+                        height: 120,
+                        // child: Image.asset(
+                        //   'img/profile_back.png',
+                        //   fit: BoxFit.fill,
+                        // ),
+                      ),
+                    ],
                   ),
-                  Positioned(
-                    top: 25.0,
-                    child: CircleAvatar(
-                      radius: 80,
-                      backgroundColor: Colors.white,
-                      child: Consumer<EditState>(
+                ),
+                Positioned(
+                  top: 25.0,
+                  child: CircleAvatar(
+                    radius: 80,
+                    backgroundColor: Colors.white,
+                    child: Consumer<EditState>(
                         builder: (context, appState, _) {
                           origin_url = appState.profile_url;
                           if(defaultFlag == 0){
@@ -226,246 +226,246 @@ class _EditProfilePageState extends State<EditProfilePage> {
                             );
                           }
                         }
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 65),
+            Padding(
+              padding: EdgeInsets.only(left: 30, right: 30),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Center(
+                    child: TextButton.icon(
+                      onPressed: () {
+                        getGalleryImage();
+                      },
+                      icon: const Icon(
+                        Icons.edit,
+                        color: Colors.green,
+                      ),
+                      label: const Text(
+                        'Change Photo',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                          color: Colors.green,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 25.0),
+                  Container(
+                    decoration: const BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black38,
+                          blurRadius: 5,
+                          offset: Offset(0, 7),
+                        ),
+                      ],
+                    ),
+                    child: TextField(
+                      controller: _nameController,
+                      decoration: const InputDecoration(
+                        hintText: 'Name',
+                        hintStyle: TextStyle(
+                          color: Colors.grey,
+                          fontSize: 16,
+                          fontWeight: FontWeight.normal,
+                        ),
+                        // enabledBorder: OutlineInputBorder(
+                        //   borderSide: const BorderSide(width: 2, color: Colors.green),
+                        // ),
+                        border: InputBorder.none,
+                        focusedBorder: InputBorder.none,
+                        fillColor: Colors.white,
+                        filled: true,
+                      ),
+                      style: const TextStyle(
+                        color: Colors.black,
+                        fontSize: 17,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 20.0),
+                  Container(
+                    decoration: const BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black38,
+                          blurRadius: 5,
+                          offset: Offset(0, 7),
+                        ),
+                      ],
+                    ),
+                    child: TextField(
+                      controller: _genderController,
+                      decoration: const InputDecoration(
+                        hintText: 'Gender',
+                        hintStyle: TextStyle(
+                          color: Colors.grey,
+                          fontSize: 16,
+                          fontWeight: FontWeight.normal,
+                        ),
+                        border: InputBorder.none,
+                        focusedBorder: InputBorder.none,
+                        fillColor: Colors.white,
+                        filled: true,
+                      ),
+                      style: const TextStyle(
+                        color: Colors.black,
+                        fontSize: 17,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 20.0),
+                  Container(
+                    decoration: const BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black38,
+                          blurRadius: 5,
+                          offset: Offset(0, 7),
+                        ),
+                      ],
+                    ),
+                    child: TextField(
+                      controller: _ageController,
+                      decoration: const InputDecoration(
+                        hintText: 'Age',
+                        hintStyle: TextStyle(
+                          color: Colors.grey,
+                          fontSize: 16,
+                          fontWeight: FontWeight.normal,
+                        ),
+                        border: InputBorder.none,
+                        focusedBorder: InputBorder.none,
+                        fillColor: Colors.white,
+                        filled: true,
+                      ),
+                      style: const TextStyle(
+                        color: Colors.black,
+                        fontSize: 17,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 20.0),
+                  Container(
+                    decoration: const BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black38,
+                          blurRadius: 5,
+                          offset: Offset(0, 7),
+                        ),
+                      ],
+                    ),
+                    child: TextField(
+                      controller: _addressController,
+                      decoration: const InputDecoration(
+                        hintText: 'Address',
+                        hintStyle: TextStyle(
+                          color: Colors.grey,
+                          fontSize: 16,
+                          fontWeight: FontWeight.normal,
+                        ),
+                        border: InputBorder.none,
+                        focusedBorder: InputBorder.none,
+                        fillColor: Colors.white,
+                        filled: true,
+                      ),
+                      maxLines: 5,
+                      style: const TextStyle(
+                        color: Colors.black,
+                        fontSize: 17,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 55.0),
+                  Center(
+                    child: TextButton(
+                      onPressed: () async {
+                        if(_nameController.text == "" || _genderController.text == ""
+                            || _ageController.text == "" || _addressController.text == ""){
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('You should fill all the blanks!')));
+                        } else{
+                          var snackBar = SnackBar(
+                            elevation: 0,
+                            behavior: SnackBarBehavior.floating,
+                            backgroundColor: Colors.transparent,
+                            content: AwesomeSnackbarContent(
+                              title: '프로필 수정 완료!',
+                              message:
+                              '다시 로그인한 후, 앱을 이용해 주세요 :)\n(자동 로그아웃 됩니다.)',
+                              contentType: ContentType.warning,
+                            ),
+                          );
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+                          final storageRef = FirebaseStorage.instance
+                              .ref()
+                              .child('${timestamp}.png');
+
+                          if (_image != null) {
+                            File file = File(_image!.path);
+                            await storageRef.putFile(file);
+
+                            url = await storageRef.getDownloadURL();
+                          }
+
+                          if(url == '') url = origin_url;
+
+                          await FirebaseFirestore.instance
+                              .collection('user')
+                              .doc(FirebaseAuth.instance.currentUser!.uid)
+                              .update(<String, dynamic>{
+                            'name': _nameController.text,
+                            'profile_url': url,
+                            'gender': _genderController.text,
+                            'age': _ageController.text,
+                            'address': _addressController.text,
+                          });
+
+                          loginController.profile_url = url;
+                          loginController.name = _nameController.text;
+                          loginController.gender = _genderController.text;
+                          loginController.age = _ageController.text;
+
+                          Timer(
+                              const Duration(seconds: 2),
+                                  () => Navigator.pushNamed(context, '/login')
+                          );
+                          // Navigator.pushNamed(context, '/profile');
+                        }
+                      },
+                      child: Container(
+                        width: 300,
+                        height: 50,
+                        decoration: const BoxDecoration(
+                            color: Color(0xff69f81b),
+                            gradient: LinearGradient(
+                              colors: [Color(0xffbff5ad), Color(0xff54c737)],
+                            ),
+                            borderRadius: BorderRadius.all(Radius.circular(20))),
+                        child: const Center(
+                          child: Text(
+                            'Save & Logout',
+                            style: TextStyle(color: Colors.white, fontSize: 20),
+                          ),
+                        ),
                       ),
                     ),
                   ),
                 ],
               ),
-              const SizedBox(height: 65),
-              Padding(
-                padding: EdgeInsets.only(left: 30, right: 30),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Center(
-                      child: TextButton.icon(
-                        onPressed: () {
-                          getGalleryImage();
-                        },
-                        icon: const Icon(
-                          Icons.edit,
-                          color: Colors.green,
-                        ),
-                        label: const Text(
-                          'Change Photo',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18,
-                            color: Colors.green,
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 25.0),
-                    Container(
-                      decoration: const BoxDecoration(
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black38,
-                            blurRadius: 5,
-                            offset: Offset(0, 7),
-                          ),
-                        ],
-                      ),
-                      child: TextField(
-                        controller: _nameController,
-                        decoration: const InputDecoration(
-                          hintText: 'Name',
-                          hintStyle: TextStyle(
-                            color: Colors.grey,
-                            fontSize: 16,
-                            fontWeight: FontWeight.normal,
-                          ),
-                          // enabledBorder: OutlineInputBorder(
-                          //   borderSide: const BorderSide(width: 2, color: Colors.green),
-                          // ),
-                          border: InputBorder.none,
-                          focusedBorder: InputBorder.none,
-                          fillColor: Colors.white,
-                          filled: true,
-                        ),
-                        style: const TextStyle(
-                          color: Colors.black,
-                          fontSize: 17,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 20.0),
-                    Container(
-                      decoration: const BoxDecoration(
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black38,
-                            blurRadius: 5,
-                            offset: Offset(0, 7),
-                          ),
-                        ],
-                      ),
-                      child: TextField(
-                        controller: _genderController,
-                        decoration: const InputDecoration(
-                          hintText: 'Gender',
-                          hintStyle: TextStyle(
-                            color: Colors.grey,
-                            fontSize: 16,
-                            fontWeight: FontWeight.normal,
-                          ),
-                          border: InputBorder.none,
-                          focusedBorder: InputBorder.none,
-                          fillColor: Colors.white,
-                          filled: true,
-                        ),
-                        style: const TextStyle(
-                          color: Colors.black,
-                          fontSize: 17,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 20.0),
-                    Container(
-                      decoration: const BoxDecoration(
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black38,
-                            blurRadius: 5,
-                            offset: Offset(0, 7),
-                          ),
-                        ],
-                      ),
-                      child: TextField(
-                        controller: _ageController,
-                        decoration: const InputDecoration(
-                          hintText: 'Age',
-                          hintStyle: TextStyle(
-                            color: Colors.grey,
-                            fontSize: 16,
-                            fontWeight: FontWeight.normal,
-                          ),
-                          border: InputBorder.none,
-                          focusedBorder: InputBorder.none,
-                          fillColor: Colors.white,
-                          filled: true,
-                        ),
-                        style: const TextStyle(
-                          color: Colors.black,
-                          fontSize: 17,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 20.0),
-                    Container(
-                      decoration: const BoxDecoration(
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black38,
-                            blurRadius: 5,
-                            offset: Offset(0, 7),
-                          ),
-                        ],
-                      ),
-                      child: TextField(
-                        controller: _addressController,
-                        decoration: const InputDecoration(
-                          hintText: 'Address',
-                          hintStyle: TextStyle(
-                            color: Colors.grey,
-                            fontSize: 16,
-                            fontWeight: FontWeight.normal,
-                          ),
-                          border: InputBorder.none,
-                          focusedBorder: InputBorder.none,
-                          fillColor: Colors.white,
-                          filled: true,
-                        ),
-                        maxLines: 5,
-                        style: const TextStyle(
-                          color: Colors.black,
-                          fontSize: 17,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 55.0),
-                    Center(
-                      child: TextButton(
-                        onPressed: () async {
-                          if(_nameController.text == "" || _genderController.text == ""
-                          || _ageController.text == "" || _addressController.text == ""){
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('You should fill all the blanks!')));
-                          } else{
-                            var snackBar = SnackBar(
-                              elevation: 0,
-                              behavior: SnackBarBehavior.floating,
-                              backgroundColor: Colors.transparent,
-                              content: AwesomeSnackbarContent(
-                                title: '프로필 수정 완료!',
-                                message:
-                                '다시 로그인한 후, 앱을 이용해 주세요 :)\n(자동 로그아웃 됩니다.)',
-                                contentType: ContentType.warning,
-                              ),
-                            );
-                            ScaffoldMessenger.of(context).showSnackBar(snackBar);
-
-                            final storageRef = FirebaseStorage.instance
-                                .ref()
-                                .child('${timestamp}.png');
-
-                            if (_image != null) {
-                              File file = File(_image!.path);
-                              await storageRef.putFile(file);
-
-                              url = await storageRef.getDownloadURL();
-                            }
-
-                            if(url == '') url = origin_url;
-
-                            await FirebaseFirestore.instance
-                                .collection('user')
-                                .doc(FirebaseAuth.instance.currentUser!.uid)
-                                .update(<String, dynamic>{
-                              'name': _nameController.text,
-                              'profile_url': url,
-                              'gender': _genderController.text,
-                              'age': _ageController.text,
-                              'address': _addressController.text,
-                            });
-
-                            loginController.profile_url = url;
-                            loginController.name = _nameController.text;
-                            loginController.gender = _genderController.text;
-                            loginController.age = _ageController.text;
-
-                            Timer(
-                                const Duration(seconds: 2),
-                                    () => Navigator.pushNamed(context, '/login')
-                                );
-                            // Navigator.pushNamed(context, '/profile');
-                          }
-                        },
-                        child: Container(
-                          width: 300,
-                          height: 50,
-                          decoration: const BoxDecoration(
-                              color: Color(0xff69f81b),
-                              gradient: LinearGradient(
-                                colors: [Color(0xffbff5ad), Color(0xff54c737)],
-                              ),
-                              borderRadius: BorderRadius.all(Radius.circular(20))),
-                          child: const Center(
-                            child: Text(
-                              'Save & Logout',
-                              style: TextStyle(color: Colors.white, fontSize: 20),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-          // bottomNavigationBar: floatingBar(context),
+            ),
+          ],
         ),
+        // bottomNavigationBar: floatingBar(context),
+      ),
     );
   }
 }
