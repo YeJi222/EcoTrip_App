@@ -83,14 +83,54 @@ class Controller extends GetxController {
         .getDownloadURL();
   }
 
-  // void addProduct(String name, String location, String description,
-  //     String imageURL, List<TimelineItem> items, String dur) {
-  //   products.add(Product(
-  //       title: name,
-  //       location: location,
-  //       description: description,
-  //       imageURL: imageURL,
-  //       duration: dur,
-  //       items: items));
-  // }
+}
+
+class LoginController extends GetxController {
+  LoginController() {}
+
+  List<Product> products = <Product>[];
+  String default_url = '';
+
+  String _name = '';
+  String get name => _name;
+
+  String _email = '';
+  String get email => _email;
+
+  String _profile_url = '';
+  String get profile_url => _profile_url;
+
+  String _uid = '';
+  String get uid => _uid;
+
+  String _gender = '';
+  String get gender => _gender;
+
+  String _age = '';
+  String get age => _age;
+
+
+  set gender(String value) {
+    _gender = value;
+  }
+
+  set uid(String value) {
+    _uid = value;
+  }
+
+  set email(String value) {
+    _email = value;
+  }
+
+  set profile_url(String value) {
+    _profile_url = value;
+  }
+
+  set name(String value) {
+    _name = value;
+  }
+
+  set age(String value) {
+    _age = value;
+  }
 }

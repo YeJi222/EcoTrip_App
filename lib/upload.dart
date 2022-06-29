@@ -20,34 +20,34 @@ import 'package:direct_select/direct_select.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 
-class ApplicationUploadState extends ChangeNotifier{
-  ApplicationUploadState(){
-    init();
-  }
-
-  Future<void> init() async {
-    await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform,
-    );
-
-    FirebaseAuth.instance.userChanges().listen((user) async {
-      if (user != null) {
-        final doc_user = await FirebaseFirestore.instance
-            .collection('user')
-            .doc(FirebaseAuth.instance.currentUser!.uid)
-            .get();
-        if(doc_user.exists == true){
-          _name = doc_user.get('name');
-        }
-        notifyListeners();
-      }
-      notifyListeners();
-    });
-  }
-
-  String _name = '';
-  String get name => _name;
-}
+// class ApplicationUploadState extends ChangeNotifier{
+//   ApplicationUploadState(){
+//     init();
+//   }
+//
+//   Future<void> init() async {
+//     await Firebase.initializeApp(
+//       options: DefaultFirebaseOptions.currentPlatform,
+//     );
+//
+//     FirebaseAuth.instance.userChanges().listen((user) async {
+//       if (user != null) {
+//         final doc_user = await FirebaseFirestore.instance
+//             .collection('user')
+//             .doc(FirebaseAuth.instance.currentUser!.uid)
+//             .get();
+//         if(doc_user.exists == true){
+//           _name = doc_user.get('name');
+//         }
+//         notifyListeners();
+//       }
+//       notifyListeners();
+//     });
+//   }
+//
+//   String _name = '';
+//   String get name => _name;
+// }
 
 class UploadPage extends StatefulWidget {
   const UploadPage({
@@ -59,6 +59,9 @@ class UploadPage extends StatefulWidget {
 }
 
 class _UploadPageState extends State<UploadPage> {
+
+  final LoginController loginController = Get.put(LoginController());
+
   DateTime initialDate = DateTime.now();
   List<DateTime>? multiOrRangeSelect;
   List<String>? date_format;
@@ -641,9 +644,7 @@ class _UploadPageState extends State<UploadPage> {
               const SizedBox(height: 15.0),
               Padding(
                 padding: EdgeInsets.only(left: 30, right: 30),
-                child:Consumer<ApplicationUploadState>(
-                    builder: (context, appState, _) {
-                      return TextButton(
+                child:TextButton(
                         onPressed: () async {
                           if(_nameController.text == "" || _locController.text == ""
                               || _descController.text == ""){
@@ -713,7 +714,7 @@ class _UploadPageState extends State<UploadPage> {
                                 'title': _nameController.text,
                                 'timestamp': uploadTime,
                                 'description': _descController.text,
-                                'creator_name': appState.name,
+                                'creator_name': loginController.name,
                                 'location': _locController.text
                               }).then((_) => {
                                 Timer(Duration(seconds: 1), () {
@@ -740,9 +741,7 @@ class _UploadPageState extends State<UploadPage> {
                             ),
                           ),
                         ),
-                    );
-                  }
-                ),
+                    )
               ),
             ],
           ),

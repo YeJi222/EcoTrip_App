@@ -1,71 +1,52 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ecotripapp/widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'dart:async';
 import 'package:animated_text_kit/animated_text_kit.dart';
-import 'package:floating_bottom_bar/animated_bottom_navigation_bar.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
-import 'firebase_options.dart';
-import 'login.dart';
+import 'cotroller.dart';
 import 'package:day_night_switcher/day_night_switcher.dart';
 
-String name = '';
-String email = '';
-String profile_url = '';
+// String name = '';
+// String email = '';
+// String profile_url = '';
 
-class ApplicationState extends ChangeNotifier{
-  ApplicationState(){
-    init();
-  }
-
-  Future<void> init() async {
-    await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform,
-    );
-
-    /*
-    final doc_user = await FirebaseFirestore.instance
-        .collection('user')
-        .doc(FirebaseAuth.instance.currentUser!.uid)
-        .get();
-    if(doc_user.exists == true){
-      _name = doc_user.get('name');
-      _email = doc_user.get('email');
-      _profile_url = doc_user.get('profile_url');
-    }
-    notifyListeners();
-
-     */
-
-    FirebaseAuth.instance.userChanges().listen((user) async {
-      if (user != null) {
-        final doc_user = await FirebaseFirestore.instance
-            .collection('user')
-            .doc(FirebaseAuth.instance.currentUser!.uid)
-            .get();
-        if(doc_user.exists == true){
-          _name = doc_user.get('name');
-          _email = doc_user.get('email');
-          _profile_url = doc_user.get('profile_url');
-        }
-        notifyListeners();
-      }
-      notifyListeners();
-    });
-  }
-
-  String _name = '';
-  String get name => _name;
-
-  String _email = '';
-  String get email => _email;
-
-  String _profile_url = '';
-  String get profile_url => _profile_url;
-}
+// class ApplicationState extends ChangeNotifier{
+//   ApplicationState(){
+//     init();
+//   }
+//
+//   Future<void> init() async {
+//     await Firebase.initializeApp(
+//       options: DefaultFirebaseOptions.currentPlatform,
+//     );
+//
+//     FirebaseAuth.instance.userChanges().listen((user) async {
+//       if (user != null) {
+//         final doc_user = await FirebaseFirestore.instance
+//             .collection('user')
+//             .doc(FirebaseAuth.instance.currentUser!.uid)
+//             .get();
+//         if(doc_user.exists == true){
+//           _name = doc_user.get('name');
+//           _email = doc_user.get('email');
+//           _profile_url = doc_user.get('profile_url');
+//         }
+//         notifyListeners();
+//       }
+//       notifyListeners();
+//     });
+//   }
+//
+//   String _name = '';
+//   String get name => _name;
+//
+//   String _email = '';
+//   String get email => _email;
+//
+//   String _profile_url = '';
+//   String get profile_url => _profile_url;
+// }
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key, String? title,}) : super(key: key);
@@ -75,20 +56,11 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  // Stream<void> load_user() async*{
-  //   FirebaseFirestore.instance
-  //       .collection('user')
-  //       .doc(FirebaseAuth.instance.currentUser!.uid)
-  //       .get()
-  //       .then((value) {
-  //         name = value.get('name') as String;
-  //         email = value.get('email') as String;
-  //   });
-  //
-  //   // print(name);
-  // }
+
+  final LoginController loginController = Get.put(LoginController());
 
   bool isDarkModeEnabled = false;
+  final storage = const FlutterSecureStorage();
 
   @override
   Widget build(BuildContext context) {
@@ -208,26 +180,21 @@ class _ProfilePageState extends State<ProfilePage> {
                     child: CircleAvatar(
                       radius: 70,
                       backgroundColor: Colors.white,
-                      child: Consumer<ApplicationState>(
-                        builder: (context, appState, _){
-                          // ApplicationState();
-                          return Container(
+                      child: Container(
                             width: 130,
                             height: 130,
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(100.0),
                               child: Image.network(
-                                appState.profile_url,
+                                loginController.profile_url,
                                 // '${FirebaseAuth.instance.currentUser!.photoURL}',
                                 // photoURL ?? default_url,
                                 fit: BoxFit.cover,
                               ),
                             ),
-                          );
-                        }
+                          )
                       ),
                     ),
-                  ),
 
                   // Positioned(
                   //   bottom: 140.0,
@@ -244,11 +211,10 @@ class _ProfilePageState extends State<ProfilePage> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Consumer<ApplicationState>(
-                            builder: (context, appState, _) => Column(
+                        Column(
                               children: [
                                 Text(
-                                  appState.name,
+                                  loginController.name,
                                   // "${FirebaseAuth.instance.currentUser!.displayName}",
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
@@ -258,7 +224,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 ),
                                 SizedBox(height: 7),
                                 Text(
-                                  appState.email,
+                                  loginController.email,
                                   // "${FirebaseAuth.instance.currentUser!.email}",
                                   style: TextStyle(
                                     fontSize: 15,
@@ -268,7 +234,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 ),
                               ],
                             ),
-                        ),
+                        // ),
                       ],
                     ),
                   ),
@@ -316,7 +282,8 @@ class _ProfilePageState extends State<ProfilePage> {
                       child: GestureDetector(
                         onTap: () async {
                           FirebaseAuth.instance.signOut();
-                          Navigator.pushNamed(context, '/login');
+                          storage.delete(key: "login");
+                          Navigator.pushNamed(context, '/loading');
                         },
                         child: Row(
                           children: [

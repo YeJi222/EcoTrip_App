@@ -1,15 +1,16 @@
 import 'dart:io';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ecotripapp/widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+import 'cotroller.dart';
 import 'firebase_options.dart';
 
 String profile_url = '';
@@ -52,6 +53,9 @@ class EditProfilePage extends StatefulWidget {
 }
 
 class _EditProfilePageState extends State<EditProfilePage> {
+
+  final LoginController loginController = Get.put(LoginController());
+
   bool isDarkModeEnabled = false;
 
   final _nameController = TextEditingController();
@@ -424,6 +428,12 @@ class _EditProfilePageState extends State<EditProfilePage> {
                               'age': _ageController.text,
                               'address': _addressController.text,
                             });
+
+                            loginController.profile_url = url;
+                            loginController.name = _nameController.text;
+                            loginController.gender = _genderController.text;
+                            loginController.age = _ageController.text;
+
                             Timer(
                                 const Duration(seconds: 2),
                                     () => Navigator.pushNamed(context, '/login')

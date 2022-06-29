@@ -65,6 +65,9 @@ class _DetailPageState extends State<DetailPage> {
     for (var image in _images) {
       precacheImage(NetworkImage(image), context);
     }
+    // for (var image in product.imageURL) {
+    //   precacheImage(NetworkImage(image), context);
+    // }
   }
 
   @override
@@ -72,6 +75,7 @@ class _DetailPageState extends State<DetailPage> {
     verticalController = ScrollController();
     horizontalController = ScrollController();
     super.initState();
+    product=widget.product;
     Future.delayed(Duration.zero, () {
       precache();
       WidgetsBinding.instance.addPostFrameCallback((_) { // null check
@@ -128,7 +132,7 @@ class _DetailPageState extends State<DetailPage> {
                             color: Colors.black,
                           ),
                           onPressed: (){
-                            Navigator.pushNamed(context, '/favorite');
+                            // Navigator.pushNamed(context, '/favorite');
                           },
                         ),
                       ),
@@ -166,7 +170,7 @@ class _DetailPageState extends State<DetailPage> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
-                                Icon(
+                                const Icon(
                                   Icons.location_on,
                                   color: Colors.redAccent,
                                 ),
@@ -183,7 +187,7 @@ class _DetailPageState extends State<DetailPage> {
                                 ),
                               ]
                             ),
-                            Divider(
+                            const Divider(
                               height: 30,
                               thickness: 1.5,
                               indent: 2,
@@ -192,32 +196,6 @@ class _DetailPageState extends State<DetailPage> {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                // SizedBox(
-                                //   width: 420,
-                                //   height: 420,
-                                //   child: Stack(
-                                //     children: [
-                                //       Positioned(
-                                //         top: -20,
-                                //         left: -15,
-                                //         child: SizedBox(
-                                //           width: 420,
-                                //           height: 420,
-                                //           child: CachedNetworkImage(
-                                //             progressIndicatorBuilder: (context, url, progress) =>
-                                //                 Center(
-                                //                   child: CircularProgressIndicator(
-                                //                     value: progress.progress,
-                                //                   ),
-                                //                 ),
-                                //             imageUrl: product.imageURL,
-                                //             fit: BoxFit.cover,
-                                //           ),
-                                //         ),
-                                //       ),
-                                //     ],
-                                //   ),
-                                // ),
                                 Padding(
                                   padding: const EdgeInsets.all(5),
                                   child: SizedBox(

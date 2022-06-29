@@ -16,10 +16,10 @@ Future<void> main() async {
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => ApplicationHomeState()),
-        ChangeNotifierProvider(create: (context) => ApplicationState()),
+        // ChangeNotifierProvider(create: (context) => ApplicationHomeState()),
+        // ChangeNotifierProvider(create: (context) => ApplicationState()),
         ChangeNotifierProvider(create: (context) => EditState()),
-        ChangeNotifierProvider(create: (context) => ApplicationUploadState()),
+        // ChangeNotifierProvider(create: (context) => ApplicationUploadState()),
       ],
       child: const TravelApp(),
     ),

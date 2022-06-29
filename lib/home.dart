@@ -112,34 +112,34 @@ class _NavigatorPageState extends State<NavigatorPage> {
   }
 }
 
-class ApplicationHomeState extends ChangeNotifier{
-  ApplicationHomeState(){
-    init();
-  }
-
-  Future<void> init() async {
-    await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform,
-    );
-
-    FirebaseAuth.instance.userChanges().listen((user) async {
-      if (user != null) {
-        final doc_user = await FirebaseFirestore.instance
-            .collection('user')
-            .doc(FirebaseAuth.instance.currentUser!.uid)
-            .get();
-        if(doc_user.exists == true){
-          _name = doc_user.get('name');
-        }
-        notifyListeners();
-      }
-      notifyListeners();
-    });
-  }
-
-  String _name = '';
-  String get name => _name;
-}
+// class ApplicationHomeState extends ChangeNotifier{
+//   ApplicationHomeState(){
+//     init();
+//   }
+//
+//   Future<void> init() async {
+//     await Firebase.initializeApp(
+//       options: DefaultFirebaseOptions.currentPlatform,
+//     );
+//
+//     FirebaseAuth.instance.userChanges().listen((user) async {
+//       if (user != null) {
+//         final doc_user = await FirebaseFirestore.instance
+//             .collection('user')
+//             .doc(FirebaseAuth.instance.currentUser!.uid)
+//             .get();
+//         if(doc_user.exists == true){
+//           _name = doc_user.get('name');
+//         }
+//         notifyListeners();
+//       }
+//       notifyListeners();
+//     });
+//   }
+//
+//   String _name = '';
+//   String get name => _name;
+// }
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -149,6 +149,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final LoginController loginController = Get.put(LoginController());
   final Controller controller = Get.put(Controller());
 
   static int load_num = 15; // number of cards to load
@@ -241,21 +242,17 @@ class _HomePageState extends State<HomePage> {
                               color: Colors.black,
                               fontWeight: FontWeight.bold,
                             ),
-                            child: Consumer<ApplicationHomeState>(
-                                builder: (context, appState, _) {
-                                  return AnimatedTextKit(
+                            child: AnimatedTextKit(
                                     animatedTexts: [
                                       RotateAnimatedText(
-                                        'Hello! ${appState.name} 🌿',
+                                        'Hello! ${loginController.name} 🌿',
                                       ),
                                     ],
                                     onTap: () {
                                       print("Tap Event");
                                     },
                                     repeatForever: true,
-                                  );
-                                }
-                            ),
+                                  )
                           ),
                         ],
                       ),
