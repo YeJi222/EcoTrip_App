@@ -120,160 +120,160 @@ class _DetailPageState extends State<DetailPage> {
               SliverToBoxAdapter(
                 child: Screenshot(
                   controller: _screenshotController,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                        height: 330,
-                        child: ScrollPageView(
-                          checkedIndicatorColor: Colors.green,
-                          delay: Duration(seconds: 3),
-                          controller: ScrollPageController(),
-                          // children: _images.map((image) => _imageView(image)).toList(),
-                          children: img_url.map((image) => _imageView(image)).toList(),
+                  child: Container(
+                    color: Colors.white,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          height: 330,
+                          child: ScrollPageView(
+                            checkedIndicatorColor: Colors.green,
+                            delay: Duration(seconds: 3),
+                            controller: ScrollPageController(),
+                            // children: _images.map((image) => _imageView(image)).toList(),
+                            children: img_url.map((image) => _imageView(image)).toList(),
+                          ),
                         ),
-                      ),
-                      SizedBox(height: 15),
-                      Padding(
-                        padding: EdgeInsets.only(left: 10, right: 15),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.only(left: 5),
-                              child: Text(
-                                product.title,
-                                style: const TextStyle(
-                                  // fontWeight: FontWeight.bold,
-                                  fontSize: 25,
-                                  fontFamily: 'jua',
+                        SizedBox(height: 15),
+                        Padding(
+                          padding: EdgeInsets.only(left: 10, right: 15),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.only(left: 5),
+                                child: Text(
+                                  product.title,
+                                  style: const TextStyle(
+                                    // fontWeight: FontWeight.bold,
+                                    fontSize: 25,
+                                    fontFamily: 'jua',
+                                  ),
                                 ),
                               ),
-                            ),
-                            const SizedBox(
-                              height: 4,
-                            ),
-                            Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  const Icon(
-                                    Icons.location_on,
-                                    color: Colors.redAccent,
-                                  ),
-                                  const SizedBox(
-                                    width: 2,
-                                  ),
-                                  Text(
-                                    product.location,
-                                    style: const TextStyle(
-                                      // fontWeight: FontWeight.bold,
-                                      fontSize: 18,
-                                      fontFamily: 'jua',
-                                    ),
-                                  ),
-                                ]
-                            ),
-                            const Divider(
-                              height: 30,
-                              thickness: 1.5,
-                              indent: 2,
-                              endIndent: 10,
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(left: 10, bottom: 10, right: 15),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const Text(
-                                    'Description',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 18,
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    height: 10,
-                                  ),
-                                  ReadMoreText(
-                                    product.description,
-                                    trimLines: 5,
-                                    style: const TextStyle(
-                                        color: Colors.black
-                                    ),
-                                    colorClickableText: Colors.red,
-                                    trimMode: TrimMode.Line,
-                                    trimCollapsedText: ' Read more',
-                                    trimExpandedText: ' ...Briefly',
-                                  ),
-                                  const SizedBox(
-                                    height: 20,
-                                  ),
-                                  const Text(
-                                    'Trip Plans With Challenges',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 18,
-                                    ),
-                                  ),
-                                ],
+                              const SizedBox(
+                                height: 4,
                               ),
-                            ),
-                          ],
+                              Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    const Icon(
+                                      Icons.location_on,
+                                      color: Colors.redAccent,
+                                    ),
+                                    const SizedBox(
+                                      width: 2,
+                                    ),
+                                    Text(
+                                      product.location,
+                                      style: const TextStyle(
+                                        // fontWeight: FontWeight.bold,
+                                        fontSize: 18,
+                                        fontFamily: 'jua',
+                                      ),
+                                    ),
+                                  ]
+                              ),
+                              const Divider(
+                                height: 30,
+                                thickness: 1.5,
+                                indent: 2,
+                                endIndent: 10,
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(left: 10, bottom: 10, right: 15),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Text(
+                                      'Description',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18,
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                    ReadMoreText(
+                                      product.description,
+                                      trimLines: 5,
+                                      style: const TextStyle(
+                                          color: Colors.black
+                                      ),
+                                      colorClickableText: Colors.red,
+                                      trimMode: TrimMode.Line,
+                                      trimCollapsedText: ' Read more',
+                                      trimExpandedText: ' ...Briefly',
+                                    ),
+                                    const SizedBox(
+                                      height: 20,
+                                    ),
+                                    const Text(
+                                      'Trip Plans With Challenges',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(left: 20, top: 5, right: 20, bottom: 30),
-                            child: SizedBox(
-                              height: 520,
-                              width: 400,
-                              child: Scrollbar(
-                                thumbVisibility: true,
-                                controller: horizontalController,
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(left: 20, top: 5, right: 20, bottom: 30),
+                              child: SizedBox(
+                                height: 520,
+                                width: 400,
                                 child: Scrollbar(
-                                  controller: verticalController,
-                                  child: SingleChildScrollView(
-                                    controller: horizontalController,
-                                    scrollDirection: Axis.horizontal,
+                                  thumbVisibility: true,
+                                  controller: horizontalController,
+                                  child: Scrollbar(
+                                    controller: verticalController,
                                     child: SingleChildScrollView(
-                                      controller: verticalController,
-                                      child: Column(
-                                        children: [
-                                          Row(
-                                            children: [
-                                              const SizedBox(width: 60),
-                                              ...List.generate(
-                                                int.parse(product.duration),
-                                                    (index) => DayHeader(day: index),
-                                              ),
-                                            ],
-                                          ),
-                                          const SizedBox(height: 20),
-                                          DynamicTimeline(
-                                            firstDateTime: DateTime(2000, 01, 01, 7),
-                                            lastDateTime: DateTime(2000, 01, 01, 22),
-                                            labelBuilder: DateFormat('HH:mm').format,
-                                            intervalDuration: const Duration(hours: 1),
-                                            crossAxisCount: int.parse(product.duration),
-                                            intervalExtent: 40,
-                                            items: product.items,
-                                          ),
-                                        ],
+                                      controller: horizontalController,
+                                      scrollDirection: Axis.horizontal,
+                                      child: SingleChildScrollView(
+                                        controller: verticalController,
+                                        child: Column(
+                                          children: [
+                                            Row(
+                                              children: [
+                                                const SizedBox(width: 60),
+                                                ...List.generate(
+                                                  int.parse(product.duration),
+                                                      (index) => DayHeader(day: index),
+                                                ),
+                                              ],
+                                            ),
+                                            const SizedBox(height: 20),
+                                            DynamicTimeline(
+                                              firstDateTime: DateTime(2000, 01, 01, 6),
+                                              lastDateTime: DateTime(2000, 01, 01, 24),
+                                              labelBuilder: DateFormat('HH:mm').format,
+                                              intervalDuration: const Duration(hours: 1),
+                                              crossAxisCount: int.parse(product.duration),
+                                              intervalExtent: 40,
+                                              items: product.items,
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ),
                                   ),
                                 ),
                               ),
                             ),
-                          ),
-                        ],
-                      ),
-
-
-
-                    ],
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
