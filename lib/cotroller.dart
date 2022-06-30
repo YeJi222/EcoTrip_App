@@ -37,6 +37,19 @@ class Controller extends GetxController {
     return items;
   }
 
+  Future<List<String>> getChallenges(
+      QueryDocumentSnapshot<Map<String, dynamic>> document) async {
+    List<String> challenges = <String>[];
+
+    var challenges_db = document.data()['challenges'] as List<dynamic>;
+
+    for (final challenge in challenges_db) {
+      challenges.add(challenge['challenge']);
+    }
+
+    return challenges;
+  }
+
   Future<List<String>> getImages(
       QueryDocumentSnapshot<Map<String, dynamic>> document) async {
     List<String> images = <String>[];
@@ -63,6 +76,7 @@ class Controller extends GetxController {
             title: document.data()['title'] as String,
             location: document.data()['location'] as String,
             description: document.data()['description'] as String,
+            challenges: await getChallenges(document),
             imageURL: await getImages(document),
             duration: document.data()['duration'] as String,
             timestamp: document.data()['timestamp'] as String,
@@ -102,6 +116,7 @@ class LoginController extends GetxController {
           title: document.data()['title'] as String,
           location: document.data()['location'] as String,
           description: document.data()['description'] as String,
+          challenges: await getChallenges(document),
           imageURL: await getImages(document),
           duration: document.data()['duration'] as String,
           timestamp: document.data()['timestamp'] as String,
@@ -136,6 +151,19 @@ class LoginController extends GetxController {
     }
 
     return items;
+  }
+
+  Future<List<String>> getChallenges(
+      QueryDocumentSnapshot<Map<String, dynamic>> document) async {
+    List<String> challenges = <String>[];
+
+    var challenges_db = document.data()['challenges'] as List<dynamic>;
+
+    for (final challenge in challenges_db) {
+      challenges.add(challenge['challenge']);
+    }
+
+    return challenges;
   }
 
   Future<List<String>> getImages(

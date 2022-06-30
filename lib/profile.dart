@@ -66,6 +66,7 @@ class _ProfilePageState extends State<ProfilePage> {
     return MaterialApp(
       theme: ThemeData.light().copyWith(
         primaryColor: Colors.yellow,
+        scaffoldBackgroundColor: Color(0xfff9fff8),
         // primaryColorLight: Colors.yellow,
         // textTheme: const TextTheme(
         //   bodyText1: TextStyle(color: Colors.yellow),
@@ -149,6 +150,7 @@ class _ProfilePageState extends State<ProfilePage> {
             ],
           ),
           extendBodyBehindAppBar: true,
+          // backgroundColor: Color(0xfff9fff8),
           body: Column(
             children: [
               Stack(

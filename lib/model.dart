@@ -1,18 +1,21 @@
 import 'package:dynamic_timeline/dynamic_timeline.dart';
 
 class Product {
-  Product(
-      {required this.title,
-      required this.description,
-      required this.imageURL,
-      required this.location,
-      required this.items,
-      required this.duration,
-      required this.timestamp});
+  Product({
+    required this.title,
+    required this.description,
+    required this.challenges,
+    required this.imageURL,
+    required this.location,
+    required this.items,
+    required this.duration,
+    required this.timestamp
+  });
 
   final String title;
   final String location;
   final String description;
+  final List<String> challenges;
   final List<String> imageURL;
   final List<TimelineItem> items;
   final String duration;

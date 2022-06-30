@@ -77,7 +77,8 @@ class LoginPage extends StatelessWidget {
         decoration: const BoxDecoration(
           image: DecorationImage(
             fit: BoxFit.cover,
-            image: AssetImage('img/login.png'), // 배경 이미지
+            // image: AssetImage('img/login.png'), // 배경 이미지
+            image: AssetImage('img/profile_back.png')
           ),
         ),
         child: Scaffold(
@@ -87,7 +88,7 @@ class LoginPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               const SizedBox(
-                height: 250,
+                height: 200,
               ),
               ClipRRect(
                 borderRadius: BorderRadius.circular(30.0),
@@ -99,20 +100,21 @@ class LoginPage extends StatelessWidget {
                     )),
               ),
               const SizedBox(
-                height: 380,
+                height: 430,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
-                    width: 320,
+                    width: 250,
                     decoration: BoxDecoration(
                       color: Colors.white,
                       border: Border.all(
-                        color: Color(0xfffc99a1),
-                        width: 2,
+                        // color: Color(0xfffc99a1),
+                        color: Colors.white,
+                        // width: 2,
                       ),
-                      borderRadius: BorderRadius.circular(15.0),
+                      borderRadius: BorderRadius.circular(45.0),
                     ),
                     child: TextButton(
                       onPressed: () async {
@@ -125,12 +127,24 @@ class LoginPage extends StatelessWidget {
                               "Google auth hasn't been enabled for this project.");
                         }
                       },
-                      child: const Text(
-                        'Google Login',
-                        style: TextStyle(
-                            color: Color(0xfffc99a1),
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.asset(
+                            'img/google_logo.png',
+                            width: 30,
+                          ),
+                          SizedBox(width: 15,),
+                          Text(
+                            'Google Login',
+                            style: TextStyle(
+                              // color: Color(0xfffc99a1),
+                                color: Colors.green,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ),

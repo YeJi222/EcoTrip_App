@@ -43,7 +43,8 @@ class _SearchPage extends State<SearchPage> {
     return WillPopScope(
       onWillPop: () async => false,
       child: FirestoreSearchScaffold(
-          appBarBackgroundColor: Color(0xfff9fff8),
+          scaffoldBackgroundColor: Color(0xfff9fff8),
+          appBarBackgroundColor: Colors.white,
           searchBackgroundColor: Colors.white,
           firestoreCollectionName: 'products',
           showSearchIcon: true,
@@ -79,7 +80,8 @@ class _SearchPage extends State<SearchPage> {
                       'Search Trip Plans :)',
                       style: TextStyle(
                         // fontWeight: FontWeight.bold,
-                        fontSize: 25,
+                        fontSize: 28,
+                        fontFamily: 'jua',
                       ),
                     ),
                   ),
