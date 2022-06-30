@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecotripapp/profile.dart';
 import 'package:ecotripapp/search.dart';
@@ -12,8 +13,10 @@ import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:floating_bottom_bar/animated_bottom_navigation_bar.dart';
 import 'package:provider/provider.dart';
 import 'package:get/get.dart';
+import 'detail.dart';
 import 'favorite.dart';
 import 'firebase_options.dart';
+import 'model.dart';
 
 class NavigatorPage extends StatefulWidget {
   @override
@@ -21,6 +24,10 @@ class NavigatorPage extends StatefulWidget {
 }
 
 class _NavigatorPageState extends State<NavigatorPage> {
+
+  final LoginController loginController = Get.put(LoginController());
+  final Controller controller = Get.put(Controller());
+
   int activeIndex = 0;
   void changeActivePage(int? index) {
     setState(() {
@@ -32,12 +39,21 @@ class _NavigatorPageState extends State<NavigatorPage> {
 
   @override
   void initState() {
-    pages = [
+    pages = const [
       HomePage(),
       SearchPage(),
       FavoritePage(),
       ProfilePage(),
     ];
+    for(final item in controller.products){
+      print(item.isStored);
+      print(loginController.likeProducts.length);
+      for(final i in loginController.likeProducts){
+        if(i.title == item.title) {
+          item.isStored=true;
+        }
+      }
+    }
     super.initState();
   }
 
@@ -112,34 +128,6 @@ class _NavigatorPageState extends State<NavigatorPage> {
   }
 }
 
-// class ApplicationHomeState extends ChangeNotifier{
-//   ApplicationHomeState(){
-//     init();
-//   }
-//
-//   Future<void> init() async {
-//     await Firebase.initializeApp(
-//       options: DefaultFirebaseOptions.currentPlatform,
-//     );
-//
-//     FirebaseAuth.instance.userChanges().listen((user) async {
-//       if (user != null) {
-//         final doc_user = await FirebaseFirestore.instance
-//             .collection('user')
-//             .doc(FirebaseAuth.instance.currentUser!.uid)
-//             .get();
-//         if(doc_user.exists == true){
-//           _name = doc_user.get('name');
-//         }
-//         notifyListeners();
-//       }
-//       notifyListeners();
-//     });
-//   }
-//
-//   String _name = '';
-//   String get name => _name;
-// }
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -315,4 +303,6 @@ class _HomePageState extends State<HomePage> {
         ),
      );
   }
+
 }
+

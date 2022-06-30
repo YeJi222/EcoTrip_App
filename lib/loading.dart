@@ -35,6 +35,8 @@ class _LoadingPageState extends State<LoadingPage> {
                   loginController.uid = userInfo.split(" ")[3],
                   loginController.email = userInfo.split(" ")[5],
                   loginController.profile_url = userInfo.split(" ")[7],
+                  loginController.getLikeProduct(),
+
                   Navigator.pushReplacement(
                     context,
                     PageRouteBuilder(

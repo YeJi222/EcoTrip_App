@@ -60,10 +60,12 @@ class LoginPage extends StatelessWidget {
       loginController.profile_url = document.data()!['profile_url'] as String;
     }
 
+    loginController.getLikeProduct();
     await storage.write(
         key: "login",
         value:
             "name ${loginController.name} uid ${loginController.uid} email ${loginController.email} photoURL ${loginController.profile_url}");
+
   }
 
   @override

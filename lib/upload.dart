@@ -775,7 +775,8 @@ class _UploadPageState extends State<UploadPage> {
                                 'timestamp': uploadTime,
                                 'description': _descController.text,
                                 'creator_name': loginController.name,
-                                'location': _locController.text
+                                'location': _locController.text,
+                                'duration': date_len.toString(),
                               }).then((_) => {
                                 Timer(Duration(seconds: 1), () {
                                   showSnackBar(context, 'Upload complete!');

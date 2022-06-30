@@ -17,7 +17,6 @@ class Controller extends GetxController {
   // To make getEvent function await.
   Future<List<TimelineItem>> getEvent(
       QueryDocumentSnapshot<Map<String, dynamic>> document) async {
-
     List<TimelineItem> items = <TimelineItem>[];
 
     var event_doc = document.data()['events'] as List<dynamic>;
@@ -25,8 +24,10 @@ class Controller extends GetxController {
     for (final e in event_doc) {
       items.add(
         TimelineItem(
-          startDateTime: DateTime.fromMillisecondsSinceEpoch(int.parse(e['startTime'])),
-          endDateTime: DateTime.fromMillisecondsSinceEpoch(int.parse(e['endTime'])),
+          startDateTime:
+              DateTime.fromMillisecondsSinceEpoch(int.parse(e['startTime'])),
+          endDateTime:
+              DateTime.fromMillisecondsSinceEpoch(int.parse(e['endTime'])),
           position: e['position'],
           child: Event(title: e['title']),
         ),
@@ -63,8 +64,8 @@ class Controller extends GetxController {
             location: document.data()['location'] as String,
             description: document.data()['description'] as String,
             imageURL: await getImages(document),
-            // duration: document.data()['duration'] as String,
-            duration: '4',
+            duration: document.data()['duration'] as String,
+            timestamp: document.data()['timestamp'] as String,
             // By mak getEvent function awaiting, Apps can get data one by one.
             items: await getEvent(document),
             // creator_name: document.data()['creator_name'] as String,
@@ -80,14 +81,75 @@ class Controller extends GetxController {
         .ref("upload_default.png")
         .getDownloadURL();
   }
-
 }
 
 class LoginController extends GetxController {
   LoginController() {}
 
-  List<Product> products = <Product>[];
+  List<Product> likeProducts = <Product>[];
   String default_url = '';
+
+  Future<void> getLikeProduct() async {
+    FirebaseFirestore.instance
+        .collection('user')
+        .doc(_uid)
+        .collection('favorite')
+        .snapshots()
+        .listen((event) async {
+      likeProducts = <Product>[];
+      for (final document in event.docs) {
+        Product temp = Product(
+          title: document.data()['title'] as String,
+          location: document.data()['location'] as String,
+          description: document.data()['description'] as String,
+          imageURL: await getImages(document),
+          duration: document.data()['duration'] as String,
+          timestamp: document.data()['timestamp'] as String,
+          // By mak getEvent function awaiting, Apps can get data one by one.
+          items: await getEvent(document),
+        );
+        temp.isStored = true;
+        likeProducts.add(temp);
+      }
+      update();
+    });
+    update();
+  }
+
+  Future<List<TimelineItem>> getEvent(
+      QueryDocumentSnapshot<Map<String, dynamic>> document) async {
+    List<TimelineItem> items = <TimelineItem>[];
+
+    var event_doc = document.data()['events'] as List<dynamic>;
+
+    for (final e in event_doc) {
+      items.add(
+        TimelineItem(
+          startDateTime:
+              DateTime.fromMillisecondsSinceEpoch(int.parse(e['startTime'])),
+          endDateTime:
+              DateTime.fromMillisecondsSinceEpoch(int.parse(e['endTime'])),
+          position: e['position'],
+          child: Event(title: e['title']),
+        ),
+      );
+    }
+
+    return items;
+  }
+
+  Future<List<String>> getImages(
+      QueryDocumentSnapshot<Map<String, dynamic>> document) async {
+    List<String> images = <String>[];
+
+    var images_db = document.data()['imgURL'] as List<dynamic>;
+
+    for (final img in images_db) {
+      images.add(img['url']);
+    }
+
+    return images;
+  }
 
   String _name = '';
   String get name => _name;
@@ -106,7 +168,6 @@ class LoginController extends GetxController {
 
   String _age = '';
   String get age => _age;
-
 
   set gender(String value) {
     _gender = value;

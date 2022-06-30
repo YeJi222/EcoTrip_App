@@ -1,7 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'dart:developer';
-import 'package:floating_bottom_bar/animated_bottom_navigation_bar.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'cotroller.dart';
 import 'detail.dart';
 import 'model.dart';
 
@@ -75,6 +76,8 @@ class DayHeader extends StatelessWidget {
 
 // List Horizon
 List<Card> buildListCardsH(List<Product> products, BuildContext context) {
+  final LoginController loginController = Get.put(LoginController());
+
   if (products.isEmpty) {
     return const <Card>[];
   }
@@ -101,17 +104,17 @@ List<Card> buildListCardsH(List<Product> products, BuildContext context) {
               children: [
                 Positioned(
                   child: SizedBox(
-                  width: 250,
-                  height: 320,
+                    width: 250,
+                    height: 320,
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(40.0),
                       child: CachedNetworkImage(
                         progressIndicatorBuilder: (context, url, progress) =>
                             Center(
-                              child: CircularProgressIndicator(
-                                value: progress.progress,
-                              ),
-                            ),
+                          child: CircularProgressIndicator(
+                            value: progress.progress,
+                          ),
+                        ),
                         imageUrl: product.imageURL[0],
                         fit: BoxFit.cover,
                       ),
@@ -133,8 +136,7 @@ List<Card> buildListCardsH(List<Product> products, BuildContext context) {
                               style: const TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.w600,
-                                  fontSize: 25
-                              ),
+                                  fontSize: 25),
                             ),
                             const SizedBox(
                               height: 10,
@@ -146,14 +148,13 @@ List<Card> buildListCardsH(List<Product> products, BuildContext context) {
                               style: const TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.normal,
-                                  fontSize: 15
-                              ),
+                                  fontSize: 15),
                             ),
                             // const SizedBox(height: 10,),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
-                                Text(
+                                const Text(
                                   "Top 1",
                                   style: TextStyle(
                                       color: Colors.lightGreenAccent,
@@ -164,20 +165,54 @@ List<Card> buildListCardsH(List<Product> products, BuildContext context) {
                                   width: 120,
                                 ),
                                 IconButton(
-                                    onPressed: () {},
-                                    icon: const Icon(
+                                    onPressed: () {
+                                      print(product.isStored);
+
+                                      if (product.isStored) {
+                                        FirebaseFirestore.instance
+                                            .collection('user')
+                                            .doc(loginController.uid)
+                                            .collection('favorite')
+                                            .where('title', isEqualTo: product.title)
+                                            .get()
+                                            .then((value) {
+                                          for (final document in value.docs) {
+                                            document.reference.delete();
+                                          }
+                                        });
+                                        product.isStored=false;
+
+                                      } else {
+                                        DocumentReference copyFrom = FirebaseFirestore
+                                            .instance
+                                            .collection('products')
+                                            .doc(product.timestamp);
+                                        DocumentReference copyTo = FirebaseFirestore
+                                            .instance
+                                            .collection('user')
+                                            .doc(loginController.uid)
+                                            .collection('favorite')
+                                            .doc();
+
+                                        copyFrom.get().then(
+                                                (value) => {copyTo.set(value.data())});
+
+                                        product.isStored=true;
+                                      }
+                                    },
+                                    icon: Icon(
                                       Icons.bookmark_added_outlined,
-                                      color: Colors.white,
-                                      size: 27,
-                                    )
-                                ),
+                                      color: (product.isStored)
+                                          ? const Color(0xff6dc62f)
+                                          : Colors.black,
+                                      size: 25,
+                                    )),
                               ],
                             )
                           ],
                         ),
                       ),
-                    )
-                ),
+                    )),
                 Positioned(
                   right: 50,
                   top: 20,
@@ -219,6 +254,9 @@ List<Card> buildListCardsH(List<Product> products, BuildContext context) {
 
 // List Vertical
 List<Card> buildListCardsV(List<Product> products, BuildContext context) {
+
+  final LoginController loginController = Get.put(LoginController());
+
   if (products.isEmpty) {
     return const <Card>[];
   }
@@ -251,7 +289,11 @@ List<Card> buildListCardsV(List<Product> products, BuildContext context) {
                   ),
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.only(left: 10.0, top: 10, bottom: 10,),
+                  padding: const EdgeInsets.only(
+                    left: 10.0,
+                    top: 10,
+                    bottom: 10,
+                  ),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -261,19 +303,21 @@ List<Card> buildListCardsV(List<Product> products, BuildContext context) {
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(15.0),
                             child: CachedNetworkImage(
-                              progressIndicatorBuilder: (context, url, progress) =>
-                                  Center(
-                                    child: CircularProgressIndicator(
-                                      value: progress.progress,
-                                    ),
-                                  ),
+                              progressIndicatorBuilder:
+                                  (context, url, progress) => Center(
+                                child: CircularProgressIndicator(
+                                  value: progress.progress,
+                                ),
+                              ),
                               imageUrl: product.imageURL[0],
                               fit: BoxFit.cover,
                             ),
-                          )
-                      ),
+                          )),
                       Padding(
-                        padding: EdgeInsets.only(left: 10, top: 3,),
+                        padding: const EdgeInsets.only(
+                          left: 10,
+                          top: 3,
+                        ),
                         child: SizedBox(
                           width: 180,
                           child: Column(
@@ -281,21 +325,22 @@ List<Card> buildListCardsV(List<Product> products, BuildContext context) {
                             children: [
                               Text(
                                 product.title,
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 18
-                                ),
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 18),
                               ),
-                              const SizedBox(height: 10,),
-                              Text(product.description,
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              Text(
+                                product.description,
                                 maxLines: 2,
                                 overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w300,
-                                  fontSize: 13
-                                ),
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.w300, fontSize: 13),
                               ),
-                              const SizedBox(height: 10,),
+                              const SizedBox(
+                                height: 10,
+                              ),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
@@ -319,18 +364,62 @@ List<Card> buildListCardsV(List<Product> products, BuildContext context) {
                       ),
                       Column(
                         children: [
-                          const SizedBox(height: 6,),
-                          const Text("data",style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17, color: Color(0xff6dc62f)),),
-                          const SizedBox(height: 25,),
+                          const SizedBox(
+                            height: 6,
+                          ),
+                          const Text(
+                            "data",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 17,
+                                color: Color(0xff6dc62f)),
+                          ),
+                          const SizedBox(
+                            height: 25,
+                          ),
                           IconButton(
-                              onPressed: () {
-                                print("Button");
+                            visualDensity: const VisualDensity(horizontal: -4),
+                            onPressed: () {
+
+                                if (product.isStored) {
+                                  FirebaseFirestore.instance
+                                      .collection('user')
+                                      .doc(loginController.uid)
+                                      .collection('favorite')
+                                      .where('title', isEqualTo: product.title)
+                                      .get()
+                                      .then((value) {
+                                    for (final document in value.docs) {
+                                      document.reference.delete();
+                                    }
+                                  });
+                                  product.isStored=false;
+
+                                } else {
+                                  DocumentReference copyFrom = FirebaseFirestore
+                                      .instance
+                                      .collection('products')
+                                      .doc(product.timestamp);
+                                  DocumentReference copyTo = FirebaseFirestore
+                                      .instance
+                                      .collection('user')
+                                      .doc(loginController.uid)
+                                      .collection('favorite')
+                                      .doc();
+
+                                  copyFrom.get().then(
+                                          (value) => {copyTo.set(value.data())});
+                                  product.isStored=true;
+                                }
                               },
-                              icon: const Icon(
+                              icon: Icon(
                                 Icons.bookmark_added_outlined,
-                                color: Colors.black,
+                                color: (product.isStored)
+                                    ? const Color(0xff6dc62f)
+                                    : Colors.black,
                                 size: 25,
-                              )
+                              ),
+                            splashColor: Colors.blue,
                           ),
                         ],
                       )
