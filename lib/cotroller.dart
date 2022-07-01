@@ -90,6 +90,18 @@ class Controller extends GetxController {
     update();
   }
 
+  void changeIsStored(Product product) {
+    for(final pd in products){
+      if((product.title.compareTo(pd.title)==0)&&(product.timestamp.compareTo(pd.timestamp)==0)){
+        if(pd.isStored==false) {
+          pd.isStored=true;
+        } else {
+          pd.isStored=false;
+        }
+      }
+    }
+  }
+
   Future<void> downloadDefaultURL() async {
     default_url = await FirebaseStorage.instance
         .ref("upload_default.png")

@@ -1,9 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'cotroller.dart';
 import 'detail.dart';
+import 'package:get/get.dart';
 import 'model.dart';
 
 class Event extends StatelessWidget {
@@ -77,6 +77,8 @@ class DayHeader extends StatelessWidget {
 // List Horizon
 List<Card> buildListCardsH(List<Product> products, BuildContext context) {
   final LoginController loginController = Get.put(LoginController());
+  final Controller controller = Get.put(Controller());
+
 
   if (products.isEmpty) {
     return const <Card>[];
@@ -173,32 +175,30 @@ List<Card> buildListCardsH(List<Product> products, BuildContext context) {
                                             .collection('user')
                                             .doc(loginController.uid)
                                             .collection('favorite')
-                                            .where('title', isEqualTo: product.title)
+                                            .where('title',
+                                                isEqualTo: product.title)
                                             .get()
                                             .then((value) {
                                           for (final document in value.docs) {
                                             document.reference.delete();
                                           }
                                         });
-                                        product.isStored=false;
-
                                       } else {
-                                        DocumentReference copyFrom = FirebaseFirestore
-                                            .instance
-                                            .collection('products')
-                                            .doc(product.timestamp);
-                                        DocumentReference copyTo = FirebaseFirestore
-                                            .instance
-                                            .collection('user')
-                                            .doc(loginController.uid)
-                                            .collection('favorite')
-                                            .doc();
+                                        DocumentReference copyFrom =
+                                            FirebaseFirestore.instance
+                                                .collection('products')
+                                                .doc(product.timestamp);
+                                        DocumentReference copyTo =
+                                            FirebaseFirestore.instance
+                                                .collection('user')
+                                                .doc(loginController.uid)
+                                                .collection('favorite')
+                                                .doc();
 
-                                        copyFrom.get().then(
-                                                (value) => {copyTo.set(value.data())});
-
-                                        product.isStored=true;
+                                        copyFrom.get().then((value) =>
+                                            {copyTo.set(value.data())});
                                       }
+                                      controller.changeIsStored(product);
                                     },
                                     icon: Icon(
                                       Icons.bookmark_added_outlined,
@@ -254,8 +254,8 @@ List<Card> buildListCardsH(List<Product> products, BuildContext context) {
 
 // List Vertical
 List<Card> buildListCardsV(List<Product> products, BuildContext context) {
-
   final LoginController loginController = Get.put(LoginController());
+  final Controller controller = Get.put(Controller());
 
   if (products.isEmpty) {
     return const <Card>[];
@@ -381,44 +381,41 @@ List<Card> buildListCardsV(List<Product> products, BuildContext context) {
                             visualDensity: const VisualDensity(horizontal: -4),
                             onPressed: () {
 
-                                if (product.isStored) {
-                                  FirebaseFirestore.instance
-                                      .collection('user')
-                                      .doc(loginController.uid)
-                                      .collection('favorite')
-                                      .where('title', isEqualTo: product.title)
-                                      .get()
-                                      .then((value) {
-                                    for (final document in value.docs) {
-                                      document.reference.delete();
-                                    }
-                                  });
-                                  product.isStored=false;
-
-                                } else {
-                                  DocumentReference copyFrom = FirebaseFirestore
-                                      .instance
-                                      .collection('products')
-                                      .doc(product.timestamp);
-                                  DocumentReference copyTo = FirebaseFirestore
-                                      .instance
-                                      .collection('user')
-                                      .doc(loginController.uid)
-                                      .collection('favorite')
-                                      .doc();
-
-                                  copyFrom.get().then(
-                                          (value) => {copyTo.set(value.data())});
-                                  product.isStored=true;
-                                }
-                              },
-                              icon: Icon(
-                                Icons.bookmark_added_outlined,
-                                color: (product.isStored)
-                                    ? const Color(0xff6dc62f)
-                                    : Colors.black,
-                                size: 25,
-                              ),
+                              if (product.isStored) {
+                                FirebaseFirestore.instance
+                                    .collection('user')
+                                    .doc(loginController.uid)
+                                    .collection('favorite')
+                                    .where('title', isEqualTo: product.title)
+                                    .get()
+                                    .then((value) {
+                                  for (final document in value.docs) {
+                                    document.reference.delete();
+                                  }
+                                });
+                              } else {
+                                DocumentReference copyFrom = FirebaseFirestore
+                                    .instance
+                                    .collection('products')
+                                    .doc(product.timestamp);
+                                DocumentReference copyTo = FirebaseFirestore
+                                    .instance
+                                    .collection('user')
+                                    .doc(loginController.uid)
+                                    .collection('favorite')
+                                    .doc();
+                                copyFrom.get().then(
+                                    (value) => {copyTo.set(value.data())});
+                              }
+                              controller.changeIsStored(product);
+                            },
+                            icon: Icon(
+                              Icons.bookmark_added_outlined,
+                              color: (product.isStored)
+                                  ? const Color(0xff6dc62f)
+                                  : Colors.black,
+                              size: 25,
+                            ),
                             splashColor: Colors.blue,
                           ),
                         ],
