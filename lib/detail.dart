@@ -32,11 +32,12 @@ class _DetailPageState extends State<DetailPage> {
   late Product product = Product(
       title: "",
       description: "",
+      challenges: [],
       imageURL: [],
       location: "",
       timestamp: "",
       items: [],
-      duration: '0'
+      duration: '0',
   );
 
   final _screenshotController = ScreenshotController();
@@ -130,7 +131,7 @@ class _DetailPageState extends State<DetailPage> {
           ),
           extendBodyBehindAppBar: true,
           body: CustomScrollView(
-            physics: const BouncingScrollPhysics(),
+            physics: BouncingScrollPhysics(),
             slivers: [
               SliverToBoxAdapter(
                 child: Screenshot(
@@ -247,7 +248,7 @@ class _DetailPageState extends State<DetailPage> {
                               height: 520,
                               width: 400,
                               child: Scrollbar(
-                                thumbVisibility: true,
+                                // thumbVisibility: true,
                                 controller: horizontalController,
                                 child: Scrollbar(
                                   controller: verticalController,
@@ -269,8 +270,8 @@ class _DetailPageState extends State<DetailPage> {
                                           ),
                                           const SizedBox(height: 20),
                                           DynamicTimeline(
-                                            firstDateTime: DateTime(2000, 01, 01, 7),
-                                            lastDateTime: DateTime(2000, 01, 01, 22),
+                                            firstDateTime: DateTime(2000, 01, 01, 6),
+                                            lastDateTime: DateTime(2000, 01, 01, 24),
                                             labelBuilder: DateFormat('HH:mm').format,
                                             intervalDuration: const Duration(hours: 1),
                                             crossAxisCount: int.parse(product.duration),
@@ -287,16 +288,79 @@ class _DetailPageState extends State<DetailPage> {
                           ),
                         ],
                       ),
-
-
-
+                      Padding(
+                        padding: EdgeInsets.only(left: 20, right: 15),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: const [
+                            Text(
+                              'Challenges List Preview',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(left: 15, right: 15),
+                        child: Column(
+                          children: [
+                            for(int i = 0 ; i < product.challenges.length ; i++)
+                              ListTile(
+                                title: Text(
+                                  '🌱 Challenge #${i+1}',
+                                  style: TextStyle(
+                                      fontSize: 15,
+                                      color: Colors.grey
+                                  ),
+                                ),
+                                subtitle: Text(
+                                  product.challenges[i],
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      color: Colors.black,
+                                      fontFamily: 'jua'
+                                  ),
+                                ),
+                                isThreeLine: false,
+                              ),
+                          ],
+                        ),
+                      ),
+                      Padding(
+                          padding: EdgeInsets.only(left: 35, right: 35),
+                          child:TextButton(
+                            onPressed: () async {
+                              Navigator.pop(context);
+                            },
+                            child: Container(
+                              width: 700,
+                              height: 45,
+                              decoration: const BoxDecoration(
+                                  color: Color(0xff69f81b),
+                                  gradient: LinearGradient(
+                                    colors: [Color(0xffbff5ad), Color(0xff54c737)],
+                                  ),
+                                  borderRadius: BorderRadius.all(Radius.circular(20))),
+                              child: const Center(
+                                child: Text(
+                                  'Confirm',
+                                  style: TextStyle(color: Colors.white, fontSize: 20),
+                                ),
+                              ),
+                            ),
+                          ),
+                      ),
+                      SizedBox(height: 30,),
                     ],
                   ),
-            ),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
+        ),
       ),
     );
   }
