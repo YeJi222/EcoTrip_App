@@ -30,11 +30,19 @@ class _LoadingPageState extends State<LoadingPage> {
         () async => {
               if (await storage.read(key: "login")!=null)
                 {
+                  loginController.address = "",
                   userInfo = (await storage.read(key: "login"))!,
                   loginController.name = userInfo.split(" ")[1],
                   loginController.uid = userInfo.split(" ")[3],
                   loginController.email = userInfo.split(" ")[5],
                   loginController.profile_url = userInfo.split(" ")[7],
+                  loginController.age = userInfo.split(" ")[9],
+                  loginController.gender = userInfo.split(" ")[11],
+                  // loginController.address = userInfo.split(" ")[13],
+                  for(int i = 13; i < userInfo.split(" ").length; i++){
+                    loginController.address += userInfo.split(" ")[i],
+                    if(i!=userInfo.split("").length-1) loginController.address += " "
+                  },
                   loginController.getLikeProduct(),
 
                   Navigator.pushReplacement(
