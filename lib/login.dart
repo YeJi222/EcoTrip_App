@@ -51,21 +51,29 @@ class LoginPage extends StatelessWidget {
       loginController.name = (FirebaseAuth.instance.currentUser?.displayName)!;
       loginController.uid = (FirebaseAuth.instance.currentUser?.uid)!;
       loginController.email = (FirebaseAuth.instance.currentUser?.email)!;
-      loginController.profile_url = (FirebaseAuth.instance.currentUser?.photoURL)!;
-
+      loginController.profile_url =
+          (FirebaseAuth.instance.currentUser?.photoURL)!;
     } else {
       loginController.name = document.data()!['name'] as String;
       loginController.uid = document.data()!['uid'] as String;
       loginController.email = document.data()!['email'] as String;
       loginController.profile_url = document.data()!['profile_url'] as String;
+      loginController.address = document.data()!['address'] as String;
+      loginController.age = document.data()!['age'] as String;
+      loginController.gender = document.data()!['gender'] as String;
     }
 
     loginController.getLikeProduct();
     await storage.write(
         key: "login",
         value:
-            "name ${loginController.name} uid ${loginController.uid} email ${loginController.email} photoURL ${loginController.profile_url}");
-
+            "name ${loginController.name} "
+                "uid ${loginController.uid} "
+                "email ${loginController.email} "
+                "photoURL ${loginController.profile_url} "
+                "age ${loginController.age} "
+                "gender ${loginController.gender} "
+                "address ${loginController.address}");
   }
 
   @override
@@ -76,10 +84,9 @@ class LoginPage extends StatelessWidget {
         height: 400,
         decoration: const BoxDecoration(
           image: DecorationImage(
-            fit: BoxFit.cover,
-            // image: AssetImage('img/login.png'), // 배경 이미지
-            image: AssetImage('img/profile_back.png')
-          ),
+              fit: BoxFit.cover,
+              // image: AssetImage('img/login.png'), // 배경 이미지
+              image: AssetImage('img/profile_back.png')),
         ),
         child: Scaffold(
           resizeToAvoidBottomInset: false,
@@ -134,15 +141,16 @@ class LoginPage extends StatelessWidget {
                             'img/google_logo.png',
                             width: 30,
                           ),
-                          SizedBox(width: 15,),
+                          SizedBox(
+                            width: 15,
+                          ),
                           Text(
                             'Google Login',
                             style: TextStyle(
-                              // color: Color(0xfffc99a1),
+                                // color: Color(0xfffc99a1),
                                 color: Colors.green,
                                 fontWeight: FontWeight.bold,
-                                fontSize: 20
-                            ),
+                                fontSize: 20),
                           ),
                         ],
                       ),

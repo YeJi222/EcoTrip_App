@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dynamic_timeline/dynamic_timeline.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'model.dart';
 import 'widget.dart';
@@ -19,9 +20,9 @@ class Controller extends GetxController {
       QueryDocumentSnapshot<Map<String, dynamic>> document) async {
     List<TimelineItem> items = <TimelineItem>[];
 
-    var event_doc = document.data()['events'] as List<dynamic>;
+    var eventDoc = document.data()['events'] as List<dynamic>;
 
-    for (final e in event_doc) {
+    for (final e in eventDoc) {
       items.add(
         TimelineItem(
           startDateTime:
@@ -41,9 +42,9 @@ class Controller extends GetxController {
       QueryDocumentSnapshot<Map<String, dynamic>> document) async {
     List<String> challenges = <String>[];
 
-    var challenges_db = document.data()['challenges'] as List<dynamic>;
+    var challengesDb = document.data()['challenges'] as List<dynamic>;
 
-    for (final challenge in challenges_db) {
+    for (final challenge in challengesDb) {
       challenges.add(challenge['challenge']);
     }
 
@@ -54,9 +55,9 @@ class Controller extends GetxController {
       QueryDocumentSnapshot<Map<String, dynamic>> document) async {
     List<String> images = <String>[];
 
-    var images_db = document.data()['imgURL'] as List<dynamic>;
+    var imagesDb = document.data()['imgURL'] as List<dynamic>;
 
-    for (final img in images_db) {
+    for (final img in imagesDb) {
       images.add(img['url']);
     }
 
@@ -114,6 +115,26 @@ class LoginController extends GetxController {
 
   List<Product> likeProducts = <Product>[];
   String default_url = '';
+  final storage = const FlutterSecureStorage();
+
+  Future<void> changeProfile(String url, String newName, String newGender, String newAge, String newAddress) async {
+    _profile_url = url;
+    _name = newName;
+    _gender = newGender;
+    _age = newAge;
+    _address = newAddress;
+    await storage.delete(key: "login");
+    await storage.write(
+        key: "login",
+        value:
+        "name $_name "
+            "uid $_uid "
+            "email $_email "
+            "photoURL $_profile_url "
+            "age $_age "
+            "gender $_gender "
+            "address $_address");
+  }
 
   Future<void> getLikeProduct() async {
     FirebaseFirestore.instance
@@ -147,9 +168,9 @@ class LoginController extends GetxController {
       QueryDocumentSnapshot<Map<String, dynamic>> document) async {
     List<TimelineItem> items = <TimelineItem>[];
 
-    var event_doc = document.data()['events'] as List<dynamic>;
+    var eventDoc = document.data()['events'] as List<dynamic>;
 
-    for (final e in event_doc) {
+    for (final e in eventDoc) {
       items.add(
         TimelineItem(
           startDateTime:
@@ -169,9 +190,9 @@ class LoginController extends GetxController {
       QueryDocumentSnapshot<Map<String, dynamic>> document) async {
     List<String> challenges = <String>[];
 
-    var challenges_db = document.data()['challenges'] as List<dynamic>;
+    var challengesDb = document.data()['challenges'] as List<dynamic>;
 
-    for (final challenge in challenges_db) {
+    for (final challenge in challengesDb) {
       challenges.add(challenge['challenge']);
     }
 
@@ -182,14 +203,17 @@ class LoginController extends GetxController {
       QueryDocumentSnapshot<Map<String, dynamic>> document) async {
     List<String> images = <String>[];
 
-    var images_db = document.data()['imgURL'] as List<dynamic>;
+    var imagesDb = document.data()['imgURL'] as List<dynamic>;
 
-    for (final img in images_db) {
+    for (final img in imagesDb) {
       images.add(img['url']);
     }
 
     return images;
   }
+
+  String _address = '';
+  String get address => _address;
 
   String _name = '';
   String get name => _name;
@@ -208,6 +232,10 @@ class LoginController extends GetxController {
 
   String _age = '';
   String get age => _age;
+
+  set address(String value) {
+    _address = value;
+  }
 
   set gender(String value) {
     _gender = value;

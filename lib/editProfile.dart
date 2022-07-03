@@ -269,9 +269,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     ),
                     child: TextField(
                       controller: _nameController,
-                      decoration: const InputDecoration(
-                        hintText: 'Name',
-                        hintStyle: TextStyle(
+                      decoration: InputDecoration(
+                        hintText: (loginController.name=="") ? 'Name' : loginController.name,
+                        hintStyle: const TextStyle(
                           color: Colors.grey,
                           fontSize: 16,
                           fontWeight: FontWeight.normal,
@@ -303,9 +303,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     ),
                     child: TextField(
                       controller: _genderController,
-                      decoration: const InputDecoration(
-                        hintText: 'Gender',
-                        hintStyle: TextStyle(
+                      decoration: InputDecoration(
+                        hintText: (loginController.gender=="") ? 'Gender' : loginController.gender,
+                        hintStyle: const TextStyle(
                           color: Colors.grey,
                           fontSize: 16,
                           fontWeight: FontWeight.normal,
@@ -334,9 +334,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     ),
                     child: TextField(
                       controller: _ageController,
-                      decoration: const InputDecoration(
-                        hintText: 'Age',
-                        hintStyle: TextStyle(
+                      decoration: InputDecoration(
+                        hintText: (loginController.age=="") ? 'Age' : loginController.age,
+                        hintStyle: const TextStyle(
                           color: Colors.grey,
                           fontSize: 16,
                           fontWeight: FontWeight.normal,
@@ -365,9 +365,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     ),
                     child: TextField(
                       controller: _addressController,
-                      decoration: const InputDecoration(
-                        hintText: 'Address',
-                        hintStyle: TextStyle(
+                      decoration: InputDecoration(
+                        hintText: (loginController.address=="") ? 'Address' : loginController.address,
+                        hintStyle: const TextStyle(
                           color: Colors.grey,
                           fontSize: 16,
                           fontWeight: FontWeight.normal,
@@ -399,7 +399,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                             content: AwesomeSnackbarContent(
                               title: '프로필 수정 완료!',
                               message:
-                              '다시 로그인한 후, 앱을 이용해 주세요 :)\n(자동 로그아웃 됩니다.)',
+                              '잠시 후 프로질 페이지로 돌아갑니다.',
                               contentType: ContentType.warning,
                             ),
                           );
@@ -429,16 +429,12 @@ class _EditProfilePageState extends State<EditProfilePage> {
                             'address': _addressController.text,
                           });
 
-                          loginController.profile_url = url;
-                          loginController.name = _nameController.text;
-                          loginController.gender = _genderController.text;
-                          loginController.age = _ageController.text;
+                          loginController.changeProfile(url,_nameController.text,_genderController.text,_ageController.text, _addressController.text);
 
                           Timer(
                               const Duration(seconds: 2),
-                                  () => Navigator.pushNamed(context, '/login')
+                                  () => Navigator.pop(context)
                           );
-                          // Navigator.pushNamed(context, '/profile');
                         }
                       },
                       child: Container(
