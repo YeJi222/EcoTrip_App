@@ -49,9 +49,7 @@ class _CartPageState extends State<CartPage> {
                 ],
                 isRepeatingAnimation: true,
                 repeatForever: true,
-                onTap: () {
-                  print("Tap Event");
-                },
+                onTap: () {},
               ),
             ),
           ],
@@ -98,7 +96,8 @@ class _CartPageState extends State<CartPage> {
                             children: buildListCardsV(loginController.likeProducts, context, flag)),
                       );
                     });
-                  }),
+                  }
+              ),
             ],
           ),
         ],
