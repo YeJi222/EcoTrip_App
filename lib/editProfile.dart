@@ -460,7 +460,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
             ),
           ],
         ),
-        // bottomNavigationBar: floatingBar(context),
       ),
     );
   }

@@ -1,11 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ecotripapp/favorite.dart';
+import 'package:ecotripapp/cart.dart';
 import 'package:ecotripapp/loading.dart';
 import 'package:ecotripapp/profile.dart';
 import 'package:ecotripapp/search.dart';
 import 'package:ecotripapp/upload.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'challenge_list.dart';
 import 'detail.dart';
 import 'editProfile.dart';
 import 'home.dart';
@@ -27,7 +28,7 @@ class TravelApp extends StatelessWidget {
         '/loading': (BuildContext context) => const LoadingPage(),
         '/upload': (BuildContext context) => const UploadPage(),
         '/profile': (BuildContext context) => const ProfilePage(),
-        // '/favorite': (BuildContext context) => const FavoritePage(),
+        '/challenge_list': (BuildContext context) => const ChallengeListPage(),
         '/editProfile': (BuildContext context) => const EditProfilePage(),
         '/navigator': (BuildContext context) => NavigatorPage(),
       },

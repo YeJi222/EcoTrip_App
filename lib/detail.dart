@@ -33,6 +33,7 @@ class _DetailPageState extends State<DetailPage> {
       title: "",
       description: "",
       challenges: [],
+      // trueChallenge: [],
       imageURL: [],
       location: "",
       timestamp: "",
@@ -88,7 +89,7 @@ class _DetailPageState extends State<DetailPage> {
             leading: IconButton(
               icon: const Icon(
                 Icons.arrow_back,
-                // color: Colors.black,
+                color: Colors.black,
               ),
               onPressed: (){
                 Navigator.pop(context);
@@ -102,7 +103,7 @@ class _DetailPageState extends State<DetailPage> {
                 icon: const Icon(
                   Icons.bookmark_add_outlined,
                   // Icons.bookmark_add,
-                  // color: Colors.black,
+                  color: Colors.black,
                 ),
                 onPressed: (){
                   if(product.isStored == false) {
@@ -124,7 +125,7 @@ class _DetailPageState extends State<DetailPage> {
                 onPressed: shareScreenshot,
                 icon: const Icon(
                   Icons.file_upload_outlined,
-                  // color: Colors.black,
+                  color: Colors.black,
                 ),
               ),
             ],
@@ -317,7 +318,7 @@ class _DetailPageState extends State<DetailPage> {
                                   ),
                                 ),
                                 subtitle: Text(
-                                  product.challenges[i],
+                                  product.challenges[i].challenge,
                                   style: TextStyle(
                                       fontSize: 18,
                                       color: Colors.black,

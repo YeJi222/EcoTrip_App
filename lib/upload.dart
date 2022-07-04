@@ -4,15 +4,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dynamic_timeline/dynamic_timeline.dart';
 import 'package:awesome_calendar/awesome_calendar.dart';
 import 'package:ecotripapp/cotroller.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/state_manager.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:provider/provider.dart';
-import 'firebase_options.dart';
 import 'model.dart';
 import 'widget.dart';
 import 'package:intl/intl.dart';
@@ -722,6 +718,7 @@ class _UploadPageState extends State<UploadPage> {
                             );
                             ScaffoldMessenger.of(context).showSnackBar(snackBar);
                             // showSnackBar(context, 'It will be uploaded soon. Hold on a minute, please');
+
                             String uploadTime = timestamp.toString();
                             List<String> urlList = [];
                             if (images_list!.isNotEmpty) {
@@ -761,6 +758,7 @@ class _UploadPageState extends State<UploadPage> {
                                 'challenges': [
                                   for(int i = 0 ; i < challenge_len ; i++){
                                     'challenge' : textfield_list[i].text,
+                                    'checked' : false
                                   }
                                 ],
                                 'events': [

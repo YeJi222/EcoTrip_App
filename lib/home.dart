@@ -1,22 +1,14 @@
 import 'dart:async';
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecotripapp/profile.dart';
 import 'package:ecotripapp/search.dart';
 import 'package:ecotripapp/cotroller.dart';
 import 'package:ecotripapp/widget.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:floating_bottom_bar/animated_bottom_navigation_bar.dart';
-import 'package:provider/provider.dart';
 import 'package:get/get.dart';
-import 'detail.dart';
-import 'favorite.dart';
-import 'firebase_options.dart';
-import 'model.dart';
+import 'cart.dart';
 
 class NavigatorPage extends StatefulWidget {
   @override
@@ -42,7 +34,7 @@ class _NavigatorPageState extends State<NavigatorPage> {
     pages = const [
       HomePage(),
       SearchPage(),
-      FavoritePage(),
+      CartPage(),
       ProfilePage(),
     ];
     for(final item in controller.products){
@@ -143,6 +135,8 @@ class _HomePageState extends State<HomePage> {
   static int load_num = 15; // number of cards to load
   Stream<int> loadStream =
   Stream<int>.periodic(const Duration(seconds: 2), (x) => load_num);
+
+  int flag = 0;
 
   @override
   void initState() {
@@ -290,7 +284,7 @@ class _HomePageState extends State<HomePage> {
                               child: ListView(
                                   shrinkWrap: true,
                                   physics: const NeverScrollableScrollPhysics(),
-                                  children: buildListCardsV(_.products, context)),
+                                  children: buildListCardsV(_.products, context, flag)),
                             );
                           }
                       ),
@@ -303,6 +297,5 @@ class _HomePageState extends State<HomePage> {
         ),
      );
   }
-
 }
 

@@ -24,6 +24,14 @@ class _LoadingPageState extends State<LoadingPage> {
   final LoginController loginController = Get.put(LoginController());
 
   @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      userInfo = (await storage.read(key: "login"))!;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     Timer(
         const Duration(seconds: 2),
@@ -44,6 +52,7 @@ class _LoadingPageState extends State<LoadingPage> {
                     if(i!=userInfo.split("").length-1) loginController.address += " "
                   },
                   loginController.getLikeProduct(),
+                  loginController.getTrue(),
 
                   Navigator.pushReplacement(
                     context,
@@ -68,14 +77,6 @@ class _LoadingPageState extends State<LoadingPage> {
                   )
                 }
             });
-
-    @override
-    void initState() {
-      super.initState();
-      WidgetsBinding.instance.addPostFrameCallback((_) async {
-        userInfo = (await storage.read(key: "login"))!;
-      });
-    }
 
     return MaterialApp(
       theme: ThemeData(useMaterial3: true),

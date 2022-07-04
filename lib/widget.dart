@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'cotroller.dart';
 import 'detail.dart';
+import 'detail_checkbox.dart';
 import 'package:get/get.dart';
 import 'model.dart';
 
@@ -168,7 +169,7 @@ List<Card> buildListCardsH(List<Product> products, BuildContext context) {
                                 ),
                                 IconButton(
                                     onPressed: () {
-                                      print(product.isStored);
+                                      // print(product.isStored);
 
                                       if (product.isStored) {
                                         FirebaseFirestore.instance
@@ -253,7 +254,7 @@ List<Card> buildListCardsH(List<Product> products, BuildContext context) {
 }
 
 // List Vertical
-List<Card> buildListCardsV(List<Product> products, BuildContext context) {
+List<Card> buildListCardsV(List<Product> products, BuildContext context, int flag) {
   final LoginController loginController = Get.put(LoginController());
   final Controller controller = Get.put(Controller());
 
@@ -269,13 +270,21 @@ List<Card> buildListCardsV(List<Product> products, BuildContext context) {
         clipBehavior: Clip.antiAlias,
         child: InkWell(
           onTap: () {
-            // Navigator.pushNamed(context, '/detail');
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => DetailPage(product),
-              ),
-            );
+            if(flag == 0){ // go to detail.dart
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => DetailPage(product),
+                ),
+              );
+            } else{ // go to detail_checkbox.dart
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => CheckBoxPage(product),
+                ),
+              );
+            }
           },
           child: Padding(
             padding: EdgeInsets.only(bottom: 10),
@@ -380,7 +389,6 @@ List<Card> buildListCardsV(List<Product> products, BuildContext context) {
                           IconButton(
                             visualDensity: const VisualDensity(horizontal: -4),
                             onPressed: () {
-
                               if (product.isStored) {
                                 FirebaseFirestore.instance
                                     .collection('user')
@@ -405,7 +413,7 @@ List<Card> buildListCardsV(List<Product> products, BuildContext context) {
                                     .collection('favorite')
                                     .doc();
                                 copyFrom.get().then(
-                                    (value) => {copyTo.set(value.data())});
+                                        (value) => {copyTo.set(value.data())});
                               }
                               controller.changeIsStored(product);
                             },
@@ -425,6 +433,155 @@ List<Card> buildListCardsV(List<Product> products, BuildContext context) {
                 )),
           ),
         ));
+  }).toList();
+}
+
+List<String> buildList(List<TrueChecked> trueThing, BuildContext context){
+  if(trueThing.isEmpty) return [];
+
+  List<String> trueChecked = [];
+  // print(trueThing.length);
+
+  for(int i = 0 ; i < trueThing.length ; i++){
+    print(trueThing[i].challenge.length);
+    for(int j = 0 ; j < trueThing[i].challenge.length ; j++){
+      trueChecked.add(trueThing[i].challenge[j]);
+    }
+
+    // print(trueThing[1].challenge[0]);
+    // trueChecked.add(trueThing[i].challenge[i]);
+    // print('all true challenges = ${trueChecked[i]}');
+  }
+
+  print('true list = ${trueChecked}');
+
+  return trueChecked;
+}
+
+List<Card> buildListTile(List<String> trueThing, BuildContext context) {
+  if (trueThing.isEmpty) {
+    return <Card>[];
+  }
+
+  int idx = 0;
+  return trueThing.map((thing) {
+    return Card(
+        color: Colors.transparent,
+        elevation: 0.0,
+        margin: EdgeInsets.zero,
+        clipBehavior: Clip.antiAlias,
+        child: Padding(
+            padding: EdgeInsets.only(right: 10, left: 10, bottom: 10),
+            child: Container(
+                width: 250,
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  // color: Colors.yellow,
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(11),
+                  ),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                    left: 10.0,
+                  ),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(
+                          left: 10,
+                          top: 10,
+                          bottom: 7
+                        ),
+                        child: Container(
+                          // color: Colors.red,
+                          color: Colors.white,
+                          width: 280,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                '🌱 Challenge #${idx+1}',
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 13),
+                              ),
+                              const SizedBox(
+                                height: 5,
+                              ),
+                              Text(
+                                // thing.challenge[idx++],
+                                trueThing[idx++],
+                                // 'a',
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.w300, fontSize: 18
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      // SizedBox(width: 100),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          SizedBox(height: 5,),
+                          IconButton(
+                            onPressed: () {
+                              // if (product.isStored) {
+                              //   FirebaseFirestore.instance
+                              //       .collection('user')
+                              //       .doc(loginController.uid)
+                              //       .collection('favorite')
+                              //       .where('title', isEqualTo: product.title)
+                              //       .get()
+                              //       .then((value) {
+                              //     for (final document in value.docs) {
+                              //       document.reference.delete();
+                              //     }
+                              //   });
+                              // } else {
+                              //   DocumentReference copyFrom = FirebaseFirestore
+                              //       .instance
+                              //       .collection('products')
+                              //       .doc(product.timestamp);
+                              //   DocumentReference copyTo = FirebaseFirestore
+                              //       .instance
+                              //       .collection('user')
+                              //       .doc(loginController.uid)
+                              //       .collection('favorite')
+                              //       .doc();
+                              //   copyFrom.get().then(
+                              //           (value) => {copyTo.set(value.data())});
+                              // }
+                              // controller.changeIsStored(product);
+
+
+                              // trueThing.removeAt(idx);
+                              print('delete');
+                            },
+                            icon: Icon(
+                              // Icons.check_box_outlined,
+                              Icons.delete_outline,
+                              color: Colors.red,
+                              // color: (product.isStored)
+                              //     // ? const Color(0xff6dc62f)
+                              //     ? Colors.red
+                              //     : Colors.black,
+                              size: 25,
+                            ),
+                            splashColor: Colors.blue,
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+            ),
+          ),
+        );
   }).toList();
 }
 

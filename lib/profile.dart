@@ -252,6 +252,33 @@ class _ProfilePageState extends State<ProfilePage> {
                       height: 40,
                       child: GestureDetector(
                         onTap: () async {
+                          Navigator.pushNamed(context, '/challenge_list');
+                        },
+                        child: Row(
+                          children: const [
+                            Icon(
+                              Icons.check_circle_outline_sharp,
+                              size: 25,
+                            ),
+                            SizedBox(width: 10),
+                            Text(
+                              'My Challenges List',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                                // color: Color(0xffB58CC8),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 15),
+                    SizedBox(
+                      width: 335,
+                      height: 40,
+                      child: GestureDetector(
+                        onTap: () async {
                           Navigator.pushNamed(context, '/editProfile');
                         },
                         child: Row(

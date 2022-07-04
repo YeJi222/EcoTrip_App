@@ -38,6 +38,8 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPage extends State<SearchPage> {
+  int flag = 0;
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -104,7 +106,7 @@ class _SearchPage extends State<SearchPage> {
                                       shrinkWrap: true,
                                       physics: const NeverScrollableScrollPhysics(),
                                       padding: const EdgeInsets.all(16.0),
-                                      children: buildListCardsV(_.products, context)),
+                                      children: buildListCardsV(_.products, context, flag)),
                                 );
                               }
                           ),
@@ -182,7 +184,7 @@ class _SearchPage extends State<SearchPage> {
                               shrinkWrap: true,
                               physics: const NeverScrollableScrollPhysics(),
                               padding: const EdgeInsets.all(16.0),
-                              children: buildListCardsV(_.products, context)),
+                              children: buildListCardsV(_.products, context, flag)),
                         );
                       }
                   ),

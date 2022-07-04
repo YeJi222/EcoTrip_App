@@ -4,6 +4,7 @@ class Product {
   Product({
     required this.title,
     required this.description,
+    // required this.trueChallenge,
     required this.challenges,
     required this.imageURL,
     required this.location,
@@ -15,7 +16,8 @@ class Product {
   final String title;
   final String location;
   final String description;
-  final List<String> challenges;
+  // final List<String> trueChallenge;
+  final List<SaveChallenge> challenges;
   final List<String> imageURL;
   final List<TimelineItem> items;
   final String duration;
@@ -35,4 +37,28 @@ class SaveEvent {
   final String endTime;
   final String title;
   final int position;
+}
+
+class SaveChallenge {
+  const SaveChallenge(
+      {required this.challenge,
+        required this.checked});
+
+  final String challenge;
+  final bool checked;
+}
+
+class TrueChecked {
+  TrueChecked({
+    required this.challenge,
+    required this.checked
+  });
+
+  final List<String> challenge;
+  final List<bool> checked;
+
+  // final String challenge;
+  // final bool checked;
+
+  bool isTrue=false;
 }

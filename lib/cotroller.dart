@@ -38,14 +38,19 @@ class Controller extends GetxController {
     return items;
   }
 
-  Future<List<String>> getChallenges(
+  Future<List<SaveChallenge>> getChallenges(
       QueryDocumentSnapshot<Map<String, dynamic>> document) async {
-    List<String> challenges = <String>[];
+    List<SaveChallenge> challenges = <SaveChallenge>[];
 
     var challengesDb = document.data()['challenges'] as List<dynamic>;
 
     for (final challenge in challengesDb) {
-      challenges.add(challenge['challenge']);
+      challenges.add(
+        SaveChallenge(
+            challenge: challenge['challenge'],
+            checked: challenge['checked']
+        )
+      );
     }
 
     return challenges;
@@ -114,6 +119,8 @@ class LoginController extends GetxController {
   LoginController() {}
 
   List<Product> likeProducts = <Product>[];
+  List<TrueChecked> trueThing = <TrueChecked>[];
+  // List<String> gathering = <String>[];
   String default_url = '';
   final storage = const FlutterSecureStorage();
 
@@ -164,6 +171,64 @@ class LoginController extends GetxController {
     update();
   }
 
+  Future<void> getTrue() async {
+    FirebaseFirestore.instance
+        .collection('user')
+        .doc(_uid)
+        .collection('favorite')
+        .snapshots()
+        .listen((event) async {
+      trueThing = <TrueChecked>[];
+      for (final document in event.docs) {
+        TrueChecked temp = TrueChecked(
+          challenge: await getTrueChallenge(document),
+          checked: await getTrueChecked(document),
+        );
+        temp.isTrue = true;
+        trueThing.add(temp);
+      }
+      update();
+    });
+    update();
+  }
+
+  // void trueChanged(TrueChecked trueChecked) { // 미완
+  //   for(final t in trueThing){
+  //     for(int i = 0 ; i < trueThing.length ; i++){
+  //       if((trueChecked.challenge[i].compareTo(t.challenge[i])==0)&&(trueChecked.checked[i]==t.checked[i])){
+  //         if(t.isTrue==false) {
+  //           t.isTrue=true;
+  //         } else {
+  //           t.isTrue=false;
+  //         }
+  //       }
+  //     }
+  //   }
+  // }
+
+  // Future<void> getTrueProduct() async {
+  //   FirebaseFirestore.instance
+  //       .collection('user')
+  //       .doc(_uid)
+  //       .collection('favorite')
+  //       .snapshots()
+  //       .listen((event) async {
+  //     // trueChallenge = <String>[];
+  //     for (final document in event.docs) {
+  //       var trueChallenge_db = document.data()['challenges'] as List<dynamic>;
+  //
+  //       for (final trueC in trueChallenge_db) {
+  //         if(trueC['checked'] == true){
+  //           trueChallenge.add(trueC['challenge']);
+  //         }
+  //       }
+  //       print('length : ${trueChallenge.length}');
+  //     }
+  //     update();
+  //   });
+  //   update();
+  // }
+
   Future<List<TimelineItem>> getEvent(
       QueryDocumentSnapshot<Map<String, dynamic>> document) async {
     List<TimelineItem> items = <TimelineItem>[];
@@ -186,18 +251,71 @@ class LoginController extends GetxController {
     return items;
   }
 
-  Future<List<String>> getChallenges(
+  Future<List<SaveChallenge>> getChallenges(
       QueryDocumentSnapshot<Map<String, dynamic>> document) async {
-    List<String> challenges = <String>[];
+    List<SaveChallenge> challenges = <SaveChallenge>[];
 
     var challengesDb = document.data()['challenges'] as List<dynamic>;
 
     for (final challenge in challengesDb) {
-      challenges.add(challenge['challenge']);
+      challenges.add(
+          SaveChallenge(
+              challenge: challenge['challenge'],
+              checked: challenge['checked']
+          )
+      );
     }
 
     return challenges;
   }
+
+  Future<List<String>> getTrueChallenge(
+      QueryDocumentSnapshot<Map<String, dynamic>> document) async {
+    List<String> trueChallenge = <String>[];
+
+    var trueChallenge_db = document.data()['challenges'] as List<dynamic>;
+
+    for (final trueC in trueChallenge_db) {
+      if(trueC['checked'] == true){
+        trueChallenge.add(
+            trueC['challenge']
+        );
+      }
+    }
+    print(trueChallenge);
+
+    return trueChallenge;
+  }
+
+  Future<List<bool>> getTrueChecked(
+      QueryDocumentSnapshot<Map<String, dynamic>> document) async {
+    List<bool> trueChecked = <bool>[];
+
+    var trueChallenge_db = document.data()['challenges'] as List<dynamic>;
+
+    for (final trueC in trueChallenge_db) {
+      if(trueC['checked'] == true){
+        trueChecked.add(
+            trueC['checked']
+        );
+      }
+    }
+
+    return trueChecked;
+  }
+
+  // Future<List<String>> getChallenges(
+  //     QueryDocumentSnapshot<Map<String, dynamic>> document) async {
+  //   List<String> challenges = <String>[];
+  //
+  //   var challenges_db = document.data()['challenges'] as List<dynamic>;
+  //
+  //   for (final challenge in challenges_db) {
+  //     challenges.add(challenge['challenge']);
+  //   }
+  //
+  //   return challenges;
+  // }
 
   Future<List<String>> getImages(
       QueryDocumentSnapshot<Map<String, dynamic>> document) async {
