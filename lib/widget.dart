@@ -516,7 +516,7 @@ List<Card> buildListTile(List<String> trueThing, BuildContext context) {
                                 maxLines: 2,
                                 overflow: TextOverflow.ellipsis,
                                 style: const TextStyle(
-                                    fontWeight: FontWeight.w300, fontSize: 18
+                                    fontWeight: FontWeight.w300, fontSize: 19
                                 ),
                               ),
                             ],
@@ -524,6 +524,7 @@ List<Card> buildListTile(List<String> trueThing, BuildContext context) {
                         ),
                       ),
                       // SizedBox(width: 100),
+                      /*
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
@@ -575,7 +576,8 @@ List<Card> buildListTile(List<String> trueThing, BuildContext context) {
                             splashColor: Colors.blue,
                           ),
                         ],
-                      )
+                      ),
+                       */
                     ],
                   ),
                 ),
