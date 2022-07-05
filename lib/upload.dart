@@ -16,35 +16,6 @@ import 'package:direct_select/direct_select.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 
-// class ApplicationUploadState extends ChangeNotifier{
-//   ApplicationUploadState(){
-//     init();
-//   }
-//
-//   Future<void> init() async {
-//     await Firebase.initializeApp(
-//       options: DefaultFirebaseOptions.currentPlatform,
-//     );
-//
-//     FirebaseAuth.instance.userChanges().listen((user) async {
-//       if (user != null) {
-//         final doc_user = await FirebaseFirestore.instance
-//             .collection('user')
-//             .doc(FirebaseAuth.instance.currentUser!.uid)
-//             .get();
-//         if(doc_user.exists == true){
-//           _name = doc_user.get('name');
-//         }
-//         notifyListeners();
-//       }
-//       notifyListeners();
-//     });
-//   }
-//
-//   String _name = '';
-//   String get name => _name;
-// }
-
 class UploadPage extends StatefulWidget {
   const UploadPage({
     Key? key,
@@ -96,7 +67,6 @@ class _UploadPageState extends State<UploadPage> {
 
   int challenge_len = 0;
   List<TextEditingController> textfield_list = [];
-  // TextEditingController tempController = TextEditingController();
 
   List<Widget> _buildDays() {
     return days
@@ -133,7 +103,6 @@ class _UploadPageState extends State<UploadPage> {
               DateFormat("yyyy년 MM월 dd일").format(multiOrRangeSelect![i]);
         }
         date_len = multiOrRangeSelect!.length;
-        // print(date_len);
 
         setState(() {
           days = [];
@@ -173,9 +142,6 @@ class _UploadPageState extends State<UploadPage> {
     setState((){});
   }
 
-  String default_url = '';
-  String select_url = '';
-
   late final ScrollController verticalController;
   late final ScrollController horizontalController;
 
@@ -206,7 +172,7 @@ class _UploadPageState extends State<UploadPage> {
           ),
           elevation: 0.0,
         ),
-        body: Container(
+        body: SizedBox(
           width: 500,
           child: ListView.builder(
             itemCount: 1,
@@ -214,7 +180,7 @@ class _UploadPageState extends State<UploadPage> {
               return Column(
                 children: [
                   Padding(
-                    padding: EdgeInsets.only(left: 25, right: 25),
+                    padding: const EdgeInsets.only(left: 25, right: 25),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: const [
@@ -233,7 +199,7 @@ class _UploadPageState extends State<UploadPage> {
                     height: 10,
                   ),
                   Padding(
-                    padding: EdgeInsets.only(left: 15, right: 15),
+                    padding: const EdgeInsets.only(left: 15, right: 15),
                     child: images_list!.isEmpty ? AspectRatio(
                       aspectRatio: 18 / 12,
                       child: CachedNetworkImage(
@@ -248,21 +214,21 @@ class _UploadPageState extends State<UploadPage> {
                       ),
                     )
                         : AspectRatio(
-                      aspectRatio: 18 / 12,
-                      child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: images_list!.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return Image.file(
-                              File(images_list![index].path),
-                              fit: BoxFit.fitWidth,
-                            );
-                          }
-                      ),
-                    ),
+                          aspectRatio: 18 / 12,
+                          child: ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: images_list!.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                return Image.file(
+                                  File(images_list![index].path),
+                                  fit: BoxFit.fitWidth,
+                                );
+                              }
+                          ),
+                        ),
                   ),
                   Padding(
-                    padding: EdgeInsets.only(right: 20),
+                    padding: const EdgeInsets.only(right: 20),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: <Widget>[
@@ -374,7 +340,7 @@ class _UploadPageState extends State<UploadPage> {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.only(left: 15, right: 20),
+                    padding: const EdgeInsets.only(left: 15, right: 20),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
@@ -634,7 +600,7 @@ class _UploadPageState extends State<UploadPage> {
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
+                        const Text(
                           'Add Challenges List',
                           style: TextStyle(
                             color: Colors.black,
@@ -647,16 +613,7 @@ class _UploadPageState extends State<UploadPage> {
                             onPressed: () {
                               challenge_len++;
                               textfield_list.add(TextEditingController());
-                              // print(textfield_list.length);
-
-                              // add_challenges(textfield_list, challenge_len);
-                              // temp(tempController);
                               setState(() {});
-
-
-                              // for(int i = 0 ; i < textfield_list.length ; i++){
-                              //   print('${i+1} => ${textfield_list[i]}');
-                              // }/
                             },
                             icon: Icon(Icons.add_circle_outline)
                         ),
@@ -688,13 +645,8 @@ class _UploadPageState extends State<UploadPage> {
                           ),
                         ),
                       ),
-                      // Container(
-                      //   color: Colors.green,
-                      //   width: 100,
-                      //   height: 100,
-                      // ),
                   Padding(
-                      padding: EdgeInsets.only(left: 30, right: 30),
+                      padding: const EdgeInsets.only(left: 30, right: 30),
                       child:TextButton(
                         onPressed: () async {
                           if(_nameController.text == "" || _locController.text == ""
@@ -706,7 +658,7 @@ class _UploadPageState extends State<UploadPage> {
                             var snackBar = SnackBar(
                               width: 400,
                               elevation: 0,
-                              duration: Duration(seconds: 5),
+                              duration: const Duration(seconds: 5),
                               behavior: SnackBarBehavior.floating,
                               backgroundColor: Colors.transparent,
                               content: AwesomeSnackbarContent(
@@ -717,7 +669,6 @@ class _UploadPageState extends State<UploadPage> {
                               ),
                             );
                             ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                            // showSnackBar(context, 'It will be uploaded soon. Hold on a minute, please');
 
                             String uploadTime = timestamp.toString();
                             List<String> urlList = [];
@@ -725,24 +676,15 @@ class _UploadPageState extends State<UploadPage> {
                               // print("not empty");
                               for(int i = 0 ; i < images_list!.length ; i++){
                                 File file = File(images_list![i].path);
-                                // print(file);
-                                // storageRef.putFile(file);
                                 final storageRef =
                                 FirebaseStorage.instance.ref().child('$uploadTime/$i.png');
                                 await storageRef.putFile(file);
-                                print(i);
-                                // print(await storageRef.getDownloadURL());
+                                // print(i);
                                 urlList.add(await storageRef.getDownloadURL());
                                 print(urlList[i]);
-                                // url.insert(i, storageRef.getDownloadURL());
                               }
                             }
-                            // print(images_list); // url 여러개 저장하기 다시
-                            // print(url[0]);
-                            // print(url[1]);
-                            // print(url[2]);
 
-                            // print(url_list.length);
                             if (urlList.isEmpty) {
                               showSnackBar(context, 'You should upload some Image!');
                             } else {
@@ -776,7 +718,7 @@ class _UploadPageState extends State<UploadPage> {
                                 'location': _locController.text,
                                 'duration': date_len.toString(),
                               }).then((_) => {
-                                Timer(Duration(seconds: 1), () {
+                                Timer(const Duration(seconds: 1), () {
                                   showSnackBar(context, 'Upload complete!');
                                   Navigator.popAndPushNamed(context, '/navigator');
                                 })
@@ -813,15 +755,6 @@ class _UploadPageState extends State<UploadPage> {
   }
 }
 
-// TextField add_challenges(List<TextEditingController> textfield_list, int idx) {
-//   return TextField(
-//     controller: textfield_list[idx],
-//     decoration:InputDecoration(
-//       labelText: 'Challenge',
-//     ),
-//   );
-// }
-
 class MySelectionItem extends StatelessWidget {
   final String title;
   final bool isForList;
@@ -837,10 +770,10 @@ class MySelectionItem extends StatelessWidget {
       child: isForList
           ? Padding(
               child: _buildItem(context),
-              padding: EdgeInsets.all(0.0),
+              padding: const EdgeInsets.all(0.0),
             )
           : Card(
-              margin: EdgeInsets.symmetric(horizontal: 0.0),
+              margin: const EdgeInsets.symmetric(horizontal: 0.0),
               child: Stack(
                 children: <Widget>[
                   _buildItem(context),
@@ -859,11 +792,12 @@ class MySelectionItem extends StatelessWidget {
     );
   }
 }
+
 Widget temp(TextEditingController temp) {
   return Container(
     child: TextField(
       controller: temp,
-      decoration:InputDecoration(
+      decoration:const InputDecoration(
         labelText: 'Challenge',
       ),
     ),
