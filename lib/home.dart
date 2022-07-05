@@ -1,8 +1,12 @@
 import 'dart:async';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecotripapp/profile.dart';
 import 'package:ecotripapp/search.dart';
 import 'package:ecotripapp/cotroller.dart';
 import 'package:ecotripapp/widget.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
@@ -193,6 +197,16 @@ class _HomePageState extends State<HomePage> {
           elevation: 0.0,
           actions: [
             IconButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/favorite');
+              },
+              icon: const Icon(
+                Icons.bookmark_added_outlined,
+                color: Colors.black,
+                size: 26,
+              ),
+            ),
+            IconButton(
                 onPressed: () {},
                 icon: const Icon(
                   Icons.notifications_none_outlined,
@@ -297,5 +311,6 @@ class _HomePageState extends State<HomePage> {
         ),
      );
   }
+
 }
 

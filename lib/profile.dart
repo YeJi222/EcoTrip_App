@@ -7,47 +7,6 @@ import 'package:provider/provider.dart';
 import 'cotroller.dart';
 import 'package:day_night_switcher/day_night_switcher.dart';
 
-// String name = '';
-// String email = '';
-// String profile_url = '';
-
-// class ApplicationState extends ChangeNotifier{
-//   ApplicationState(){
-//     init();
-//   }
-//
-//   Future<void> init() async {
-//     await Firebase.initializeApp(
-//       options: DefaultFirebaseOptions.currentPlatform,
-//     );
-//
-//     FirebaseAuth.instance.userChanges().listen((user) async {
-//       if (user != null) {
-//         final doc_user = await FirebaseFirestore.instance
-//             .collection('user')
-//             .doc(FirebaseAuth.instance.currentUser!.uid)
-//             .get();
-//         if(doc_user.exists == true){
-//           _name = doc_user.get('name');
-//           _email = doc_user.get('email');
-//           _profile_url = doc_user.get('profile_url');
-//         }
-//         notifyListeners();
-//       }
-//       notifyListeners();
-//     });
-//   }
-//
-//   String _name = '';
-//   String get name => _name;
-//
-//   String _email = '';
-//   String get email => _email;
-//
-//   String _profile_url = '';
-//   String get profile_url => _profile_url;
-// }
-
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key, String? title,}) : super(key: key);
 
@@ -117,14 +76,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     },
                   ),
                 )
-                // const Text(
-                //   "Eco Trip",
-                //   style: TextStyle(
-                //       color: Colors.black,
-                //       fontSize: 18,
-                //       fontWeight: FontWeight.bold),
-                // ),
-                // commit
+
               ],
             ),
             leadingWidth: 250,
@@ -137,13 +89,6 @@ class _ProfilePageState extends State<ProfilePage> {
                     color: Colors.black,
                     size: 28,
                   )),
-              // IconButton(
-              //     onPressed: () {},
-              //     icon: const Icon(
-              //       Icons.bookmark_added_outlined,
-              //       color: Colors.black,
-              //       size: 28,
-              //     )),
               const SizedBox(
                 width: 10,
               )
@@ -279,7 +224,9 @@ class _ProfilePageState extends State<ProfilePage> {
                       height: 40,
                       child: GestureDetector(
                         onTap: () async {
-                          Navigator.pushNamed(context, '/editProfile');
+                          Navigator.pushNamed(context, '/editProfile').then((value) => {
+                          setState(() {})
+                          });
                         },
                         child: Row(
                           children: const [
@@ -344,8 +291,8 @@ class _ProfilePageState extends State<ProfilePage> {
                           // color: Color(0xffB58CC8),
                           size: 25,
                         ),
-                        SizedBox(width: 10),
-                        Text(
+                        const SizedBox(width: 10),
+                        const Text(
                           'Light/Dark Theme',
                           // style: Theme.of(context).textTheme.bodyText1,
                           style: TextStyle(
