@@ -3,7 +3,6 @@ import 'package:firestore_search/firestore_search.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
-
 import 'cotroller.dart';
 
 class DataModel {
@@ -14,8 +13,6 @@ class DataModel {
 
   DataModel({this.title, this.description, this.location, this.creator_name});
 
-  //Create a method to convert QuerySnapshot from Cloud Firestore to a list of objects of this DataModel
-  //This function in essential to the working of FirestoreSearchScaffold
   List<DataModel> dataListFromSnapshot(QuerySnapshot querySnapshot) {
     return querySnapshot.docs.map((snapshot) {
       final Map<String, dynamic> dataMap =
@@ -61,7 +58,7 @@ class _SearchPage extends State<SearchPage> {
                     width: 40.0,
                     height: 90,
                   ),
-                  Icon(Icons.search),
+                  const Icon(Icons.search),
                   Expanded(
                       child: FirestoreSearchBar(
                         searchBackgroundColor: Colors.black12,
@@ -112,42 +109,6 @@ class _SearchPage extends State<SearchPage> {
                           ),
                         ],
                       );
-                      // return ListView.builder(
-                      //     itemCount: dataList.length,
-                      //     itemBuilder: (context, index) {
-                      //       final DataModel data = dataList[index];
-                      //
-                      //       return Column(
-                      //         mainAxisSize: MainAxisSize.min,
-                      //         mainAxisAlignment: MainAxisAlignment.center,
-                      //         crossAxisAlignment: CrossAxisAlignment.start,
-                      //         children: [
-                      //           Padding(
-                      //             padding: const EdgeInsets.all(8.0),
-                      //             child: Text(
-                      //               '${data.title}',
-                      //               // style: Theme.of(context).textTheme.headline6,
-                      //               style: TextStyle(
-                      //                 fontFamily: 'cafe24',
-                      //                 fontSize: 25,
-                      //               ),
-                      //             ),
-                      //           ),
-                      //           Padding(
-                      //             padding: const EdgeInsets.only(
-                      //                 bottom: 8.0, left: 8.0, right: 8.0),
-                      //             child: Text('${data.location}',
-                      //                 // style: Theme.of(context).textTheme.bodyText1),
-                      //                   style: TextStyle(
-                      //                     fontFamily: 'cafe24',
-                      //                     fontSize: 18,
-                      //                   ),
-                      //             ),
-                      //           )
-                      //         ],
-                      //       );
-                      //     }
-                      //   );
                     }
 
                     if (snapshot.connectionState == ConnectionState.done) {
@@ -190,41 +151,6 @@ class _SearchPage extends State<SearchPage> {
                   ),
                 ],
               );
-              // return ListView.builder(
-              //     itemCount: dataList.length,
-              //     itemBuilder: (context, index) {
-              //       final DataModel data = dataList[index];
-              //
-              //       return Column(
-              //         mainAxisSize: MainAxisSize.min,
-              //         mainAxisAlignment: MainAxisAlignment.center,
-              //         crossAxisAlignment: CrossAxisAlignment.start,
-              //         children: [
-              //           Padding(
-              //             padding: const EdgeInsets.all(8.0),
-              //             child: Text(
-              //               '${data.title}',
-              //               // style: Theme.of(context).textTheme.headline6,
-              //               style: TextStyle(
-              //                 fontFamily: 'cafe24',
-              //                 fontSize: 25,
-              //               ),
-              //             ),
-              //           ),
-              //           Padding(
-              //             padding: const EdgeInsets.only(
-              //                 bottom: 8.0, left: 8.0, right: 8.0),
-              //             child: Text('${data.location}',
-              //                 // style: Theme.of(context).textTheme.bodyText1),
-              //                 style: TextStyle(
-              //                   fontFamily: 'cafe24',
-              //                   fontSize: 18,
-              //                 ),
-              //             ),
-              //           )
-              //         ],
-              //       );
-              //     });
             }
 
             if (snapshot.connectionState == ConnectionState.done) {
