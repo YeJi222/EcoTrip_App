@@ -117,9 +117,7 @@ class LoginPage extends StatelessWidget {
                     decoration: BoxDecoration(
                       color: Colors.white,
                       border: Border.all(
-                        // color: Color(0xfffc99a1),
                         color: Colors.white,
-                        // width: 2,
                       ),
                       borderRadius: BorderRadius.circular(45.0),
                     ),
@@ -141,10 +139,10 @@ class LoginPage extends StatelessWidget {
                             'img/google_logo.png',
                             width: 30,
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 15,
                           ),
-                          Text(
+                          const Text(
                             'Google Login',
                             style: TextStyle(
                                 // color: Color(0xfffc99a1),
