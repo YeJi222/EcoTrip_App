@@ -1,12 +1,8 @@
 import 'dart:async';
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecotripapp/profile.dart';
 import 'package:ecotripapp/search.dart';
 import 'package:ecotripapp/cotroller.dart';
 import 'package:ecotripapp/widget.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
@@ -56,7 +52,7 @@ class _NavigatorPageState extends State<NavigatorPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Color(0xfff9fff8),
+        backgroundColor: const Color(0xfff9fff8),
         bottomNavigationBar: AnimatedBottomNavigationBar(
           bottomBarItems: [
             BottomBarItemsModel(
@@ -68,24 +64,24 @@ class _NavigatorPageState extends State<NavigatorPage> {
               },
             ),
             BottomBarItemsModel(
-              icon: Icon(Icons.search, color: Colors.black),
-              iconSelected: Icon(Icons.search, color: Colors.green),
+              icon: const Icon(Icons.search, color: Colors.black),
+              iconSelected: const Icon(Icons.search, color: Colors.green),
               dotColor: Colors.green,
               onTap: () => {
                 changeActivePage(1),
               },
             ),
             BottomBarItemsModel(
-              icon: Icon(Icons.bookmark_added_outlined, color: Colors.black),
-              iconSelected: Icon(Icons.bookmark_added_outlined, color: Colors.green),
+              icon: const Icon(Icons.bookmark_added_outlined, color: Colors.black),
+              iconSelected: const Icon(Icons.bookmark_added_outlined, color: Colors.green),
               dotColor: Colors.green,
               onTap: () => {
                 changeActivePage(2),
               },
             ),
             BottomBarItemsModel(
-              icon: Icon(Icons.person, color: Colors.black),
-              iconSelected: Icon(Icons.person, color: Colors.green),
+              icon: const Icon(Icons.person, color: Colors.black),
+              iconSelected: const Icon(Icons.person, color: Colors.green),
               dotColor: Colors.green,
               onTap: () => {
                 changeActivePage(3),
